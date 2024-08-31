@@ -1,0 +1,140 @@
+/* CSS styles for form customization */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('../img/event/backgroundform.jpg'); /* Путь к фоновому изображению */
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box; /* Учитываем padding в общей ширине */
+}
+
+.g-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.g-form__title_main {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.g-form__title_respond {
+  color: #666;
+  font-size: 1em;
+}
+
+.g-form__inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.g-form__input-wrapper {
+  margin-bottom: 15px;
+  border-color: transparent; /* Делаем границы прозрачными */
+}
+
+/* Общий стиль для полей ввода и textarea */
+.g-form__input-wrapper input, .g-form__input-wrapper textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid transparent; /* Сделаем границы прозрачными */
+  border-radius: 5px;
+  box-sizing: border-box; /* Учитываем padding в общей ширине */
+  resize: none; /* Запрещаем изменение размера */
+}
+
+.g-form__input-wrapper textarea {
+  min-height: 100px; /* Минимальная высота textarea */
+}
+
+.g-form__input-wrapper label[for="payment-method"] {
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Общий стиль для квадратика (checkbox) */
+.g-form__input-wrapper input[type="checkbox"] {
+  display: none; /* Скрываем стандартные checkbox-кнопки */
+}
+
+.g-form__input-wrapper label[for="cash"],
+.g-form__input-wrapper label[for="bank-transfer"] {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.g-form__input-wrapper label[for="cash"]::before,
+.g-form__input-wrapper label[for="bank-transfer"]::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid #3498db; /* Синий цвет квадратика */
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.g-form__input-wrapper input[type="checkbox"]:checked + label[for="cash"]::before,
+.g-form__input-wrapper input[type="checkbox"]:checked + label[for="bank-transfer"]::before {
+  content: '\2714'; /* Юникод для галочки */
+  text-align: center;
+  line-height: 20px;
+}
+
+/* Убираем кружки (radio) */
+.g-form__input-wrapper input[type="radio"] {
+  display: none;
+}
+
+.g-form__input-wrapper input[type="radio"] + label[for="cash"]::before,
+.g-form__input-wrapper input[type="radio"] + label[for="bank-transfer"]::before {
+  border-radius: 50%;
+}
+
+.g-form__input-wrapper input[type="radio"]:checked + label[for="cash"]::before,
+.g-form__input-wrapper input[type="radio"]:checked + label[for="bank-transfer"]::before {
+  background-color: #3498db;
+}
+
+.g-form__button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+.g-form__button:hover {
+  background-color: #2980b9;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+  .g-form__title_main {
+    font-size: 1.5em;
+  }
+  .g-form__input-wrapper input, .g-form__input-wrapper textarea {
+    font-size: 14px;
+  }
+}

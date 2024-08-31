@@ -1,0 +1,20 @@
+#slider__preview {
+    background-image: url('../images/cartels.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.form-fieldset {
+    text-align: left;
+    background: #34313f;
+    padding: 10px;
+}
+.language-box {
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 50px;
+    gap: 5%;
+}
+.hidden {
+    display: none;
+}

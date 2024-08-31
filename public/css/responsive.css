@@ -1,0 +1,983 @@
+@media (min-width: 1200px) and (max-width: 1440px) {
+  #recentPostCaro .owl-next,
+  #blogCarousel .owl-next {
+    right: -50px;
+  }
+
+  #recentPostCaro .owl-prev,
+  #blogCarousel .owl-prev {
+    left: -50px;
+  }
+
+  .clientSec {
+    padding: 27px 30px;
+  }
+
+  .errorContent {
+    padding-bottom: 100px;
+    padding-top: 92px;
+  }
+
+  .erorimg {
+    width: auto;
+    height: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  .galDecfw {
+    min-height: 95px;
+  }
+}
+
+@media (min-width: 991px) and (max-width: 1024px) {
+  .logo {
+    height: 90px;
+    padding-top: 0;
+    width: 131px;
+  }
+
+  .hsingleInfo h6 {
+    font-size: 14px;
+  }
+
+  .hsingleInfo h3 {
+    font-size: 18px;
+  }
+
+  .hsingleInfo {
+    margin-right: 20px;
+    padding-left: 25px;
+  }
+
+  .sicialIcon {
+    padding: 20px 0;
+    text-align: right;
+  }
+
+  .headerInfo {
+    padding: 25px 0 0;
+  }
+
+  .mainNav ul li {
+    margin-right: 45px;
+  }
+
+  .rev1con {
+    left: 130px;
+    position: relative;
+  }
+
+  .rev1con h2 {
+    top: -60px;
+    position: relative;
+  }
+
+  .lineBorder {
+    position: relative;
+    top: -20px;
+  }
+
+  .singleSer h3 br {
+    display: none;
+  }
+
+  .pBody {
+    padding: 0 30px 60px;
+  }
+
+  .singleOffer {
+    padding: 53px 34px;
+  }
+
+  .b {
+    border: 1px solid #3a3942;
+  }
+
+  .singlebDec {
+    padding: 55px 15px 60px;
+  }
+
+  .clientSec {
+    padding: 27px 0;
+  }
+
+  #recentPostCaro .owl-prev {
+    left: 0;
+  }
+
+  #recentPostCaro .owl-next {
+    right: 0;
+  }
+
+  .quoteFooter {
+    padding: 60px 30px;
+  }
+
+  .innerHeader .logo {
+    top: 15px;
+  }
+
+  .erorimg {
+    height: 762px;
+    left: auto;
+    position: absolute;
+    right: 0;
+    top: 95px;
+    width: 700px;
+  }
+
+  .appointment-time {
+    width: 25%;
+  }
+
+  .appointment-slots {
+    width: 55%;
+  }
+
+  .singTeamTab .tab-content {
+    padding: 55px 30px 5px;
+  }
+
+  .memberContact .expaddingr {
+    padding-right: 15px;
+  }
+
+  .memberContact .expaddingl {
+    padding-left: 15px;
+  }
+
+  .siRecPost img {
+    height: 75px;
+    width: 75px;
+  }
+
+  .siRecPost {
+    padding-left: 85px;
+    padding-top: 0;
+  }
+
+  .blogSingleDec {
+    padding: 60px 30px 31px;
+  }
+
+  .commentBox {
+    padding: 60px 30px 20px;
+  }
+
+  .singleBauthor img {
+    height: auto;
+    width: 170px;
+  }
+
+  .singleBauthor {
+    padding-left: 200px;
+    padding-bottom: 30px;
+  }
+
+  .commForm input[type="email"],
+  .commForm input[type="text"] {
+    float: left;
+    width: 100%;
+  }
+
+  .commForm input.comfEmail {
+    margin: 0 0 10px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+  .logo {
+    height: 67px;
+    width: 94px;
+    padding-top: 8px;
+  }
+
+  .hsingleInfo h6 {
+    font-size: 12px;
+  }
+
+  .hsingleInfo h3 {
+    font-size: 16px;
+  }
+
+  .hsingleInfo {
+    margin-right: 5px;
+    padding-left: 25px;
+  }
+
+  .sicialIcon {
+    padding: 20px 0;
+    text-align: right;
+  }
+
+  .headerInfo {
+    padding: 25px 0 0;
+  }
+
+  .mainNav ul li {
+    margin-right: 45px;
+  }
+
+  .rev1con {
+    left: 130px;
+    position: relative;
+  }
+
+  .rev1con h2 {
+    top: -60px;
+    position: relative;
+  }
+
+  .lineBorder {
+    position: relative;
+    top: -20px;
+  }
+
+  .singleSer h3 br {
+    display: none;
+  }
+
+  .pBody {
+    padding: 0 15px 60px;
+  }
+
+  .singleOffer {
+    padding: 53px 34px;
+  }
+
+  .b {
+    border: 1px solid #3a3942;
+  }
+
+  .singlebDec {
+    padding: 55px 15px 60px;
+  }
+
+  .clientSec {
+    padding: 27px 0;
+  }
+
+  #recentPostCaro .owl-prev {
+    left: 0;
+  }
+
+  #recentPostCaro .owl-next {
+    right: 0;
+  }
+
+  .mainNav2 ul li {
+    margin-right: 25px;
+  }
+
+  .innerHeader .logo {
+    height: auto;
+    padding-top: 0;
+    position: relative;
+    top: 25px;
+  }
+
+  .erorimg {
+    height: auto;
+    left: auto;
+    position: relative;
+    right: 0;
+    top: 300px;
+    width: auto;
+  }
+
+  .appointment-time {
+    width: 25%;
+  }
+
+  .appointment-slots {
+    width: 48.3%;
+  }
+
+  .singTeamTab .tab-content {
+    padding: 55px 30px 5px;
+  }
+
+  .memberContact .expaddingr {
+    padding-right: 15px;
+  }
+
+  .memberContact .expaddingl {
+    padding-left: 15px;
+  }
+
+  .galDecex {
+    padding: 0 15px;
+  }
+
+  .topPost .singlebDec {
+    padding: 55px 15px 20px;
+  }
+
+  #blogCarousel .owl-prev {
+    left: 0;
+  }
+
+  #blogCarousel .owl-next {
+    right: 0;
+  }
+
+  .shareblog a {
+    margin-bottom: 5px;
+    width: 105px;
+  }
+
+  .siRecPost img {
+    height: 75px;
+    width: 75px;
+  }
+
+  .siRecPost {
+    padding-left: 85px;
+    padding-top: 0;
+  }
+
+  .blogSingleDec {
+    padding: 60px 30px 31px;
+  }
+
+  .commentBox {
+    padding: 60px 30px 20px;
+  }
+
+  .singleBauthor img {
+    height: auto;
+    width: 170px;
+  }
+
+  .singleBauthor {
+    padding-left: 200px;
+    padding-bottom: 30px;
+  }
+
+  .commForm input[type="email"],
+  .commForm input[type="text"] {
+    float: left;
+    width: 100%;
+  }
+
+  .commForm input.comfEmail {
+    margin: 0 0 10px;
+  }
+
+  .shopSidebar {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .switchTittle {
+    display: none;
+  }
+
+  .logo {
+    height: auto;
+    width: 80px;
+  }
+
+  .headerInfo {
+    display: none;
+  }
+
+  .sicialIcon {
+    padding: 0;
+    text-align: right;
+    position: absolute;
+    top: -47px;
+    right: 15px;
+  }
+
+  .rev1con h2 {
+    position: relative;
+    top: -60px;
+    left: 15px;
+  }
+
+  .rev1con h2 {
+    font-size: 30px;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  .rev1con p {
+    position: relative;
+    top: 30px;
+    left: 15px;
+  }
+
+  .rev1con.rev1btn {
+    position: relative;
+    top: 80px;
+    left: 15px;
+  }
+
+  .lineBorder {
+    position: relative;
+    left: 15px;
+  }
+
+  .slider1 .tp-rightarrow.tparrows.default.round {
+    right: -5px !important;
+    bottom: 0 !important;
+    top: auto !important;
+  }
+
+  .slider1 .tp-leftarrow.tparrows.default.round {
+    bottom: 0 !important;
+    right: 25px !important;
+    top: auto !important;
+    left: auto !important;
+  }
+
+  .sectionTitle {
+    margin-bottom: 55px;
+    margin-right: 0;
+    padding-right: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quoteFooter {
+    padding: 30px;
+  }
+
+  .callToContent h2 {
+    margin: 0;
+    font-size: 38px;
+  }
+
+  .titleHead h2 {
+    font-size: 35px;
+    line-height: 1;
+  }
+
+  .bb,
+  .br {
+    border: none;
+  }
+
+  .singleOffer {
+    padding: 25px 15px;
+    text-align: center;
+  }
+
+  #testmonial {
+    margin: 0;
+  }
+
+  .sectionTitle2 h2 {
+    font-size: 40px;
+  }
+
+  #testmonial .carousel-indicators li {
+    display: block;
+    margin: auto;
+  }
+
+  #testmonial .carousel-indicators li.active {
+    margin-bottom: 100px;
+  }
+
+  #testmonial .carousel-indicators li:last-child {
+    margin-right: auto;
+  }
+
+  #testmonial .carousel-indicators {
+    height: auto;
+  }
+
+  .singlebDec {
+    padding: 55px 15px 60px;
+  }
+
+  #recentPostCaro .owl-next {
+    right: 0;
+  }
+
+  #recentPostCaro .owl-prev {
+    left: 0;
+  }
+
+  .clientSec {
+    padding: 27px 0;
+  }
+
+  .sicialIcon.fsocial {
+    position: relative;
+    left: 0;
+    top: 0;
+    right: 0;
+  }
+
+  #testmonial::before {
+    font-size: 132px;
+    left: 15px;
+    letter-spacing: -58px;
+    top: 55px;
+    opacity: 0.3;
+  }
+
+  #testmonial::after {
+    right: 0;
+    display: none;
+  }
+
+  .fixedHeader .headerSearch,
+  .headerSearch {
+    padding: 12px 0;
+  }
+
+  .mobileMenu,
+  .mobileMenu2 {
+    height: 20px;
+    line-height: 0.4;
+    position: absolute;
+    width: 23px;
+    top: 19px;
+    cursor: pointer;
+    right: 16px;
+    z-index: 10;
+  }
+
+  .mobileMenu span,
+  .mobileMenu2 span {
+    width: 100%;
+    height: 4px;
+    background: #e43d4e;
+    display: inline-block;
+  }
+
+  .mainNav ul {
+    position: absolute;
+    background: #292633;
+    width: 100%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10px 0;
+    display: none;
+    z-index: 9;
+  }
+
+  .mainNav > ul {
+    height: auto;
+    overflow: scroll;
+    border-top: 1px solid #201e29;
+    width: 65%;
+    text-align: left;
+    padding-left: 30px;
+    letter-spacing: 3px;
+  }
+
+  .mainNav ul li {
+    display: block;
+    margin: 0 0 10px;
+  }
+
+  .mainNav ul li a,
+  .fixedHeader .mainNav ul li a {
+    padding: 0;
+  }
+
+  .fixedHeader .mainNav ul.sub-menu,
+  .fixedHeader .mainNav ul li:hover ul.sub-menu {
+    top: 0;
+  }
+
+  .mainNav ul ul.sub-menu {
+    background: #fff;
+    left: 0;
+    margin-left: 0;
+    opacity: 1;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-top: 0;
+    position: relative;
+    top: 130px;
+    transition: none;
+    visibility: visible;
+    width: 100%;
+    z-index: 9;
+    display: none;
+    margin: 10px 0;
+  }
+
+  .mainNav ul ul.sub-menu li {
+    margin: 0;
+  }
+
+  .mainNav ul ul.sub-menu li a {
+    padding: 7px 0;
+  }
+
+  .mainNav ul li::before {
+    background: 0 0;
+  }
+
+  .singleSer h3 br {
+    display: none;
+  }
+
+  .innerHeader {
+    padding: 10px 0;
+  }
+
+  .innerHeader .sicialIcon {
+    padding-right: 40px !important;
+  }
+
+  .innerHeader .sicialIcon,
+  .innerHeader.isStickyInner.fixedHeader .sicialIcon {
+    padding: 0;
+  }
+
+  .innerHeader.isStickyInner.fixedHeader .logo {
+    width: 80px;
+  }
+
+  .innerHeader .logo {
+    top: 0;
+  }
+
+  .innerHeader.isStickyInner.fixedHeader .logo {
+    top: 0;
+  }
+
+  .mobileMenu2 {
+    position: absolute;
+    right: 15px;
+    top: -36px;
+    z-index: 9;
+  }
+
+  .mainNav2 ul {
+    position: absolute;
+    top: 11px;
+    background: #292633;
+    width: 100%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10px 0;
+    display: none;
+    z-index: 9;
+  }
+
+  .mainNav2 > ul {
+    height: 240px;
+    overflow: scroll;
+    border-top: 1px solid #201e29;
+  }
+
+  .mainNav2 ul li {
+    display: block;
+    margin: 0 0 10px;
+  }
+
+  .mainNav2 ul li a,
+  .fixedHeader .mainNav2 ul li a {
+    padding: 0;
+  }
+
+  .fixedHeader .mainNav2 ul.sub-menu,
+  .fixedHeader .mainNav2 ul li:hover ul.sub-menu {
+    top: 0;
+  }
+
+  .mainNav2 ul ul.sub-menu {
+    background: #fff;
+    left: 0;
+    margin-left: 0;
+    opacity: 1;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-top: 0;
+    position: relative;
+    top: 130px;
+    transition: none;
+    visibility: visible;
+    width: 100%;
+    z-index: 9;
+    display: none;
+    margin: 10px 0;
+  }
+
+  .mainNav2 ul ul.sub-menu li {
+    margin: 0;
+  }
+
+  .mainNav2 ul ul.sub-menu li a {
+    padding: 7px 0;
+  }
+
+  .mainNav2 ul li::before {
+    background: 0 0;
+  }
+
+  .er_search {
+    padding-right: 15px !important;
+  }
+
+  .erorimg {
+    height: auto;
+    left: auto;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .appointment-list {
+    padding: 55px 10px 60px;
+  }
+
+  .day-cell {
+    padding: 7px 0;
+  }
+
+  .appointment-time {
+    color: #fff;
+    padding: 0;
+    width: 100%;
+  }
+
+  .appointment-slots {
+    width: 100%;
+  }
+
+  .singlePrice {
+    margin-bottom: 30px;
+  }
+
+  .stafDec .sicialIcon {
+    padding: 0;
+    position: relative;
+    right: 0;
+    text-align: center;
+    top: 0;
+  }
+
+  .singleTeam {
+    margin-right: 0;
+  }
+
+  .teamtabnav li a {
+    padding: 11px;
+  }
+
+  .singTeamTab .tab-content {
+    padding: 55px 15px 5px;
+  }
+
+  .memberContact .expaddingr {
+    padding-right: 15px;
+  }
+
+  .memberContact .expaddingl {
+    padding-left: 15px;
+  }
+
+  .singleEven .eventThumb {
+    margin-bottom: 30px;
+  }
+
+  .galDecex {
+    padding: 0 15px;
+  }
+
+  .galr {
+    margin-bottom: 10px;
+  }
+
+  .galr a {
+    font-size: 16px;
+    height: 50px;
+    padding: 17px 0;
+    width: 50px;
+  }
+
+  .blocaroContent {
+    width: 100%;
+  }
+
+  .blocaroContent h2 {
+    color: #fff;
+    font-size: 21px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  #blogCarousel .owl-prev {
+    left: 0;
+  }
+
+  #blogCarousel .owl-next {
+    right: 0;
+  }
+
+  .topPost .singlebDec {
+    padding: 55px 15px 20px;
+  }
+
+  .topPostwrap .singlePost.topPost {
+    margin-bottom: 30px;
+  }
+
+  .shareblog a {
+    width: 93px;
+  }
+
+  .singlePostbDec {
+    padding: 55px 15px 30px;
+  }
+
+  .singTestmonial {
+    padding: 0 15px;
+  }
+
+  .singTestmonial h3 {
+    font-size: 20px;
+  }
+
+  .short_post {
+    padding: 55px 15px 40px;
+  }
+
+  .posDecCaro {
+    padding: 55px 15px 40px;
+  }
+
+  .singlePostb.blockquote {
+    padding: 50px 15px 60px;
+  }
+
+  .select2-container {
+    width: 100% !important;
+  }
+
+  .blogSingleDec {
+    padding: 60px 15px 31px;
+  }
+
+  .likeView a {
+    width: 32px;
+  }
+
+  .likeView a:last-of-type {
+    margin-right: 10px;
+  }
+
+  .likeView h6.pull-right {
+    padding: 14px 10px;
+  }
+
+  .singleBauthor img {
+    height: auto;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .singleBauthor {
+    padding: 15px;
+  }
+
+  .singleBauthor .sicialIcon {
+    left: 0;
+    padding: 0;
+    position: relative;
+    text-align: left;
+    top: 0;
+  }
+
+  .commentBox {
+    padding: 60px 15px 20px;
+  }
+
+  .commForm input[type="email"],
+  .commForm input[type="text"] {
+    width: 100%;
+  }
+
+  .commForm input.comfEmail {
+    margin: 0 0 9px;
+  }
+
+  .singleCom {
+    padding-left: 0;
+  }
+
+  .singleCom img {
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .singleCom a.reply {
+    font-size: 16px;
+    height: 40px;
+    top: 37px;
+    width: 40px;
+  }
+
+  .shortResult {
+    margin-bottom: 20px;
+  }
+
+  .shopSidebar {
+    padding-left: 0;
+    padding-top: 30px;
+  }
+}
+
+@media (min-width: 340px) and (max-width: 640px) {
+  .rev1con h2 {
+    top: 0;
+  }
+
+  .rev1con.rev1btn {
+    top: 30px;
+  }
+
+  .rev1con p {
+    top: 15px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 481px) {
+  .rev1con h2,
+  .rev1con.rev1btn {
+    top: 0;
+  }
+
+  .lineBorder {
+    top: 15px;
+  }
+
+  .rev1con p {
+    display: none;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 440px) {
+  .rev1con h2 {
+    top: -50px;
+  }
+
+  .rev1con p {
+    display: block;
+    position: relative;
+    top: 70px;
+  }
+
+  .rev1con.rev1btn {
+    top: 140px;
+  }
+}

@@ -1,0 +1,147 @@
+body {
+  background: #262330;
+}
+
+body.bgp1 {
+  background: url(../../images/pattern/p1.png) repeat fixed center center #fff;
+}
+
+body.bgp2 {
+  background: url(../../images/pattern/p2.png) repeat fixed center center
+    #4c4c4c;
+}
+
+body.bgp3 {
+  background: url(../../images/pattern/p3.png) repeat fixed center center #fff;
+}
+
+body.bgp4 {
+  background: url(../../images/pattern/p4.png) repeat fixed center center
+    #4c4c4c;
+}
+
+body.bgp5 {
+  background: url(../../images/pattern/p5.png) repeat fixed center center #fff;
+}
+
+body.bgp6 {
+  background: url(../../images/pattern/p6.png) repeat fixed center center
+    #4c4c4c;
+}
+
+body.bgp7 {
+  background: url(../../images/pattern/p7.png) repeat fixed center center #fff;
+}
+
+body.bgp8 {
+  background: url(../../images/pattern/p8.png) repeat fixed center center
+    #4c4c4c;
+}
+
+.box {
+  width: 1562px;
+  margin: auto;
+  background: #262330;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.headerTop,
+.fixedHeader {
+  width: 1562px;
+  margin: auto;
+}
+
+@media (min-width: 1200px) and (max-width: 1440px) {
+  .box,
+  .fixedHeader,
+  .headerTop,
+  .fixedHeader {
+    width: 1240px;
+    margin: auto;
+  }
+
+  .rev1con {
+    padding-left: 100px;
+  }
+
+  #recentPostCaro .owl-prev,
+  #blogCarousel .owl-prev {
+    left: -15px;
+  }
+
+  #recentPostCaro .owl-next,
+  #blogCarousel .owl-next {
+    right: -15px;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1280px) {
+  .box,
+  .fixedHeader,
+  .headerTop {
+    width: 1140px;
+    margin: auto;
+  }
+
+  .box .container {
+    width: 1070px;
+  }
+
+  .rev1con {
+    padding-left: 100px;
+  }
+
+  #recentPostCaro .owl-prev,
+  #blogCarousel .owl-prev {
+    left: -15px;
+  }
+
+  #recentPostCaro .owl-next,
+  #blogCarousel .owl-next {
+    right: -15px;
+  }
+
+  .hsingleInfo {
+    margin-right: 30px;
+  }
+
+  .singleOffer {
+    padding: 55px 34px;
+  }
+
+  .galr a {
+    height: 45px;
+    width: 45px;
+    font-size: 14px;
+    padding: 16px 0;
+  }
+
+  .galr {
+    margin-bottom: 6px;
+  }
+
+  .erorimg {
+    top: 45px;
+  }
+
+  .appointment-time {
+    width: 25%;
+  }
+
+  .appointment-slots {
+    width: 57%;
+  }
+
+  .commForm input[type="email"],
+  .commForm input[type="text"] {
+    width: 32.1%;
+  }
+}
+
+@media (max-width: 990px) {
+  .box,
+  .headerTop,
+  .fixedHeader {
+    width: 100%;
+  }
+}
