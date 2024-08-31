@@ -1,7 +1,7 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const app = express();
-const port = 413;
+const port = 3000;
 const {pool, postUser, isTeamOverLimit} = require('./db')
 
 // Установка EJS как шаблонизатора
@@ -68,5 +68,5 @@ app.post('/submit-event-form', async (req, res) => {
 
 // Запуск сервера
 app.listen(port, () => {
-    console.log(`Server running at https://airsoftnarva.com/:${port}`);
+    console.log(`Server running at https://localhost:${port}`);
 });
