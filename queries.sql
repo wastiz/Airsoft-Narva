@@ -1,4 +1,4 @@
-CREATE TABLE object3_reg (
+CREATE TABLE IF NOT EXISTS object3_reg (
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(15) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
