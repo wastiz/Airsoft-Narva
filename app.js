@@ -2,7 +2,7 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const app = express();
 const port = 3000;
-const {pool, postUser, isTeamOverLimit} = require('./db')
+const {pool, postUser, isTeamOverLimit, createTableIfNotExists} = require('./db')
 
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
@@ -66,7 +66,14 @@ app.post('/submit-event-form', async (req, res) => {
     }
 });
 
-// Запуск сервера
-app.listen(port, () => {
-    console.log(`Server running at https://localhost:${port}`);
-});
+
+
+async function startApp() {
+    await createTableIfNotExists();
+    // Здесь запускается сервер
+    app.listen(port, () => {
+        console.log(`Server running at https://airsoftnarva.com:${port}`);
+    });
+}
+
+startApp();

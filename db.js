@@ -8,6 +8,17 @@ const pool = new Pool({
     port: 5432,
 });
 
+async function createTableIfNotExists() {
+    const query = `CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(100), email VARCHAR(100) UNIQUE NOT NULL);`;
+
+    try {
+        await pool.query(query);
+        console.log('Table created or already exists');
+    } catch (err) {
+        console.error('Error creating table:', err);
+    }
+}
+
 function postUser () {
     pool.query('INSERT INTO object2_reg(name, phone, email, about_character, payment_method) VALUES($1, $2, $3, $4, $5)', [name, phone, email, aboutCharacter, paymentMethod]);
 }
@@ -28,4 +39,4 @@ async function isTeamOverLimit(teamName, limit = 5) {
 }
 
 
-module.exports = {pool, postUser, isTeamOverLimit};
+module.exports = {pool, createTableIfNotExists, postUser, isTeamOverLimit};
