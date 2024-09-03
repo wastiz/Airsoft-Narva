@@ -2,8 +2,8 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
     user: 'postgres',
-    host: 'localhost',
-    database: 'test1',
+    host: 'postgresql://postgres:admin@airsoftnarva-postgresql-e5968e:5432/airsoft',
+    database: 'airsoft',
     password: 'admin',
     port: 5432,
 });
