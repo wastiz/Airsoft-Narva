@@ -1,8 +1,9 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const app = express();
-const port = 3000;
 const {pool, postUser, isTeamOverLimit, createTableIfNotExists} = require('./db')
+require('dotenv').config();
+const port = process.env.SERVER_PORT || 3000;
 
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
@@ -34,14 +35,16 @@ async function checkTeam () {
 }
 
 app.get('/', (req, res) => {
-    res.render('index', { layout: 'layouts/main' });
+    const config = require('./landing-config.json')
+    res.render('pages/index', { layout: 'layouts/main', config: config });
 });
 
 
 app.get('/event', async (req, res) => {
     try {
         const restrictedTeam = await checkTeam();
-        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam });
+        const config = require('./event-config.json')
+        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: config });
     } catch (e) {
         console.error('Error in checkTeam:', e);
         res.status(500).send('Internal Server Error');
@@ -72,7 +75,7 @@ async function startApp() {
     await createTableIfNotExists();
     // Здесь запускается сервер
     app.listen(port, () => {
-        console.log(`Server running at https://airsoftnarva.com:${port}`);
+        console.log(`Server running at https://localhost:${port}`);
     });
 }
 

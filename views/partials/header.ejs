@@ -34,19 +34,19 @@
     <div class="bslide d-flex img-fit-cover ai-flex-end">
 
         <div class="bslide__desc d-flex fd-column">
-            <div class="bslide__cat">ИГРОВОЙ КОМПЛЕКС В НАРВЕ</div>
-            <h2 class="bslide__title">профессиональная организация игр</h2>
-            <div class="bslide__subtitle">Закрытая игровая площадка с собственым фудкортом и зоной отдыха.</div>
+            <div class="bslide__cat"><%= config.header["before-title"] %></div>
+            <h2 class="bslide__title"><%= config.header["title"] %></h2>
+            <div class="bslide__subtitle"><%= config.header["after-title"] %></div>
 
 
             <div class="bslide__btns d-flex ai-flex-end">
-                <a href="#rega" class="footer__btn btn">Играть</a>
+                <a href="#rega" class="footer__btn btn"><%= config.header["button"] %></a>
             </div>
         </div>
 
 
         <video id="video_background" preload="auto" no-controls autoplay loop playsinline muted>
-            <source src="img/intro2.mp4" type='video/mp4'/>
+            <source src=<%= config.header["bg"] %> type='video/mp4'/>
         </video>
 
     </div>
@@ -59,68 +59,31 @@
                     <div class="mobileMenu"><span></span> <span></span> <span></span></div>
                     <ul id='rega'>
                         <li class="has-menu-items active"><a href="/">Главная</a>
-                        <li class="has-menu-items"><a href="https://shop.airsoftnarva.com/">Магазин</a>
-
-
-                        </li>
-                        <li class="has-menu-items" id='link'>
-                            <a class='link-to-game' href="event">Cartel</a>
-                            <label class='new-label' for="link">New</label>
-                        </li>
-                        <style>
-                            .link-to-game {
-                                position: relative;
-                            }
-
-                            .new-label {
-                                font-size: 10px;
-                                background-color: yellow;
-                                color: black;
-                                border-radius: 10px;
-                                padding: 5px;
-                                position: absolute;
-                                top: 20%;
-                                left: 100%;
-
-                            }
-                        </style>
-                        <li class="has-menu-items"><a href="/booking">Аренда</a></li>
-                        <li class="has-menu-items"><a href="/events">Мероприятия</a></li>
-                        <li class="has-menu-items"><a href="/gallery">Галерея</a>
-                            <ul class="sub-menu">
-                                <li><a href="#">Regular</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="gallery-regular-2col.html">Column Two</a></li>
-                                        <li><a href="gallery-regular-3col.html">Column Three</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Fullwidth</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="gallery-fullwidth-2col.html">Column Two</a></li>
-                                        <li><a href="gallery-fullwidth-3col.html">Column Three</a></li>
-                                        <li><a href="gallery-fullwidth-4col.html">Column Four</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="has-menu-items"><a href="#">Ремонт</a>
-                            <ul class="sub-menu">
-                                <li><a href="#">Blog With sidebar</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="blog-left-sidebar.html">Left Sidebar</a></li>
-                                        <li><a href="blog-right-sidebar.html">Right Sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Blog Single</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="blog-single-left.html">Left Sidebar</a></li>
-                                        <li><a href="blog-single-right.html">Right Sidebar</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
                         <li><a href="shop.html">Правила</a></li>
                         <li><a href="shop.html">О нас</a></li>
+                        <li class="has-menu-items" id='link'>
+                            <a class='link-to-game' href="event">Object 3</a>
+                            <label class='new-label' for="link">New</label>
+                        </li>
+<!--                        <li class="has-menu-items"><a href="/booking">Аренда</a></li>-->
+<!--                        <li class="has-menu-items"><a href="/gallery">Галерея</a>-->
+<!--                            <ul class="sub-menu">-->
+<!--                                <li><a href="#">Regular</a>-->
+<!--                                    <ul class="sub-menu">-->
+<!--                                        <li><a href="gallery-regular-2col.html">Column Two</a></li>-->
+<!--                                        <li><a href="gallery-regular-3col.html">Column Three</a></li>-->
+<!--                                    </ul>-->
+<!--                                </li>-->
+<!--                                <li><a href="#">Fullwidth</a>-->
+<!--                                    <ul class="sub-menu">-->
+<!--                                        <li><a href="gallery-fullwidth-2col.html">Column Two</a></li>-->
+<!--                                        <li><a href="gallery-fullwidth-3col.html">Column Three</a></li>-->
+<!--                                        <li><a href="gallery-fullwidth-4col.html">Column Four</a></li>-->
+<!--                                    </ul>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+                        <!--<li class="has-menu-items"><a href="#">Ремонт</a></li>-->
                     </ul>
                 </nav>
             </div>
