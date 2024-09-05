@@ -5,9 +5,9 @@
             <div class="col-md-8">
                 <div class="sectionTitle border">
                     <div class="titleHead">
-                        <h1>Object</h1>
-                        <h2 class="color_gray">2</h2>
-                        <h2 class="color_white">game</h2>
+                        <h1><%= config.main.title["1"] %></h1>
+                        <h2 class="color_gray"><%= config.main.title["2"] %></h2>
+                        <h2 class="color_white"><%= config.main.title["3"] %></h2>
                     </div>
                 </div>
                 <div class='lang-div'>
@@ -32,7 +32,7 @@
                     <p><a href="https://youtube.com/@NuclearSnailStudios?feature=shared">Nuclear Snail Studios</a></p>
 
                     <h5><b>Правила и особенности игры:</b></h5>
-                    <ol>
+                    <ol class="event-rules">
                         <% for (let key in config.main.rules) { %>
                             <li><%= config.main.rules[key] %></li>
                         <% } %>
@@ -42,18 +42,19 @@
             </div>
             <div class="col-md-4">
                 <div class='quoteHeader getaquote' id='form-form'>
-                    <h3 class="g-form__title g-form__title_main">Registration</h3>
+                    <h3 class="g-form__title g-form__title_main">Регистрация</h3>
                 </div>
                 <div class='quoteFooter getaquote'>
                     <form class="g-form" id="g-form-1" autocomplete="off">
                         <div class="g-form__inputs">
-                            <input type='text' id="name" name="name" placeholder="Имя/Фамилия" required>
-                            <input type='text' id="tel" name="phone" placeholder="Phone Number" required>
-                            <input id="email" name="email" type="email" placeholder="email" required/>
-                            <input type="text" name="nickname" placeholder="Позывной">
-                            <textarea id="message" name="about-character" rows="10" placeholder="About your character (Optional)" data-lt-tmp-id="lt-324300" spellcheck="false" data-gramm="false"></textarea>
+                            <input type='text' id="name" name="name" placeholder="Имя / Фамилия" required>
+                            <input type='text' id="tel" name="phone" placeholder="Номер телефона" required>
+                            <input id="email" name="email" type="email" placeholder="Эмайл" required/>
+                            <input type="text" name="nickname" placeholder="Позывной (опционально)">
+                            <textarea id="message" name="about-character" rows="10" placeholder="О вашем персонаже (опционально)" data-lt-tmp-id="lt-324300" spellcheck="false" data-gramm="false"></textarea>
                             <fieldset name="team" class='form-fieldset'>
                                 <label>Выберите фракцию:</label> <br>
+                                <p class="team-text"></p>
                                 <input type="radio" class="form-check-input" id="4gear" name="team" value="4gear" required>
                                 <label class="form-check-label" for="4gear">4ая передача</label> <br>
                                 <input type="radio" class="form-check-input" id="farmacempentic" name="team" value="farmacempentic" required>
@@ -70,10 +71,29 @@
                                 <label class="form-check-label" for="bank-transfer">Bank</label>
                             </fieldset>
                             <label style=" color: white; " for="honeypot">Скоро разрабы догадаются отправлять инфу на мыло</label>
-                            <label style=" text-decoration: line-through; ">12.03.24-10.04.24 - 30€</label>
-                            <label style=" text-decoration: line-through; ">11.04.24-01.05.24 - 35€</label>
-                            <label>02.05.24-23.05.24 - 40€</label>
-                            <label>24.05.24-25.05.24 - 50€</label>
+                            <%
+                            const today = new Date();
+                            config.main["dates-prices"].forEach(item => {
+                                const array = item.split('-');
+                                const endDateParts = array[1].split('.');
+                                const endDate = new Date(`20${endDateParts[2]}-${endDateParts[1]}-${endDateParts[0]}`);
+                                const price = array[2];
+
+                            if (endDate < today) {
+                            %>
+                                <label style="text-decoration: line-through;">
+                                    <%= array[0] %> - <%= array[1] %> - <%= price %>€
+                                </label><br>
+                            <%
+                            } else {
+                            %>
+                                <label>
+                                    <%= array[0] %> - <%= array[1] %> - <%= price %>€
+                                </label><br>
+                            <%
+                            }
+                            });
+                            %>
 
                             <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot"
                                    value="">
@@ -85,9 +105,13 @@
                     </form>
                     <script>
                         const restrictedTeam = "<%= restrictedTeam %>";
+                        const teamText = document.querySelector(".team-text");
+                        const today = new Date();
+
                         if (restrictedTeam) {
                             const radioButton = document.getElementById(restrictedTeam);
                             radioButton.disabled = true;
+                            teamText.textContent = `В команде ${restrictedTeam} перевес в 3 или больше человека`
                         }
                     </script>
                 </div>

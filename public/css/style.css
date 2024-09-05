@@ -4109,5 +4109,8 @@ button,
   position: absolute;
   top: 20%;
   left: 100%;
-
+}
+.event-rules {
+  list-style-type: decimal !important;
+  margin-left: 3%;
 }
