@@ -452,7 +452,8 @@
 .quoteFooter input[type="text"],
 .quoteFooter input[type="email"],
 .quoteFooter textarea,
-.quoteFooter [type="textarea"]{
+.quoteFooter [type="textarea"],
+.quoteFooter [type="number"]{
   height: 50px;
   background: #34313f;
   border: none;
@@ -4113,4 +4114,8 @@ button,
 .event-rules {
   list-style-type: decimal !important;
   margin-left: 3%;
+}
+
+.text-white {
+  color: white;
 }

@@ -53,14 +53,14 @@ app.get('/event', async (req, res) => {
 
 // Обработка POST-запроса
 app.post('/submit-event-form', async (req, res) => {
-    const {name, phone, email, nickname, aboutCharacter, team, paymentMethod, honeypot} = req.body;
+    const {name, phone, email, age, nickname, aboutCharacter, team, paymentMethod, honeypot} = req.body;
 
     if (honeypot) {
         return res.status(400).send('Spam detected');
     }
 
     try {
-        await pool.query('INSERT INTO object3_reg(name, phone, email, nickname, about_character, team, payment_method) VALUES($1, $2, $3, $4, $5, $6, $7)', [name, phone, email, nickname, aboutCharacter, team, paymentMethod]);
+        await pool.query('INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team, payment_method) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [name, phone, email, age, nickname, aboutCharacter, team, paymentMethod]);
         console.log('inserted')
         res.status(200).send('Data saved successfully');
     } catch (error) {

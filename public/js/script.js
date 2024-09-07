@@ -1,5 +1,12 @@
+const statusText = document.querySelector('.g-form__title_respond');
+const btnSend = document.querySelector('.g-form__button');
+const navTabs = document.querySelectorAll('.nav-item');
+const eventContents = [document.querySelector(".event-main"), document.querySelector(".event-plot"), document.querySelector(".event-rules"), document.querySelector(".event-other")];
+
 document.querySelector('.g-form').addEventListener('submit', async function(event) {
     event.preventDefault();
+
+    statusText.innerHTML = 'Отправляем...';
 
     let formData = new FormData(this);
 
@@ -7,14 +14,13 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         name: formData.get('name'),
         phone: formData.get('phone'),
         email: formData.get('email'),
+        age: formData.get("age"),
         nickname: formData.get('nickname'),
         aboutCharacter: formData.get('about-character'),
         team: formData.get('team'),
         paymentMethod: formData.get('payment-method'),
         honeypot: formData.get('honeypot')
     };
-
-    console.log('Form data to be sent:', data);
 
     try {
         const response = await fetch("/submit-event-form", {
@@ -26,9 +32,10 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         });
 
         if (response.ok) {
-            const result = await response.json();
-            console.log('Server response:', result);
+            statusText.innerHTML = "Отправлено, спасибо"
+            btnSend.disabled = true;
         } else {
+            statusText.innerHTML = "Что-то пошло не так..."
             console.error('Server error:', response.statusText);
         }
 
@@ -36,3 +43,12 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         console.error('Request failed:', error);
     }
 });
+
+navTabs.forEach((tab, index) => {
+    tab.addEventListener('click', function(event) {
+        eventContents.forEach(item => {
+            item.classList.add('hidden')
+        })
+        eventContents[index].classList.remove('hidden')
+    })
+})
