@@ -12,7 +12,7 @@
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page">Основное</a>
+                        <a class="nav-link active" aria-current="page">Расписание</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link">Сюжет</a>
@@ -21,7 +21,7 @@
                         <a class="nav-link">Правила</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled">Другое</a>
+                        <a class="nav-link disabled">Фракции</a>
                     </li>
                 </ul>
                 <div class='event-content'>
@@ -83,17 +83,8 @@
                                 <input type="radio" class="form-check-input" id="farmacempentic" name="team" value="farmacempentic" required>
                                 <label class="form-check-label" for="farmacempentic">Фармацевтики</label>
                             </fieldset>
-
-                            <fieldset name="payment-method" class='form-fieldset'>
-                                <label for="payment-method" class="text-white">Payment:</label> <br>
-                                <input type="radio" class="form-check-input" id="cash" name="payment-method"
-                                       value="cash" required>
-                                <label class="form-check-label" for="cash">Cash</label> <br/>
-                                <input type="radio" class="form-check-input" id="bank-transfer" name="payment-method"
-                                       value="bank-transfer" required>
-                                <label class="form-check-label" for="bank-transfer">Bank</label>
-                            </fieldset>
-                            <label style=" color: white; " for="honeypot">Скоро разрабы догадаются отправлять инфу на мыло</label>
+                            <label class="text-white" for="honeypot">Оплата производится через банк. Счет будет отправлен на указанный эмайл</label>
+                            <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot" value="">
                             <%
                             const today = new Date();
                             config.main["dates-prices"].forEach(item => {
@@ -117,8 +108,6 @@
                             }
                             });
                             %>
-
-                            <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot" value="">
                             <input class="g-form__button" type="submit" id="q_submit" value="Send">
                             <br/>
                             <h3 class="g-form__title g-form__title_respond"></h3>

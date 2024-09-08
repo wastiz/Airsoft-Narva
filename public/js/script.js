@@ -18,7 +18,6 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         nickname: formData.get('nickname'),
         aboutCharacter: formData.get('about-character'),
         team: formData.get('team'),
-        paymentMethod: formData.get('payment-method'),
         honeypot: formData.get('honeypot')
     };
 
@@ -31,9 +30,13 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
             body: JSON.stringify(data)
         });
 
+        console.log(response)
+
         if (response.ok) {
             statusText.innerHTML = "Отправлено, спасибо"
             btnSend.disabled = true;
+        } else if (response.status === 409) {
+            statusText.innerHTML = "Этот емайл уже зарегистрирован на игру"
         } else {
             statusText.innerHTML = "Что-то пошло не так..."
             console.error('Server error:', response.statusText);

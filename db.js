@@ -26,7 +26,6 @@ async function createTableIfNotExists() {
             nickname VARCHAR(100),
             about_character TEXT,
             team VARCHAR(100) NOT NULL,
-            payment_method VARCHAR(20),
             registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP
        );
     `;

@@ -1,8 +1,12 @@
 const express = require('express');
-const expressLayouts = require('express-ejs-layouts');
 const app = express();
+const expressLayouts = require('express-ejs-layouts');
+const bodyParser = require('body-parser');
 const {pool, postUser, isTeamOverLimit, createTableIfNotExists} = require('./db')
 require('dotenv').config();
+const landingConfig = require('./landing-config.json');
+const eventConfig = require('./event-config.json');
+const { sendMail } = require('./mail-service');
 const port = process.env.SERVER_PORT || 3000;
 
 // Установка EJS как шаблонизатора
@@ -15,6 +19,8 @@ app.use(expressLayouts);
 app.use(express.static('public'));
 
 // Middleware для обработки JSON и URL-кодированных данных
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,16 +41,14 @@ async function checkTeam () {
 }
 
 app.get('/', (req, res) => {
-    const config = require('./landing-config.json')
-    res.render('pages/index', { layout: 'layouts/main', config: config });
+    res.render('pages/index', { layout: 'layouts/main', config: landingConfig });
 });
 
 
 app.get('/event', async (req, res) => {
     try {
         const restrictedTeam = await checkTeam();
-        const config = require('./event-config.json')
-        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: config });
+        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig });
     } catch (e) {
         console.error('Error in checkTeam:', e);
         res.status(500).send('Internal Server Error');
@@ -53,19 +57,45 @@ app.get('/event', async (req, res) => {
 
 // Обработка POST-запроса
 app.post('/submit-event-form', async (req, res) => {
-    const {name, phone, email, age, nickname, aboutCharacter, team, paymentMethod, honeypot} = req.body;
+    const {name, phone, email, age, nickname, aboutCharacter, team, honeypot} = req.body;
 
     if (honeypot) {
         return res.status(400).send('Spam detected');
     }
 
     try {
-        await pool.query('INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team, payment_method) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [name, phone, email, age, nickname, aboutCharacter, team, paymentMethod]);
-        console.log('inserted')
-        res.status(200).send('Data saved successfully');
+        const result = await pool.query(
+            'INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [name, phone, email, age, nickname, aboutCharacter, team]
+        );
+        const uniqueNumber = result.rows[0].id;
+        console.log('inserted to db and got id')
+
+        const mailOptions = {
+            from: {
+                name: "Narva CQB Arena",
+                address: process.env.MAIL_USER,
+            },
+            to: ["dmitripersitski@gmail.com", email],
+            subject: `Вы зарегистрировались на ${eventConfig["event-title"]}`,
+            text: `
+                Привет. Ты зарегистрировался на игру "${eventConfig["event-title"]}". Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав свой уникальный номер:
+                Ваш номер: ${uniqueNumber}
+                (счет)
+            `,
+
+        }
+        await sendMail(mailOptions)
+        console.log('email sent')
+
+        res.status(200).send('Все сделано');
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error saving data');
+        if (error.code === '23505') {
+            res.status(409).send('Емайл уже зарегистрирован');
+        } else {
+            console.error(error);
+            res.status(500).send('Ошибка при заполнении даты');
+        }
     }
 });
 
