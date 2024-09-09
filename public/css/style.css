@@ -4111,9 +4111,10 @@ button,
   top: 20%;
   left: 100%;
 }
-.event-rules {
+.event-rules-list {
   list-style-type: decimal !important;
-  margin-left: 3%;
+  margin-left: 2.5%;
+  margin-bottom: 3%;
 }
 
 .text-white {

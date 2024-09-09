@@ -53,5 +53,6 @@ navTabs.forEach((tab, index) => {
             item.classList.add('hidden')
         })
         eventContents[index].classList.remove('hidden')
+        eventContents[index].classList.add('active')
     })
 })

@@ -47,17 +47,20 @@
                     </div>
 
                     <div class="event-rules hidden">
-                        <h5><b>Правила и особенности игры:</b></h5>
-                        <ol class="event-rules">
-                            <% for (let key in config.main.rules) { %>
-                                <li><%= config.main.rules[key] %></li>
-                            <% } %>
-                        </ol>
+                        <% for (let key in config.main.rules) { %>
+                            <h5 class="text-white"><b><%= config.main.rules[key]["title"] %></b></h5>
+                            <ol class="event-rules-list">
+                                <% for (let i in config.main.rules[key]["array"]) { %>
+                                    <li><%= config.main.rules[key]["array"][i] %></li>
+                                <% } %>
+                            </ol>
+                        <% } %>
                     </div>
 
                     <div class="event-other hidden">
-                        <p style="color: white; font-weight: bold;">Туториалы по созданию костюма для игры: </p>
-                        <p><a href="https://youtube.com/@NuclearSnailStudios?feature=shared">Nuclear Snail Studios</a></p>
+                        <p class="text-white">- 4ая передача</p>
+                        <p class="text-white">- Фарма серпентика</p>
+                        <p class="text-white">- Нейтралы</p>
                     </div>
                 </div>
 
@@ -81,7 +84,9 @@
                                 <input type="radio" class="form-check-input" id="4gear" name="team" value="4gear" required>
                                 <label class="form-check-label" for="4gear">4ая передача</label> <br>
                                 <input type="radio" class="form-check-input" id="farmacempentic" name="team" value="farmacempentic" required>
-                                <label class="form-check-label" for="farmacempentic">Фармацевтики</label>
+                                <label class="form-check-label" for="farmacempentic">Фарма серпентика</label> <br>
+                                <input type="radio" class="form-check-input" id="neutral" name="team" value="neutral" required>
+                                <label class="form-check-label" for="neutral">Нейтралы</label>
                             </fieldset>
                             <label class="text-white" for="honeypot">Оплата производится через банк. Счет будет отправлен на указанный эмайл</label>
                             <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot" value="">
@@ -122,7 +127,7 @@
                         if (restrictedTeam) {
                             const radioButton = document.getElementById(restrictedTeam);
                             radioButton.disabled = true;
-                            teamText.textContent = `В команде ${restrictedTeam} перевес в 3 или больше человека`
+                            teamText.textContent = `В команде ${restrictedTeam} перевес в 3 или больше человека.`
                         }
                     </script>
                 </div>
