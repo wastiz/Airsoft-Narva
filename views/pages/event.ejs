@@ -57,12 +57,12 @@
                         <% } %>
                     </div>
 
-                    <div class="event-other hidden">
+                    <div class="event-other flex flex-col hidden">
                         <% for (let key in config.main.teams) { %>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=<%= config.main.teams[key]["name"]%> aria-expanded="false" aria-controls="collapseExample">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#team-<%= config.main.teams[key]["id"]%>" aria-expanded="false" aria-controls="team-<%= config.main.teams[key]["id"]%>">
                                 <%= config.main.teams[key]["name"]%>
                             </button>
-                            <div class="collapse" id=<%= config.main.teams[key]["name"]%>>
+                            <div class="collapse" id="team-<%= config.main.teams[key]["id"]%>">
                                 <div class="card card-body">
                                     <%= config.main.teams[key]["description"]%>
                                 </div>
