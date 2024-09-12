@@ -42,7 +42,7 @@ function postUser () {
     pool.query('INSERT INTO object2_reg(name, phone, email, about_character, payment_method) VALUES($1, $2, $3, $4, $5)', [name, phone, email, aboutCharacter, paymentMethod]);
 }
 
-async function isTeamOverLimit(teamName, limit = 20) {
+async function isTeamOverLimit(teamName, limit = 3) {
     try {
         const result = await pool.query(
             'SELECT COUNT(*) AS number_of_people FROM object3_reg WHERE team = $1',
