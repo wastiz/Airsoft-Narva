@@ -44,10 +44,13 @@ function postUser () {
 
 async function isTeamOverLimit(teamName, limit = 20) {
     try {
-        const result = await pool.query(
-            'SELECT COUNT(*) AS number_of_people FROM object3_reg WHERE team = $1',
-            [teamName]
-        );
+        const result = await pool.query(`
+          SELECT team, COUNT(*) AS total_members 
+          FROM object3_reg 
+          WHERE team IN ('4gear', 'farmacempentic') 
+          GROUP BY team;
+        `);
+
 
         const numberOfPeople = parseInt(result.rows[0].number_of_people, 10);
         return numberOfPeople > limit;
