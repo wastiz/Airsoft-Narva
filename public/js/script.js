@@ -6,6 +6,7 @@ const eventContents = [document.querySelector(".event-main"), document.querySele
 document.querySelector('.g-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 
+    btnSend.disabled = true;
     statusText.innerHTML = 'Отправляем...';
 
     let formData = new FormData(this);
@@ -18,7 +19,6 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         nickname: formData.get('nickname'),
         aboutCharacter: formData.get('about-character'),
         team: formData.get('team'),
-        honeypot: formData.get('honeypot')
     };
 
     try {
@@ -28,22 +28,21 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        });
-
-        console.log(response)
+        })
 
         if (response.ok) {
-            statusText.innerHTML = "Отправлено, спасибо"
-            btnSend.disabled = true;
+            statusText.innerHTML = "Отправлено, спасибо";
         } else if (response.status === 409) {
-            statusText.innerHTML = "Этот емайл уже зарегистрирован на игру"
+            statusText.innerHTML = "Этот email уже зарегистрирован на игру";
         } else {
-            statusText.innerHTML = "Что-то пошло не так..."
-            console.error('Server error:', response.statusText);
+            statusText.innerHTML = "Что-то пошло не так...";
         }
 
     } catch (error) {
         console.error('Request failed:', error);
+        statusText.innerHTML = "Ошибка сети или сервера. Попробуйте еще раз позже.";
+    } finally {
+        btnSend.disabled = false;
     }
 });
 

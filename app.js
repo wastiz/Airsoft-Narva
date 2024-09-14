@@ -45,11 +45,7 @@ app.get('/event', async (req, res) => {
 
 // Обработка POST-запроса
 app.post('/submit-event-form', async (req, res) => {
-    const {name, phone, email, age, nickname, aboutCharacter, team, honeypot} = req.body;
-
-    if (honeypot) {
-        return res.status(400).send('Spam detected');
-    }
+    const {name, phone, email, age, nickname, aboutCharacter, team} = req.body;
 
     try {
         const result = await pool.query(
@@ -78,6 +74,19 @@ app.post('/submit-event-form', async (req, res) => {
         }
         await sendMail(mailOptions)
         console.log('email sent')
+
+        const appLink = "https://script.google.com/macros/s/AKfycbx5K7-jJwmoeWhgyyvl3ITsauta4ZE6pSO0G5anU--ML4vTpNBgcloTIhGB4TrfLH0D/exec";
+        const formData = new FormData();
+        formData.append('id', uniqueNumber);
+        for (const key in req.body) {
+            formData.append(key, req.body[key]);
+        }
+        console.log(formData)
+        await fetch(appLink, {
+            method: "POST",
+            body: formData
+        })
+        console.log('inserted to table')
 
         res.status(200).send('Все сделано');
     } catch (error) {
