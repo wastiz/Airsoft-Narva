@@ -25,19 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 async function checkTeam () {
-    const team1 = '4gear';
-    const team2 = 'farmacempentic';
-
-    const isTeam1OverLimit = await isTeamOverLimit(team1);
-    const isTeam2OverLimit = await isTeamOverLimit(team2);
-
-    if (isTeam1OverLimit) {
-        return team1
-    } else if (isTeam2OverLimit) {
-        return team2
-    } else {
-        return ''
-    }
+    return ''
 }
 
 app.get('/', (req, res) => {
