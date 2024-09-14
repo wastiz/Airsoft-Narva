@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
-const {pool, postUser, isTeamOverLimit, createTableIfNotExists} = require('./db')
+const {pool, postUser, isTeamOverLimit, createTableIfNotExists, checkRestriction} = require('./db')
 require('dotenv').config();
 const landingConfig = require('./landing-config.json');
 const eventConfig = require('./event-config.json');
@@ -24,10 +24,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-async function checkTeam () {
-    return ''
-}
-
 app.get('/', (req, res) => {
     res.render('pages/index', { layout: 'layouts/main', config: landingConfig });
 });
@@ -35,7 +31,7 @@ app.get('/', (req, res) => {
 
 app.get('/event', async (req, res) => {
     try {
-        const restrictedTeam = await checkTeam();
+        const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
         res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig });
     } catch (e) {
         console.error('Error in checkTeam:', e);
@@ -100,13 +96,16 @@ app.post('/submit-event-form', async (req, res) => {
 });
 
 
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
 
-async function startApp() {
-    await createTableIfNotExists();
-    // Здесь запускается сервер
-    app.listen(port, () => {
-        console.log(`Server running at http://localhost:${port}`);
-    });
-}
+// async function startApp() {
+//     await createTableIfNotExists();
+//     // Здесь запускается сервер
+//     app.listen(port, () => {
+//         console.log(`Server running at http://localhost:${port}`);
+//     });
+// }
 
-startApp();
+//startApp();

@@ -98,7 +98,6 @@
                     </div>
 
                 </div>
-
             </div>
             <div class="col-md-4">
                 <div class='quoteHeader getaquote' id='form-form'>
@@ -115,6 +114,8 @@
                             <textarea id="message" name="about-character" rows="10" placeholder="О вашем персонаже (опционально)" data-lt-tmp-id="lt-324300" spellcheck="false" data-gramm="false"></textarea>
                             <fieldset name="team" class='form-fieldset'>
                                 <label class="text-white">Выберите фракцию:</label><br>
+
+                                <p class="team-restriction"></p>
 
                                 <input type="radio" class="form-check-input" id="4gear" name="team" value="4gear" required>
                                 <label class="form-check-label" for="4gear">4ая передача</label> <br>
@@ -167,7 +168,7 @@
                     </form>
                     <script>
                         const restrictedTeam = "<%= restrictedTeam %>";
-                        const teamText = document.querySelector(".team-text");
+                        const teamText = document.querySelector(".team-restriction");
                         const today = new Date();
 
                         if (restrictedTeam) {
