@@ -25,14 +25,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.render('pages/index', { layout: 'layouts/main', config: landingConfig });
+    res.render('pages/index', { layout: 'layouts/main', config: landingConfig, currentPath: req.path });
 });
 
 
 app.get('/event', async (req, res) => {
     try {
         const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
-        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig });
+        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig, currentPath: req.path });
     } catch (e) {
         console.error('Error in checkTeam:', e);
         res.status(500).send('Internal Server Error');
