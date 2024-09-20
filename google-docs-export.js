@@ -1,11 +1,13 @@
 const fs = require('fs');
 const { google } = require('googleapis');
 const { JSDOM } = require('jsdom');
+require('dotenv').config();
 
 const FILE_ID = '10Tylw81mhHU9lTCG9yZzXAZ0dMg3c_WRXxmkuXF_FvQ';
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
 const auth = new google.auth.GoogleAuth({
-    keyFile: './credentials.json',
+    credentials,
     scopes: ['https://www.googleapis.com/auth/drive.readonly']
 });
 

@@ -24,3 +24,7 @@ ol {
 /*ul {*/
 /*    list-style-type: circle;*/
 /*}*/
+.doc-content img {
+    width: 50%;
+    height: 50%;
+}
