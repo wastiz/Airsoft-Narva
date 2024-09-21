@@ -42,15 +42,30 @@ function postUser () {
     pool.query('INSERT INTO object2_reg(name, phone, email, about_character, payment_method) VALUES($1, $2, $3, $4, $5)', [name, phone, email, aboutCharacter, paymentMethod]);
 }
 
-async function isTeamOverLimit(teamName, limit = 3) {
+async function checkRestriction(teams, limit) {
     try {
-        const result = await pool.query(
-            'SELECT COUNT(*) AS number_of_people FROM object3_reg WHERE team = $1',
-            [teamName]
-        );
+        const result = await pool.query(`
+          SELECT team, COUNT(*) AS total_members 
+          FROM object3_reg 
+          WHERE team IN (${teams.map(team => `'${team}'`).join(', ')}) 
+          GROUP BY team;
+        `);
 
-        const numberOfPeople = parseInt(result.rows[0].number_of_people, 10);
-        return numberOfPeople > limit;
+        const rows = result.rows.map(row => ({
+            team: row.team,
+            total_members: parseInt(row.total_members, 10)
+        }));
+
+        for (let i = 0; i < rows.length; i++) {
+            for (let j = 0; j < rows.length; j++) {
+                if (i !== j && rows[i].total_members >= rows[j].total_members + limit) {
+                    return rows[i].team;
+                }
+            }
+        }
+
+        return null;
+
     } catch (error) {
         console.error('Error checking team size:', error);
         throw error;
@@ -58,4 +73,4 @@ async function isTeamOverLimit(teamName, limit = 3) {
 }
 
 
-module.exports = {pool, createTableIfNotExists, postUser, isTeamOverLimit};
+module.exports = {pool, createTableIfNotExists, postUser, checkRestriction};

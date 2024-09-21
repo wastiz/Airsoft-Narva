@@ -18,3 +18,13 @@
 .hidden {
     display: none;
 }
+ol {
+    list-style-type: decimal;
+}
+/*ul {*/
+/*    list-style-type: circle;*/
+/*}*/
+.doc-content img {
+    width: 50%;
+    height: 50%;
+}

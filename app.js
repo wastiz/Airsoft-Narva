@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
-const {pool, postUser, isTeamOverLimit, createTableIfNotExists} = require('./db')
+const {pool, postUser, isTeamOverLimit, createTableIfNotExists, checkRestriction} = require('./db')
 require('dotenv').config();
 const landingConfig = require('./landing-config.json');
 const eventConfig = require('./event-config.json');
@@ -24,31 +24,15 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-async function checkTeam () {
-    const team1 = '4gear';
-    const team2 = 'farmacempentic';
-
-    const isTeam1OverLimit = await isTeamOverLimit(team1);
-    const isTeam2OverLimit = await isTeamOverLimit(team2);
-
-    if (isTeam1OverLimit) {
-        return team1
-    } else if (isTeam2OverLimit) {
-        return team2
-    } else {
-        return ''
-    }
-}
-
 app.get('/', (req, res) => {
-    res.render('pages/index', { layout: 'layouts/main', config: landingConfig });
+    res.render('pages/index', { layout: 'layouts/main', config: landingConfig, currentPath: req.path });
 });
 
 
 app.get('/event', async (req, res) => {
     try {
-        const restrictedTeam = await checkTeam();
-        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig });
+        const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
+        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig, currentPath: req.path });
     } catch (e) {
         console.error('Error in checkTeam:', e);
         res.status(500).send('Internal Server Error');
@@ -57,11 +41,7 @@ app.get('/event', async (req, res) => {
 
 // Обработка POST-запроса
 app.post('/submit-event-form', async (req, res) => {
-    const {name, phone, email, age, nickname, aboutCharacter, team, honeypot} = req.body;
-
-    if (honeypot) {
-        return res.status(400).send('Spam detected');
-    }
+    const {name, phone, email, age, nickname, aboutCharacter, team} = req.body;
 
     try {
         const result = await pool.query(
@@ -79,7 +59,7 @@ app.post('/submit-event-form', async (req, res) => {
             to: ["dmitripersitski@gmail.com", email],
             subject: `Вы зарегистрировались на ${eventConfig["event-title"]}`,
             text: `
-                Привет. Ты зарегистрировался на игру "${eventConfig["event-title"]}". Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав при оплате свой уникальный номер:
+                Здравствуй, ${name.split(" ")[0]}. Ты зарегистрировался на игру "${eventConfig["event-title"]}". Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав при оплате свой уникальный номер:
                 Ваш уникальный номер: ${uniqueNumber}
                 EE291010220279349223
                 V&V TRADE OÜ
@@ -90,6 +70,19 @@ app.post('/submit-event-form', async (req, res) => {
         }
         await sendMail(mailOptions)
         console.log('email sent')
+
+        const appLink = "https://script.google.com/macros/s/AKfycbx5K7-jJwmoeWhgyyvl3ITsauta4ZE6pSO0G5anU--ML4vTpNBgcloTIhGB4TrfLH0D/exec";
+        const formData = new FormData();
+        formData.append('id', uniqueNumber);
+        for (const key in req.body) {
+            formData.append(key, req.body[key]);
+        }
+        console.log(formData)
+        await fetch(appLink, {
+            method: "POST",
+            body: formData
+        })
+        console.log('inserted to table')
 
         res.status(200).send('Все сделано');
     } catch (error) {
@@ -103,13 +96,16 @@ app.post('/submit-event-form', async (req, res) => {
 });
 
 
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
 
-async function startApp() {
-    await createTableIfNotExists();
-    // Здесь запускается сервер
-    app.listen(port, () => {
-        console.log(`Server running at http://localhost:${port}`);
-    });
-}
+// async function startApp() {
+//     await createTableIfNotExists();
+//     // Здесь запускается сервер
+//     app.listen(port, () => {
+//         console.log(`Server running at http://localhost:${port}`);
+//     });
+// }
 
-startApp();
+//startApp();

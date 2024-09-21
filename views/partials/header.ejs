@@ -67,10 +67,10 @@
                 <nav class="mainNav">
                     <div class="mobileMenu"><span></span> <span></span> <span></span></div>
                     <ul id='rega'>
-                        <li class="has-menu-items active"><a href="/">Главная</a>
-                        <li><a href="shop.html">Правила</a></li>
-                        <li><a href="shop.html">О нас</a></li>
-                        <li class="has-menu-items" id='link'>
+                        <li class="<%= currentPath === '/' ? 'active' : '' %>"><a href="/">Главная</a>
+                        <li class="<%= currentPath === '/rules' ? 'active' : '' %>"><a href="/">Правила</a></li>
+                        <li class="<%= currentPath === '/about' ? 'active' : '' %>"><a href="/">О нас</a></li>
+                        <li class="<%= currentPath === '/event' ? 'active' : '' %>" id='link'>
                             <a class='link-to-game' href="event">Object 3</a>
                             <label class='new-label' for="link">New</label>
                         </li>
