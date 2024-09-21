@@ -41,7 +41,7 @@ app.get('/event', async (req, res) => {
 
 // Обработка POST-запроса
 app.post('/submit-event-form', async (req, res) => {
-    const {name, phone, email, age, nickname, aboutCharacter, team} = req.body;
+    const {name, phone, email, social, age, nickname, aboutCharacter, team} = req.body;
 
     try {
         const result = await pool.query(
