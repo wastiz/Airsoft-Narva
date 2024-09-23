@@ -31,8 +31,8 @@ app.get('/', (req, res) => {
 
 app.get('/event', async (req, res) => {
     try {
-        const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
-        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: restrictedTeam, config: eventConfig, currentPath: req.path });
+        //const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
+        res.render('pages/event', { layout: 'layouts/main', restrictedTeam: '', config: eventConfig, currentPath: req.path });
     } catch (e) {
         console.error('Error in checkTeam:', e);
         res.status(500).send('Internal Server Error');
@@ -44,12 +44,13 @@ app.post('/submit-event-form', async (req, res) => {
     const {name, phone, email, social, age, nickname, aboutCharacter, team} = req.body;
 
     try {
-        const result = await pool.query(
-            'INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-            [name, phone, email, age, nickname, aboutCharacter, team]
-        );
-        const uniqueNumber = result.rows[0].id;
-        console.log('inserted to db and got id')
+        // const result = await pool.query(
+        //     'INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+        //     [name, phone, email, age, nickname, aboutCharacter, team]
+        // );
+        // const uniqueNumber = result.rows[0].id;
+        // console.log('inserted to db and got id')
+        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
 
         const mailOptions = {
             from: {
