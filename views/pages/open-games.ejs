@@ -1,0 +1,39 @@
+<%- include('../partials/header.ejs') %>
+<section class="commonSection wearebest">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="sectionTitle border">
+                    <div class="titleHead">
+                        <h1>OPEN</h1>
+                        <h2 class="color_white">GAMES</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class='quoteHeader getaquote' id='form-form'>
+                    <h3 class="g-form__title g-form__title_main">Регистрация</h3>
+                </div>
+                <div class='quoteFooter getaquote'>
+                    <form class="g-form" id="g-form-1" autocomplete="off">
+                        <div class="g-form__inputs">
+                            <input type='text' id="name" name="name" placeholder="Имя / Фамилия" required>
+                            <input type='text' id="tel" name="phone" placeholder="Номер телефона" required>
+                            <input id="email" name="email" type="email" placeholder="Эмайл" required/>
+                            <input id="age" name="age" type="number" placeholder="Введите ваш возраст" required/>
+                            <br>
+                            <label class="text-white" for="honeypot">Вам придет письмо на эмайл о регистрации</label>
+                            <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot" value="">
+                            <br>
+                            <input class="g-form__button" type="submit" id="q_submit" value="Send">
+                            <br/>
+                            <h3 class="g-form__title g-form__title_respond"></h3>
+                            <div class="g-form__preloader"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="js/open-games.js"></script>
