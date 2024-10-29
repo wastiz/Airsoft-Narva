@@ -8,6 +8,7 @@ const landingConfig = require('./landing-config.json');
 const eventConfig = require('./event-config.json');
 const { sendMail } = require('./mail-service');
 const port = process.env.SERVER_PORT || 3000;
+const host = process.env.HOST
 
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
@@ -97,7 +98,7 @@ app.post('/submit-event-form', async (req, res) => {
 });
 
 
-app.listen(port, () => {
+app.listen(port, host, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
 
