@@ -7,7 +7,7 @@ require('dotenv').config();
 const landingConfig = require('./landing-config.json');
 const eventConfig = require('./event-config.json');
 const { sendMail } = require('./mail-service');
-const port = process.env.SERVER_PORT || 3000;
+const port = process.env.SERVER_PORT;
 const host = process.env.HOST
 
 // Установка EJS как шаблонизатора
