@@ -6,6 +6,7 @@ const {pool, postUser, isTeamOverLimit, createTableIfNotExists, checkRestriction
 require('dotenv').config();
 const landingConfig = require('./landing-config.json');
 const eventConfig = require('./event-config.json');
+const openGamesConfig = require('./open-games.json');
 const { sendMail } = require('./mail-service');
 const port = process.env.SERVER_PORT || 3000;
 const host = process.env.HOST
@@ -99,7 +100,7 @@ app.post('/submit-event-form', async (req, res) => {
 
 app.get('/open-games', async (req, res) => {
     try {
-        res.render('pages/open-games', { layout: 'layouts/main', restrictedTeam: '', config: eventConfig, currentPath: req.path });
+        res.render('pages/open-games', { layout: 'layouts/main', restrictedTeam: '', config: openGamesConfig, currentPath: req.path });
     } catch (e) {
         console.error('Error in checkTeam:', e);
         res.status(500).send('Internal Server Error');
@@ -110,12 +111,6 @@ app.post('/submit-open-game-form', async (req, res) => {
     const {name, phone, email, age} = req.body;
 
     try {
-        // const result = await pool.query(
-        //     'INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-        //     [name, phone, email, age, nickname, aboutCharacter, team]
-        // );
-        // const uniqueNumber = result.rows[0].id;
-        // console.log('inserted to db and got id')
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
 
         const mailOptions = {
@@ -124,9 +119,9 @@ app.post('/submit-open-game-form', async (req, res) => {
                 address: process.env.MAIL_USER,
             },
             to: ["dmitripersitski@gmail.com", email],
-            subject: `Вы зарегистрировались на Открытую Игру}`,
+            subject: `Вы зарегистрировались на Открытую Игру`,
             text: `
-                Здравствуй, ${name.split(" ")[0]}. Ты зарегистрировался на Открытую игру. Смотри обновления в наших соц сетях.
+                Здравствуй, ${name.split(" ")[0]}. Ты зарегистрировался на Открытую игру. Хорошей тебе игры и смотри обновления в наших соц сетях.
             `,
 
         }
