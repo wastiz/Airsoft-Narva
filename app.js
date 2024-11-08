@@ -2,14 +2,13 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
-const {pool, postUser, isTeamOverLimit, createTableIfNotExists, checkRestriction} = require('./db')
 require('dotenv').config();
 const landingConfig = require('./landing-config.json');
 const eventConfig = require('./event-config.json');
 const openGamesConfig = require('./open-games.json');
 const { sendMail } = require('./mail-service');
-const port = process.env.SERVER_PORT || 3000;
-const host = process.env.HOST
+const port = process.env.SERVER_PORT;
+const host = process.env.HOST || 3000
 
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
@@ -46,12 +45,6 @@ app.post('/submit-event-form', async (req, res) => {
     const {name, phone, email, social, age, nickname, aboutCharacter, team} = req.body;
 
     try {
-        // const result = await pool.query(
-        //     'INSERT INTO object3_reg(name, phone, email, age, nickname, about_character, team) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-        //     [name, phone, email, age, nickname, aboutCharacter, team]
-        // );
-        // const uniqueNumber = result.rows[0].id;
-        // console.log('inserted to db and got id')
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
 
         const mailOptions = {
@@ -156,13 +149,3 @@ app.post('/submit-open-game-form', async (req, res) => {
 app.listen(port, host, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
-
-// async function startApp() {
-//     await createTableIfNotExists();
-//     // Здесь запускается сервер
-//     app.listen(port, () => {
-//         console.log(`Server running at http://localhost:${port}`);
-//     });
-// }
-
-//startApp();
