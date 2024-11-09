@@ -122,25 +122,17 @@ app.post('/submit-open-game-form', async (req, res) => {
         console.log('email sent')
 
         const appLink = "https://script.google.com/macros/s/AKfycbx5K7-jJwmoeWhgyyvl3ITsauta4ZE6pSO0G5anU--ML4vTpNBgcloTIhGB4TrfLH0D/exec";
-
-// Создаём объект, который будет содержать данные
-        const data = {
-            id: uniqueNumber,
-            ...req.body
-        };
-
-        console.log(data); // Проверим, что данные правильные
-
+        const formData = new FormData();
+        formData.append('id', uniqueNumber);
+        for (const key in req.body) {
+            formData.append(key, req.body[key]);
+        }
+        console.log(formData)
         await fetch(appLink, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json" // Указываем, что отправляем данные в формате JSON
-            },
-            body: JSON.stringify(data) // Преобразуем объект в строку JSON
-        });
-
-        console.log('inserted to table');
-
+            body: formData
+        })
+        console.log('inserted to table')
 
         res.status(200).send('Все сделано');
     } catch (error) {
