@@ -115,6 +115,11 @@ app.post('/submit-open-game-form', async (req, res) => {
             subject: `Вы зарегистрировались на Открытую Игру`,
             text: `
                 Здравствуй, ${name.split(" ")[0]}. Ты зарегистрировался на Открытую игру. Хорошей тебе игры и смотри обновления в наших соц сетях.
+                
+                Facebook: https://www.facebook.com/NarvaCQB
+                YouTube: https://youtube.com/@dmitripersitski6065?si=cjISOSNzcDVww0bK
+                Vkontakte: https://vk.com/narvacqb
+                Telegram: https://t.me/+xxISHNZT35phMDg0
             `,
 
         }

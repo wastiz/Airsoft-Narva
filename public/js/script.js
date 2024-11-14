@@ -43,6 +43,7 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         console.error('Request failed:', error);
         statusText.innerHTML = "Ошибка сети или сервера. Попробуйте еще раз позже.";
     } finally {
+        document.querySelector('.g-form').reset()
         btnSend.disabled = false;
     }
 });
