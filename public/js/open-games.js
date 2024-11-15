@@ -14,6 +14,7 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         phone: formData.get('phone'),
         email: formData.get('email'),
         age: formData.get("age"),
+        payment: formData.get('payment'),
     };
 
     try {

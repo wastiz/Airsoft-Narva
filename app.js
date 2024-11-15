@@ -101,7 +101,7 @@ app.get('/open-games', async (req, res) => {
 });
 
 app.post('/submit-open-game-form', async (req, res) => {
-    const {name, phone, email, age} = req.body;
+    const {name, email} = req.body;
 
     try {
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
