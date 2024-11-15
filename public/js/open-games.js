@@ -42,3 +42,5 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         btnSend.disabled = false;
     }
 });
+
+
