@@ -4,8 +4,8 @@
 *
 * Released under the MIT license
 * https://github.com/select2/select2/blob/master/LICENSE.md
-*/(function(factory){if(typeof define==='function'&&define.amd){define(['jquery'],factory);}else if(typeof module==='object'&&module.exports){module.exports=function(root,jQuery){if(jQuery===undefined){if(typeof window!=='undefined'){jQuery=require('jquery');}
-else{jQuery=require('jquery')(root);}}
+*/(function(factory){if(typeof define==='function'&&define.amd){define(['public/js/jquery/jquery'],factory);}else if(typeof module==='object'&&module.exports){module.exports=function(root, jQuery){if(jQuery===undefined){if(typeof window!=='undefined'){jQuery=require('public/js/jquery/jquery');}
+else{jQuery=require('public/js/jquery/jquery')(root);}}
 factory(jQuery);return jQuery;};}else{factory(jQuery);}}(function(jQuery){var S2=(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd){var S2=jQuery.fn.select2.amd;}
 var S2;(function(){if(!S2||!S2.requirejs){if(!S2){S2={};}else{require=S2;}
 var requirejs,require,define;(function(undef){var main,req,makeMap,handlers,defined={},waiting={},config={},defining={},hasOwn=Object.prototype.hasOwnProperty,aps=[].slice,jsSuffixRegExp=/\.js$/;function hasProp(obj,prop){return hasOwn.call(obj,prop);}

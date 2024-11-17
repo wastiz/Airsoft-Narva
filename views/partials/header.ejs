@@ -36,8 +36,11 @@
         <div class="bslide__desc d-flex fd-column">
             <div class="bslide__cat"><%= config.header["before-title"] %></div>
             <h2 class="bslide__title"><%= config.header["title"] %></h2>
-            <div class="bslide__subtitle"><%= new Date().toLocaleDateString('ru-RU') %></div>
-
+            <% if (config.header["after-title"] === 'date') { %>
+                <div class="bslide__subtitle"><%= new Date().toLocaleDateString('ru-RU') %></div>
+            <% } else { %>
+                <div class="bslide__subtitle"><%= config.header["after-title"] %></div>
+            <% } %>
 
             <div class="bslide__btns d-flex ai-flex-end">
                 <a href="#rega" class="footer__btn btn"><%= config.header["button"] %></a>
@@ -70,13 +73,12 @@
                         <li class="<%= currentPath === '/' ? 'active' : '' %>"><a href="/">Главная</a>
                         <li class="<%= currentPath === '/rules' ? 'active' : '' %>"><a href="/">Правила</a></li>
                         <li class="<%= currentPath === '/about' ? 'active' : '' %>"><a href="/">О нас</a></li>
-<!--                        <li class="<%= currentPath === '/event' ? 'active' : '' %>" id='link'>-->
-<!--                            <a class='link-to-game' href="event">Object 3</a>-->
-<!--                            <label class='new-label' for="link">New</label>-->
-<!--                        </li>-->
-<!--                        random comment-->
                         <li class="<%= currentPath === '/open-games' ? 'active' : '' %>" id='link'>
                             <a class='link-to-game' href="open-games">Open Games</a>
+                        </li>
+                        <li class="<%= currentPath === '/event' ? 'active' : '' %>" id='link'>
+                            <a class='link-to-game' href="event">Death Zone</a>
+                            <label class='new-label' for="link">New</label>
                         </li>
 
 <!--                        <li class="has-menu-items"><a href="/booking">Аренда</a></li>-->

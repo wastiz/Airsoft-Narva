@@ -1,21 +1,62 @@
-console.log('Hello');
-const btns = document.querySelectorAll(".lang-btn")
-const divs = document.querySelectorAll('.lang-div')
+const statusText = document.querySelector('.g-form__title_respond');
+const btnSend = document.querySelector('.g-form__button');
+const navTabs = document.querySelectorAll('.nav-item');
+const eventContents = [document.querySelector(".event-main"), document.querySelector(".event-plot"), document.querySelector(".event-rules"), document.querySelector(".event-other")];
 
-btns[0].addEventListener('click', (e) => {
-    divs[0].classList.remove('hidden');
-    divs[1].classList.add('hidden')
-    divs[2].classList.add('hidden')
-})
+document.querySelector('.g-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-btns[1].addEventListener('click', (e) => {
-    divs[1].classList.remove('hidden');
-    divs[0].classList.add('hidden')
-    divs[2].classList.add('hidden')
-})
+    btnSend.disabled = true;
+    statusText.innerHTML = 'Отправляем...';
 
-btns[2].addEventListener('click', (e) => {
-    divs[2].classList.remove('hidden');
-    divs[0].classList.add('hidden')
-    divs[1].classList.add('hidden')
+    let formData = new FormData(this);
+
+    let data = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        social: formData.get('social'),
+        age: formData.get("age"),
+        nickname: formData.get('nickname'),
+        aboutCharacter: formData.get('about-character'),
+        team: formData.get('team'),
+    };
+
+    try {
+        const response = await fetch("/submit-event-form", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (response.ok) {
+            statusText.innerHTML = "Отправлено, спасибо";
+        } else if (response.status === 409) {
+            statusText.innerHTML = "Этот email уже зарегистрирован на игру";
+        } else {
+            statusText.innerHTML = "Что-то пошло не так...";
+        }
+
+    } catch (error) {
+        console.error('Request failed:', error);
+        statusText.innerHTML = "Ошибка сети или сервера. Попробуйте еще раз позже.";
+    } finally {
+        document.querySelector('.g-form').reset()
+        btnSend.disabled = false;
+    }
+});
+
+navTabs.forEach((tab, index) => {
+    tab.addEventListener('click', function(event) {
+        eventContents.forEach(item => {
+            item.classList.add('hidden')
+        })
+        eventContents[index].classList.remove('hidden')
+        navTabs.forEach((tab) => {
+            tab.classList.remove('active')
+        })
+        navTabs[index].classList.add('active')
+    })
 })

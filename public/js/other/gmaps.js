@@ -1,5 +1,5 @@
 "use strict";(function(root,factory){if(typeof exports==='object'){module.exports=factory();}
-else if(typeof define==='function'&&define.amd){define(['jquery','googlemaps!'],factory);}
+else if(typeof define==='function'&&define.amd){define(['public/js/jquery/jquery','googlemaps!'],factory);}
 else{root.GMaps=factory();}}(this,function(){/*!
 * GMaps.js v0.4.22
 * http://hpneo.github.com/gmaps/

@@ -40,7 +40,6 @@ app.get('/event', async (req, res) => {
     }
 });
 
-// Обработка POST-запроса
 app.post('/submit-event-form', async (req, res) => {
     const {name, phone, email, social, age, nickname, aboutCharacter, team} = req.body;
 
@@ -120,24 +119,35 @@ app.post('/submit-open-game-form', async (req, res) => {
                 YouTube: https://youtube.com/@dmitripersitski6065?si=cjISOSNzcDVww0bK
                 Vkontakte: https://vk.com/narvacqb
                 Telegram: https://t.me/+xxISHNZT35phMDg0
+                
+                Инициалы для перевода:
+                EE291010220279349223
+                V&V TRADE OÜ
             `,
 
         }
         await sendMail(mailOptions)
         console.log('email sent')
 
-        const appLink = "https://script.google.com/macros/s/AKfycbx5K7-jJwmoeWhgyyvl3ITsauta4ZE6pSO0G5anU--ML4vTpNBgcloTIhGB4TrfLH0D/exec";
-        const formData = new FormData();
-        formData.append('id', uniqueNumber);
-        for (const key in req.body) {
-            formData.append(key, req.body[key]);
-        }
-        console.log(formData)
+        const appLink = "https://script.google.com/macros/s/AKfycby61LAj743Ots1n9sGDYEvIVoAYuoP--EKuBj2eDf4jXQhy8APwfmUlQI_vfPbnPzop/exec";
+        const requestBody = {
+            game: "Death Zone",
+            id: uniqueNumber,
+            ...req.body
+        };
+
+        console.log(requestBody);
+
         await fetch(appLink, {
             method: "POST",
-            body: formData
-        })
-        console.log('inserted to table')
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        console.log('inserted to table');
+
 
         res.status(200).send('Все сделано');
     } catch (error) {
