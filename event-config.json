@@ -1,18 +1,18 @@
 {
-    "event-title": "Object6 v3",
+    "event-title": "Death Zone",
     "header": {
-        "bg": "img/event/object3.png",
+        "bg": "img/event/death-zone.jpg",
         "bg-type": "image",
         "before-title": "Объявляем регистрацию на игру",
-        "title": "Object6 v3",
-        "after-title": "19.10.24",
+        "title": "Death Zone",
+        "after-title": "21.12.24",
         "button": "Регистрация"
     },
     "main": {
         "title": {
-            "1": "OBJECT",
-            "2": "3",
-            "3": "GAME"
+            "1": "Death",
+            "2": "Zone",
+            "3": ""
         },
         "schedule": {
             "arrival": "Заезд - 13:00",
