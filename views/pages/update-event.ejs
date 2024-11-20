@@ -1,0 +1,311 @@
+<%
+const convertToISODate = (date) => {
+    const [day, month, year] = date.split('.');
+    return `${year}-${month}-${day}`;
+};
+%>
+
+<section class="commonSection wearebest" id="update-event">
+    <div class="container">
+        <div class="row">
+            <h2>Обновление Ивента</h2>
+        </div>
+        <div class="row">
+            <form action="">
+                <!-- Основная информация -->
+                <div class="mb-20">
+                    <h6>Главное:</h6>
+                    <div class="update-event-field">
+                        <label for="event-title">Название</label>
+                        <input id="event-title" type="text" value="<%= event.header.title || '' %>">
+                    </div>
+
+                    <div class="update-event-field">
+                        <label for="event-date">Дата</label>
+                        <input id="event-date" type="date" value="<%= convertToISODate(event.header["after-title"]) || '' %>">
+                    </div>
+                </div>
+
+                <!--Задний фон-->
+                <div class="mb-20">
+                    <h6>Задний фон:</h6>
+                    <div class="d-flex flex-row align-items-center gap-5">
+                        <input
+                                class="form-check-input"
+                                type="radio"
+                                value="image"
+                                id="event-image"
+                                name="bg-type"
+                                <% if (event.header.type === "image") { %>checked<% } %>>
+                        <label class="form-check-label" for="event-image">Картинка</label>
+                        <input id="event-image-file" type="file">
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center gap-5">
+                        <input
+                                type="radio"
+                                value="video"
+                                id="event-video"
+                                name="bg-type"
+                                <% if (event.header.type === "video") { %>checked<% } %>>
+                        <label for="event-video">Видео</label>
+                        <input id="event-video-file" type="file">
+                    </div>
+                </div>
+
+
+                <!-- Расписание -->
+                <h6>Расписание:</h6>
+                <div class="d-flex flex-row align-items-center gap-5 mb-20">
+                    <label for="event-arrival">Заезд:</label>
+                    <input id="event-arrival" type="time" value="<%= event.schedule.arrival || '' %>">
+
+                    <label for="event-briefing">Брифинг:</label>
+                    <input id="event-briefing" type="time" value="<%= event.schedule.briefing || '' %>">
+
+                    <label for="event-start">Старт игры:</label>
+                    <input id="event-start" type="time" value="<%= event.schedule.start || '' %>">
+
+                    <label for="event-end">Конец игры:</label>
+                    <input id="event-end" type="time" value="<%= event.schedule.end || '' %>">
+
+                    <label for="event-afterparty">Афтер-пати:</label>
+                    <input id="event-afterparty" type="time" value="<%= event.schedule.afterparty || '' %>">
+                </div>
+
+                <!-- Сюжет -->
+                <div class="update-event-field mb-20">
+                    <h6>Сюжет:</h6>
+                    <textarea id="event-story" rows="5" placeholder="Опишите сюжет ивента..."><%= event.story || '' %></textarea>
+                </div>
+
+                <!-- Правила -->
+                <div class="mb-20">
+                    <h6>Правила:</h6>
+                    <div id="rules-list" class="mb-20">
+                        <% for (const ruleTitle in event.rules) { %>
+                            <div class="rule-list-item mb-20" id="rule-list-item-<%= ruleTitle %>">
+                                <label for="rule-title-<%= ruleTitle %>">Название списка правил</label>
+                                <input id="rule-title-<%= ruleTitle %>" type="text" value="<%= ruleTitle %>" placeholder="Название списка правил">
+                                <div class="rule-items d-flex flex-col mb-20">
+                                    <% event.rules[ruleTitle].forEach(function(ruleItem, itemIndex) { %>
+                                        <label for="rule-item-<%= ruleTitle %>-<%= itemIndex %>">Правило <%= itemIndex + 1 %></label>
+                                        <input id="rule-item-<%= ruleTitle %>-<%= itemIndex %>" type="text" value="<%= ruleItem %>" placeholder="Текст правила">
+                                    <% }); %>
+                                </div>
+                                <button type="button" onclick="addRuleItem('<%= ruleTitle %>')">Добавить правило</button>
+                            </div>
+                        <% } %>
+                    </div>
+                    <button type="button" onclick="addRuleList()">Добавить список правил</button>
+                </div>
+
+                <!-- Команды -->
+                <div class="mb-20">
+                    <h6>Команды:</h6>
+                    <label for="team-restriction">Ограничение по командам:</label>
+                    <input id="team-restriction" type="number" value="<%= event.teamrestriction || '' %>">
+                    <div id="teams-list" class="d-flex flex-col mb-20">
+                        <% event.teams.forEach(function(team, teamIndex) { %>
+                            <div class="team-list-item">
+                                <label for="team-name-<%= teamIndex %>">Название команды</label>
+                                <input id="team-name-<%= teamIndex %>" type="text" value="<%= team.name %>" placeholder="Название команды">
+                                <label for="team-description-<%= teamIndex %>">Описание</label>
+                                <textarea id="team-description-<%= teamIndex %>" rows="1" placeholder="Описание команды..."><%= team.description %></textarea>
+                            </div>
+                        <% }); %>
+                    </div>
+                    <button type="button" onclick="addTeam()">Добавить команду</button>
+                </div>
+
+                <!--Оплата-->
+                <h6>Цена:</h6>
+                <div class="mb-20">
+                    <p class="text-white">Ниже надо ввести с какой даты до какую дату какая цена действует</p>
+                    <% event["dates-prices"].forEach((datePrice, index) => {
+                        const [fromDate, tillDate, price] = datePrice.split('-');
+
+                        const validFromDate = convertToISODate(fromDate);
+                        const validTillDate = convertToISODate(tillDate);
+                    %>
+                    <div class="d-flex flex-row mb-20 gap-5 pricing-section">
+                        <label for="from-date<%= index + 1 %>">С даты:</label>
+                        <input id="from-date<%= index + 1 %>" type="date" value="<%= validFromDate %>">
+
+                        <label for="till-date<%= index + 1 %>">По дату:</label>
+                        <input id="till-date<%= index + 1 %>" type="date" value="<%= validTillDate %>">
+
+                        <label for="price<%= index + 1 %>">Цена</label>
+                        <input id="price<%= index + 1 %>" type="number" value="<%= price %>">
+                    </div>
+                    <% }); %>
+                </div>
+
+
+                <button type="submit">Сохранить</button>
+                <p id="text-handler"></p>
+            </form>
+        </div>
+    </div>
+
+    <input type="hidden" id="hidden-rule-data" value='<%= JSON.stringify(event.rules) %>'>
+    <input type="hidden" id="hidden-team-data" value='<%= JSON.stringify(event.teams) %>'>
+
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const imageRadio = document.querySelector('#event-image');
+        const videoRadio = document.querySelector('#event-video');
+        const imageFileInput = document.querySelector('#event-image-file');
+        const videoFileInput = document.querySelector('#event-video-file');
+
+        const toggleFileInputs = () => {
+            if (imageRadio.checked) {
+                imageFileInput.disabled = false;
+                videoFileInput.disabled = true;
+            } else if (videoRadio.checked) {
+                imageFileInput.disabled = true;
+                videoFileInput.disabled = false;
+            }
+        };
+
+        toggleFileInputs();
+
+        imageRadio.addEventListener('change', toggleFileInputs);
+        videoRadio.addEventListener('change', toggleFileInputs);
+
+        const rulesData = JSON.parse(document.getElementById('hidden-rule-data').value);
+        const teamsData = JSON.parse(document.getElementById('hidden-team-data').value);
+
+        let ruleListCounter = Object.keys(rulesData).length;
+        let ruleItemCounter = Object.values(rulesData).reduce((acc, list) => acc + list.length, 0);
+        let teamCounter = teamsData.length;
+
+        function addRuleList() {
+            ruleListCounter++;
+            const newRuleList = `
+                <div class="rule-list-item" id="rule-list-item-${ruleListCounter}">
+                    <label for="rule-title-${ruleListCounter}">Название списка правил</label>
+                    <input id="rule-title-${ruleListCounter}" type="text" placeholder="Название списка правил">
+                    <div class="rule-items d-flex flex-col mb-20">
+                        <label for="rule-item-${ruleListCounter}-1">Правило 1</label>
+                        <input id="rule-item-${ruleListCounter}-1" type="text" placeholder="Текст правила">
+                    </div>
+                    <button type="button" onclick="addRuleItem(${ruleListCounter})">Добавить правило</button>
+                </div>
+            `;
+            document.getElementById('rules-list').insertAdjacentHTML('beforeend', newRuleList);
+        }
+
+        function addRuleItem(ruleListId) {
+            ruleItemCounter++;
+            const newRuleItem = `
+                <label for="rule-item-${ruleListId}-${ruleItemCounter}">Правило ${ruleItemCounter}</label>
+                <input id="rule-item-${ruleListId}-${ruleItemCounter}" type="text" placeholder="Текст правила">
+            `;
+            const ruleListItem = document.getElementById(`rule-list-item-${ruleListId}`);
+            if (ruleListItem) {
+                ruleListItem.querySelector('.rule-items').insertAdjacentHTML('beforeend', newRuleItem);
+            } else {
+                console.error('Element not found:', `rule-list-item-${ruleListId}`);
+            }
+        }
+
+        function addTeam() {
+            teamCounter++;
+            const newTeam = `
+                <div class="team-list-item">
+                    <label for="team-name-${teamCounter}">Название команды</label>
+                    <input id="team-name-${teamCounter}" type="text" placeholder="Название команды">
+                    <label for="team-description-${teamCounter}">Описание</label>
+                    <textarea id="team-description-${teamCounter}" rows="1" placeholder="Описание команды..."></textarea>
+                </div>
+            `;
+            document.getElementById('teams-list').insertAdjacentHTML('beforeend', newTeam);
+        }
+
+        window.addRuleList = addRuleList;
+        window.addRuleItem = addRuleItem;
+        window.addTeam = addTeam;
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const textHandler = document.getElementById('text-handler');
+            textHandler.innerText = 'Обрабатываем...';
+
+            const eventData = {
+                title: document.getElementById('event-title').value,
+                date: document.getElementById('event-date').value,
+                image: document.getElementById('event-image').checked,
+                video: document.getElementById('event-video').checked,
+                schedule: {
+                    arrival: document.getElementById('event-arrival').value,
+                    briefing: document.getElementById('event-briefing').value,
+                    start: document.getElementById('event-start').value,
+                    end: document.getElementById('event-end').value,
+                    afterparty: document.getElementById('event-afterparty').value
+                },
+                story: document.getElementById('event-story').value,
+                rules: gatherRules(),
+                teams: gatherTeams(),
+                teamrestriction: document.getElementById('team-restriction').value,
+                pricing: gatherPricing()
+            };
+
+            fetch('/submit-update-event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(eventData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        textHandler.innerText = "Заебца"
+                    }
+                })
+                .catch((error) => {
+                    textHandler.innerText = 'Бля, ошибка'
+                    console.error('Error:', error);
+                    alert('Ошибка при обновлении ивента.');
+                });
+        });
+
+        function gatherRules() {
+            const rules = {};
+            document.querySelectorAll('.rule-list-item').forEach(function (listItem) {
+                const listTitle = listItem.querySelector('input[type="text"]').value;
+                const ruleItems = [];
+                listItem.querySelectorAll('.rule-items input').forEach(function (input) {
+                    ruleItems.push(input.value);
+                });
+                rules[listTitle] = ruleItems;
+            });
+            return rules;
+        }
+
+        function gatherTeams() {
+            const teams = [];
+            document.querySelectorAll('.team-list-item').forEach(function (teamItem) {
+                const teamName = teamItem.querySelector('input').value;
+                const teamDescription = teamItem.querySelector('textarea').value;
+                teams.push({ name: teamName, description: teamDescription });
+            });
+            return teams;
+        }
+
+        function gatherPricing() {
+            const pricing = [];
+            document.querySelectorAll('.pricing-section').forEach(function (priceItem) {
+                const dateInputs = priceItem.querySelectorAll('input[type="date"]');
+                const priceInput = priceItem.querySelector('input[type="number"]');
+
+                pricing.push([dateInputs[0].value, dateInputs[1].value, priceInput.value]);
+            });
+            return pricing;
+        }
+    });
+</script>
+

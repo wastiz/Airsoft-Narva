@@ -2,11 +2,14 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
-const landingConfig = require('./landing-config.json');
-const eventConfig = require('./event-config.json');
-const openGamesConfig = require('./open-games.json');
+const landingConfig = require('./configs/landing-config.json');
+const eventConfig = require('./configs/event-config.json');
+const openGamesConfig = require('./configs/open-games.json');
 const { sendMail } = require('./mail-service');
+const { transformData } = require("./functions")
 const port = process.env.SERVER_PORT;
 const host = process.env.HOST || 3000
 
@@ -159,6 +162,38 @@ app.post('/submit-open-game-form', async (req, res) => {
         }
     }
 });
+
+app.get('/update-event', async (req, res) => {
+    res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
+})
+
+app.post('/submit-update-event', async (req, res) => {
+    try {
+        let data = req.body;
+        console.log("Полученные данные:", data);
+
+        data = transformData(data);
+        console.log("Трансформированные данные:", data);
+
+        const filePath = path.join(__dirname, 'configs/event-config.json');
+
+        const fileContent = await fs.promises.readFile(filePath, 'utf8');
+        console.log("Содержимое файла до изменения:", fileContent);
+
+        const parsedContent = JSON.parse(fileContent);
+
+        Object.assign(parsedContent, data);
+
+        await fs.promises.writeFile(filePath, JSON.stringify(parsedContent, null, 2), 'utf8');
+        console.log("Файл успешно обновлён");
+
+        res.status(200).json({ message: 'Файл успешно обновлён.' });
+    } catch (error) {
+        console.error("Ошибка:", error);
+        res.status(500).json({ message: 'Произошла ошибка на сервере.', error: error.message });
+    }
+});
+
 
 
 app.listen(port, host, () => {

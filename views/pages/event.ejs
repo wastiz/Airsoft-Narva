@@ -5,9 +5,9 @@
             <div class="col-md-8">
                 <div class="sectionTitle border">
                     <div class="titleHead">
-                        <h1><%= config.main.title["1"] %></h1>
-                        <h2 class="color_gray"><%= config.main.title["2"] %></h2>
-                        <h2 class="color_white"><%= config.main.title["3"] %></h2>
+                        <h1><%= config.header.title.split(" ")[0] ? config.header.title.split(" ")[0] : "" %></h1>
+                        <h2 class="color_gray"><%= config.header.title.split(" ")[1] ? config.header.title.split(" ")[1] : "" %></h2>
+                        <h2 class="color_white"><%= config.header.title.split(" ")[2] ? config.header.title.split(" ")[2] : "" %></h2>
                     </div>
                 </div>
                 <ul class="nav nav-tabs">
@@ -31,42 +31,41 @@
 
                         <h5><b>Расписание:</b></h5>
                         <div style="color: white; font-weight: bold;">
-                            <% for (let key in config.main.schedule) { %>
-                                <p><%= config.main.schedule[key] %></p>
-                            <% } %>
+                            <p>Заезд: <%= config.schedule.arrival %></p>
+                            <p>Брифинг: <%= config.schedule.briefing %></p>
+                            <p>Старт: <%= config.schedule.start %></p>
+                            <p>Окончание: <%= config.schedule.end%></p>
+                            <p>АфтерПати: <%= config.schedule.afterparty %></p>
                         </div>
                     </div>
 
                     <div class="event-plot hidden">
                         <h5 class="text-white"><b>Сюжет:</b></h5>
                         <div>
-                            <p>
-                                После катастрофы, разрушившей мир, выжившие укрылись в заброшенном лагере. Поначалу они были едины, но вскоре взгляды на дальнейшее выживание разделились.
-                            </p>
-                            <p>
-                                Первая группа, назвавшая себя "Оплот", стремится превратить лагерь в неприступную крепость, создать самодостаточное сообщество с непоколебимым порядком и прочными стенами. Они верят, что безопасность и стабильность — залог выживания.
-                            </p>
-                            <p>
-                                Вторая группа, "Кочевники", уверена, что лагерь слишком опасен и ресурсы здесь быстро иссякнут. Они хотят использовать все, что осталось, и как можно скорее отправиться в поисках лучших мест.
-                            </p>
-                            <p>
-                                В напряженной атмосфере взаимного недоверия конфликт между лагерями накаляется, и каждый игрок должен выбрать свою сторону, чтобы определить будущее этого лагеря и, возможно, всего человечества.
-                            </p>
+                            <p><%= config.story %></p>
                         </div>
                     </div>
 
                     <div class="event-rules hidden">
-                        <%- include('rules.ejs')%>
+                        <% Object.keys(config.rules).forEach(ruleCategory => { %>
+                            <h2><%= ruleCategory %></h2>
+                            <ul>
+                                <% config.rules[ruleCategory].forEach(rule => { %>
+                                    <li><%= rule %></li>
+                                <% }); %>
+                            </ul>
+                        <% }); %>
                     </div>
 
-                    <div class="event-other flex flex-col hidden">
-                        <% for (let key in config.main.teams) { %>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#team-<%= config.main.teams[key]["id"]%>" aria-expanded="false" aria-controls="team-<%= config.main.teams[key]["id"]%>">
-                                <%= config.main.teams[key]["name"]%>
+
+                    <div class="event-teams flex flex-col hidden">
+                        <% for (let key in config.teams) { %>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#team-<%= config.teams[key]["name"]%>" aria-expanded="false" aria-controls="team-<%= config.teams[key]["name"]%>">
+                                <%= config.teams[key]["name"]%>
                             </button>
-                            <div class="collapse" id="team-<%= config.main.teams[key]["id"]%>">
+                            <div class="collapse" id="team-<%= config.teams[key]["name"]%>">
                                 <div class="card card-body">
-                                    <%= config.main.teams[key]["description"]%>
+                                    <%= config.teams[key]["description"]%>
                                 </div>
                             </div>
                         <% } %>
@@ -91,7 +90,7 @@
                             <fieldset name="team" class='form-fieldset'>
                                 <label class="text-white">Выберите фракцию:</label><br>
 
-                                <p class="team-restriction">В данный момент у 4ой передачи перевес в 3 или более человека</p>
+                                <p class="team-restriction">В данный момент у 4ой передачи перевес в 3 или более человека </p>
 
                                 <input type="radio" class="form-check-input" id="4gear" name="team" value="4gear" required disabled>
                                 <label class="form-check-label" for="4gear">4ая передача</label> <br>
@@ -114,7 +113,7 @@
                             <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot" value="">
                             <%
                             const today = new Date();
-                            config.main["dates-prices"].forEach(item => {
+                            config["dates-prices"].forEach(item => {
                                 const array = item.split('-');
                                 const endDateParts = array[1].split('.');
                                 const endDate = new Date(`20${endDateParts[2]}-${endDateParts[1]}-${endDateParts[0]}`);

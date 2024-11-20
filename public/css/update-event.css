@@ -1,0 +1,16 @@
+#update-event form h6 {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+.update-event-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.gap-5 {
+    gap: 5px;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}

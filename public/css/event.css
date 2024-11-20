@@ -28,3 +28,28 @@ ol {
     width: 50%;
     height: 50%;
 }
+
+.event-rules h1 {
+    font-size: 25px;
+}
+.event-rules h2 {
+    font-size: 20px;
+}
+.event-rules h3 {
+    font-size: 20px;
+}
+.event-rules h1, .event-rules h2, .event-rules h3 {
+    color: #3a516c;
+}
+.event-rules p {
+    margin-bottom: 15px;
+}
+.event-rules ul {
+    margin-left: 10px;
+}
+.event-rules li {
+    margin-bottom: 10px;
+}
+.event-rules .important {
+    color: red;
+}
