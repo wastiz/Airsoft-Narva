@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
+const multer = require('multer');
 const landingConfig = require('./configs/landing-config.json');
 const eventConfig = require('./configs/event-config.json');
 const openGamesConfig = require('./configs/open-games.json');
@@ -167,21 +168,53 @@ app.get('/update-event', async (req, res) => {
     res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
 })
 
+// Обработка формы с загрузкой файла
 app.post('/submit-update-event', async (req, res) => {
     try {
-        let data = req.body;
-        console.log("Полученные данные:", data);
+        let { password, ...data } = req.body;
+
+        if (password === "1234") {
+            return res.status(405).json({ message: 'Пароль 1234 запрещен!' });
+        } else if (!password || password !== process.env.ADMIN_PASSWORD) {
+            console.log("Попытка с неверным паролем");
+            return res.status(403).json({ message: 'Доступ запрещён. Неверный пароль.' });
+        }
+
+        console.log(data)
+        imageFile = data["bg-file"]
+        if (imageFile) {
+            const base64Data = imageFile.split(',')[1];
+
+            const buffer = Buffer.from(base64Data, 'base64');
+
+            const uploadPath = path.join(__dirname, 'public', 'img', 'event');
+
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+
+            const filename = data.bgname;
+            const filePath = path.join(uploadPath, filename);
+
+            fs.writeFile(filePath, buffer, (err) => {
+                if (err) {
+                    console.error('Ошибка записи файла:', err);
+                    return res.status(500).json({ message: 'Ошибка сохранения изображения' });
+                }
+                const imageUrl = `public/img/event/${filename}`;
+
+                res.json({ message: 'Изображение успешно загружено', imageUrl: imageUrl });
+            });
+        }
+
+        console.log(data)
 
         data = transformData(data);
-        console.log("Трансформированные данные:", data);
 
         const filePath = path.join(__dirname, 'configs/event-config.json');
-
         const fileContent = await fs.promises.readFile(filePath, 'utf8');
-        console.log("Содержимое файла до изменения:", fileContent);
 
         const parsedContent = JSON.parse(fileContent);
-
         Object.assign(parsedContent, data);
 
         await fs.promises.writeFile(filePath, JSON.stringify(parsedContent, null, 2), 'utf8');

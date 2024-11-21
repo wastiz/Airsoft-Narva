@@ -47,11 +47,11 @@
             </div>
         </div>
 
-        <% if (config.header["bg-type"] === "video") { %>
+        <% if (config.header["type"] === "video") { %>
             <video id="video_background" preload="auto" no-controls autoplay loop playsinline muted>
                 <source src=<%= config.header["bg"] %> type='video/mp4'/>
             </video>
-        <% } else if (config.header["bg-type"] === "image") { %>
+        <% } else if (config.header["type"] === "image") { %>
             <style>
                 #slider {
                     background-image: url(<%= config.header["bg"] %>);

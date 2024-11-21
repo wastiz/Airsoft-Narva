@@ -7,7 +7,7 @@ function transformData(input) {
     };
 
     output["header"] = {
-        "bg": input.background ? input.background : 'img/Object6.jpg',
+        "bg": input.bgname ? `img/event/${input.bgname}` : 'img/event/Object6.jpg',
         "type": input.image ? "image" : (input.video ? "video" : "none"),
         "before-title": "Объявляем регистрацию на",
         "title": input.title,

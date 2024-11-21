@@ -141,6 +141,11 @@ const convertToISODate = (date) => {
                     <% }); %>
                 </div>
 
+                <div class="mb-20">
+                    <h6>Пароль:</h6>
+                    <p class="text-white">Чтобы сохранить изменения введите пароль</p>
+                    <input type="password" id="update-password">
+                </div>
 
                 <button type="submit">Сохранить</button>
                 <p id="text-handler"></p>
@@ -151,8 +156,8 @@ const convertToISODate = (date) => {
     <input type="hidden" id="hidden-rule-data" value='<%= JSON.stringify(event.rules) %>'>
     <input type="hidden" id="hidden-team-data" value='<%= JSON.stringify(event.teams) %>'>
 
-</section>
 
+</section>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -230,9 +235,10 @@ const convertToISODate = (date) => {
         window.addRuleItem = addRuleItem;
         window.addTeam = addTeam;
 
+        const textHandler = document.getElementById('text-handler');
+
         document.querySelector('form').addEventListener('submit', function (event) {
             event.preventDefault();
-            const textHandler = document.getElementById('text-handler');
             textHandler.innerText = 'Обрабатываем...';
 
             const eventData = {
@@ -240,6 +246,7 @@ const convertToISODate = (date) => {
                 date: document.getElementById('event-date').value,
                 image: document.getElementById('event-image').checked,
                 video: document.getElementById('event-video').checked,
+                bgname: document.getElementById('event-image-file').files[0].name,
                 schedule: {
                     arrival: document.getElementById('event-arrival').value,
                     briefing: document.getElementById('event-briefing').value,
@@ -251,9 +258,48 @@ const convertToISODate = (date) => {
                 rules: gatherRules(),
                 teams: gatherTeams(),
                 teamrestriction: document.getElementById('team-restriction').value,
-                pricing: gatherPricing()
+                pricing: gatherPricing(),
+                password: document.getElementById('update-password').value
             };
 
+            const imageFile = document.getElementById('event-image-file').files[0];
+            const videoFile = document.getElementById('event-video-file').files[0];
+
+            const promises = [];
+
+            if (imageFile) {
+                promises.push(new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = function() {
+                        eventData['bg-file'] = reader.result;
+                        resolve();
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(imageFile);
+                }));
+            }
+
+            if (videoFile) {
+                promises.push(new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = function() {
+                        eventData['bg-file'] = reader.result;
+                        resolve();
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(videoFile);
+                }));
+            }
+
+            Promise.all(promises).then(() => {
+                sendData(eventData);
+            }).catch((error) => {
+                textHandler.innerText = 'Ошибка при загрузке файлов.';
+                console.error('Ошибка при чтении файлов:', error);
+            });
+        });
+
+        function sendData(eventData) {
             fetch('/submit-update-event', {
                 method: 'POST',
                 headers: {
@@ -264,14 +310,18 @@ const convertToISODate = (date) => {
                 .then(response => {
                     if (response.ok) {
                         textHandler.innerText = "Заебца"
+                    } else if (response.status === 403) {
+                        textHandler.innerText = "Введите пароль (1234)"
+                    } else if (response.status === 405) {
+                        textHandler.innerText = "Серьезно?...";
                     }
                 })
                 .catch((error) => {
-                    textHandler.innerText = 'Бля, ошибка'
+                    textHandler.innerText = 'Бля, ошибка. Вперед разносить мой тг';
                     console.error('Error:', error);
                     alert('Ошибка при обновлении ивента.');
                 });
-        });
+        }
 
         function gatherRules() {
             const rules = {};
