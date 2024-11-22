@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let formData = new FormData(this);
 
         let data = {
+            game: document.getElementById('event-title').textContent,
             name: formData.get('name'),
             phone: formData.get('phone'),
             email: formData.get('email'),

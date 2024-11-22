@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-const multer = require('multer');
 const landingConfig = require('./configs/landing-config.json');
 const eventConfig = require('./configs/event-config.json');
 const openGamesConfig = require('./configs/open-games.json');
@@ -45,7 +44,7 @@ app.get('/event', async (req, res) => {
 });
 
 app.post('/submit-event-form', async (req, res) => {
-    const {name, phone, email, social, age, nickname, aboutCharacter, team} = req.body;
+    const data = req.body;
 
     try {
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
@@ -55,10 +54,10 @@ app.post('/submit-event-form', async (req, res) => {
                 name: "Narva CQB Arena",
                 address: process.env.MAIL_USER,
             },
-            to: ["dmitripersitski@gmail.com", email],
+            to: ["dmitripersitski@gmail.com", data.email],
             subject: `Вы зарегистрировались на ${eventConfig["event-title"]}`,
             text: `
-                Здравствуй, ${name.split(" ")[0]}. Ты зарегистрировался на игру "${eventConfig["event-title"]}". Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав при оплате свой уникальный номер:
+                Здравствуй, ${data.name.split(" ")[0]}. Ты зарегистрировался на игру "${eventConfig.header.title}". Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав при оплате свой уникальный номер:
                 Ваш уникальный номер: ${uniqueNumber}
                 EE291010220279349223
                 V&V TRADE OÜ
@@ -70,16 +69,12 @@ app.post('/submit-event-form', async (req, res) => {
         await sendMail(mailOptions)
         console.log('email sent')
 
-        const appLink = "https://script.google.com/macros/s/AKfycbx5K7-jJwmoeWhgyyvl3ITsauta4ZE6pSO0G5anU--ML4vTpNBgcloTIhGB4TrfLH0D/exec";
-        const formData = new FormData();
-        formData.append('id', uniqueNumber);
-        for (const key in req.body) {
-            formData.append(key, req.body[key]);
-        }
-        console.log(formData)
+        const appLink = "https://script.google.com/macros/s/AKfycbyXhQZllYFroiCsbKALdb4HpB36UiDzKTiN5_i5CfQtY2FqigVnCfqMW3XDM57pbs2i/exec";
+        data["id"] = uniqueNumber;
+        console.log(data);
         await fetch(appLink, {
             method: "POST",
-            body: formData
+            body: JSON.stringify(data)
         })
         console.log('inserted to table')
 
@@ -133,14 +128,12 @@ app.post('/submit-open-game-form', async (req, res) => {
         await sendMail(mailOptions)
         console.log('email sent')
 
-        const appLink = "https://script.google.com/macros/s/AKfycby61LAj743Ots1n9sGDYEvIVoAYuoP--EKuBj2eDf4jXQhy8APwfmUlQI_vfPbnPzop/exec";
+        const appLink = "https://script.google.com/macros/s/AKfycbyXhQZllYFroiCsbKALdb4HpB36UiDzKTiN5_i5CfQtY2FqigVnCfqMW3XDM57pbs2i/exec";
         const requestBody = {
-            game: "Death Zone",
+            game: "Open Game",
             id: uniqueNumber,
             ...req.body
         };
-
-        console.log(requestBody);
 
         await fetch(appLink, {
             method: "POST",
@@ -168,7 +161,6 @@ app.get('/update-event', async (req, res) => {
     res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
 })
 
-// Обработка формы с загрузкой файла
 app.post('/submit-update-event', async (req, res) => {
     try {
         let { password, ...data } = req.body;
@@ -181,7 +173,7 @@ app.post('/submit-update-event', async (req, res) => {
         }
 
         console.log(data)
-        imageFile = data["bg-file"]
+        const imageFile = data["bg-file"]
         if (imageFile) {
             const base64Data = imageFile.split(',')[1];
 
@@ -206,8 +198,6 @@ app.post('/submit-update-event', async (req, res) => {
                 res.json({ message: 'Изображение успешно загружено', imageUrl: imageUrl });
             });
         }
-
-        console.log(data)
 
         data = transformData(data);
 

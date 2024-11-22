@@ -38,7 +38,7 @@ const convertToISODate = (date) => {
                                 name="bg-type"
                                 <% if (event.header.type === "image") { %>checked<% } %>>
                         <label class="form-check-label" for="event-image">Картинка</label>
-                        <input id="event-image-file" type="file">
+                        <input id="event-image-file" type="file" value="<%= event.header.bg.split("/")[-1]%>">
                     </div>
 
                     <div class="d-flex flex-row align-items-center gap-5">
@@ -108,10 +108,16 @@ const convertToISODate = (date) => {
                     <div id="teams-list" class="d-flex flex-col mb-20">
                         <% event.teams.forEach(function(team, teamIndex) { %>
                             <div class="team-list-item">
+                                <label for="team-id-<%= teamIndex %>">id команды</label>
+                                <input id="team-id-<%= teamIndex %>" type="text" value="<%= team.id %>" placeholder="id команды">
                                 <label for="team-name-<%= teamIndex %>">Название команды</label>
                                 <input id="team-name-<%= teamIndex %>" type="text" value="<%= team.name %>" placeholder="Название команды">
                                 <label for="team-description-<%= teamIndex %>">Описание</label>
                                 <textarea id="team-description-<%= teamIndex %>" rows="1" placeholder="Описание команды..."><%= team.description %></textarea>
+                                <input class="form-check-input" type="checkbox" value="" id="disable-team-<%= team.id %>" <%if(team.isDisabled) {%> checked <%}%>>
+                                <label class="form-check-label" for="disable-team-<%= team.id %>">
+                                    Закрыть команду
+                                </label>
                             </div>
                         <% }); %>
                     </div>
@@ -220,16 +226,29 @@ const convertToISODate = (date) => {
 
         function addTeam() {
             teamCounter++;
+
             const newTeam = `
-                <div class="team-list-item">
-                    <label for="team-name-${teamCounter}">Название команды</label>
-                    <input id="team-name-${teamCounter}" type="text" placeholder="Название команды">
-                    <label for="team-description-${teamCounter}">Описание</label>
-                    <textarea id="team-description-${teamCounter}" rows="1" placeholder="Описание команды..."></textarea>
-                </div>
-            `;
+        <div class="team-list-item">
+            <label for="team-id-${teamCounter}">id команды</label>
+            <input id="team-id-${teamCounter}" type="text" placeholder="id команды">
+
+            <label for="team-name-${teamCounter}">Название команды</label>
+            <input id="team-name-${teamCounter}" type="text" placeholder="Название команды">
+
+            <label for="team-description-${teamCounter}">Описание</label>
+            <textarea id="team-description-${teamCounter}" rows="1" placeholder="Описание команды..."></textarea>
+
+            <input class="form-check-input" type="checkbox" value="" id="disable-team-${teamCounter}">
+            <label class="form-check-label" for="disable-team-${teamCounter}">
+                Закрыть команду
+            </label>
+        </div>
+    `;
+
+            // Добавляем разметку в конец списка команд
             document.getElementById('teams-list').insertAdjacentHTML('beforeend', newTeam);
         }
+
 
         window.addRuleList = addRuleList;
         window.addRuleItem = addRuleItem;
@@ -241,12 +260,18 @@ const convertToISODate = (date) => {
             event.preventDefault();
             textHandler.innerText = 'Обрабатываем...';
 
+            let fileName = '';
+
+            if (document.getElementById('event-image-file').files.length > 0) {
+                fileName = document.getElementById('event-image-file').files[0].name;
+            }
+
             const eventData = {
                 title: document.getElementById('event-title').value,
                 date: document.getElementById('event-date').value,
                 image: document.getElementById('event-image').checked,
                 video: document.getElementById('event-video').checked,
-                bgname: document.getElementById('event-image-file').files[0].name,
+                bgname: fileName,
                 schedule: {
                     arrival: document.getElementById('event-arrival').value,
                     briefing: document.getElementById('event-briefing').value,
@@ -339,10 +364,19 @@ const convertToISODate = (date) => {
         function gatherTeams() {
             const teams = [];
             document.querySelectorAll('.team-list-item').forEach(function (teamItem) {
-                const teamName = teamItem.querySelector('input').value;
+                const teamId = teamItem.querySelector('input[type="text"]').value;
+                const teamName = teamItem.querySelector('input[type="text"]:nth-of-type(2)').value;
                 const teamDescription = teamItem.querySelector('textarea').value;
-                teams.push({ name: teamName, description: teamDescription });
+                const isDisabled = teamItem.querySelector('input[type="checkbox"]').checked;
+
+                teams.push({
+                    id: teamId,
+                    name: teamName,
+                    description: teamDescription,
+                    isDisabled: isDisabled
+                });
             });
+
             return teams;
         }
 

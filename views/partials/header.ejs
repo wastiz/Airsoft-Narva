@@ -35,7 +35,7 @@
 
         <div class="bslide__desc d-flex fd-column">
             <div class="bslide__cat"><%= config.header["before-title"] %></div>
-            <h2 class="bslide__title"><%= config.header["title"] %></h2>
+            <h2 class="bslide__title" id="event-title"><%= config.header["title"] %></h2>
             <% if (config.header["after-title"] === 'date') { %>
                 <div class="bslide__subtitle"><%= new Date().toLocaleDateString('ru-RU') %></div>
             <% } else { %>

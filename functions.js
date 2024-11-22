@@ -1,3 +1,5 @@
+const eventConfig = require('./configs/event-config.json');
+
 function transformData(input) {
     const output = {};
 
@@ -7,7 +9,7 @@ function transformData(input) {
     };
 
     output["header"] = {
-        "bg": input.bgname ? `img/event/${input.bgname}` : 'img/event/Object6.jpg',
+        "bg": input.bgname ? `img/event/${input.bgname}` : eventConfig.header.bg,
         "type": input.image ? "image" : (input.video ? "video" : "none"),
         "before-title": "Объявляем регистрацию на",
         "title": input.title,
