@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const landingConfig = require('./configs/landing-config.json');
-const eventConfig = require('./configs/event-config.json');
 const openGamesConfig = require('./configs/open-games.json');
 const { sendMail } = require('./mail-service');
 const { transformData } = require("./functions")
@@ -34,6 +33,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/event', async (req, res) => {
+    const eventConfig = require('./configs/event-config.json');
     try {
         //const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
         res.render('pages/event', { layout: 'layouts/main', restrictedTeam: '', config: eventConfig, currentPath: req.path });
@@ -45,6 +45,7 @@ app.get('/event', async (req, res) => {
 
 app.post('/submit-event-form', async (req, res) => {
     const data = req.body;
+    const eventConfig = require('./configs/event-config.json');
 
     try {
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
@@ -158,6 +159,7 @@ app.post('/submit-open-game-form', async (req, res) => {
 });
 
 app.get('/update-event', async (req, res) => {
+    const eventConfig = require('./configs/event-config.json');
     res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
 })
 
