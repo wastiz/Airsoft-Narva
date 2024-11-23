@@ -1,7 +1,7 @@
 {
     "header": {
         "bg": "img/event/header-open.jpg",
-        "bg-type": "image",
+        "type": "image",
         "before-title": "",
         "title": "Открытая игра",
         "after-title": "date",
