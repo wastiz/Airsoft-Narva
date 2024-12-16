@@ -31,9 +31,14 @@ app.get('/', (req, res) => {
     res.render('pages/index', { layout: 'layouts/main', config: landingConfig, currentPath: req.path });
 });
 
+function getEventConfig() {
+    const filePath = path.join(__dirname, 'configs/event-config.json');
+    const data = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(data);
+}
 
 app.get('/event', async (req, res) => {
-    const eventConfig = require('./configs/event-config.json');
+    const eventConfig = getEventConfig();
     try {
         //const restrictedTeam = await checkRestriction(['4gear', 'farmacempentic'], 3);
         res.render('pages/event', { layout: 'layouts/main', restrictedTeam: '', config: eventConfig, currentPath: req.path });
@@ -45,7 +50,7 @@ app.get('/event', async (req, res) => {
 
 app.post('/submit-event-form', async (req, res) => {
     const data = req.body;
-    const eventConfig = require('./configs/event-config.json');
+    const eventConfig = getEventConfig();
 
     try {
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
@@ -159,7 +164,7 @@ app.post('/submit-open-game-form', async (req, res) => {
 });
 
 app.get('/update-event', async (req, res) => {
-    const eventConfig = require('./configs/event-config.json');
+    const eventConfig = getEventConfig();
     res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
 })
 
