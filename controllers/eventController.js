@@ -4,7 +4,7 @@ const {sendMail} = require("../mail-service");
 const {getEventConfig} = require("../functions");
 
 
-router.post('/submit-event-form', async (req, res) => {
+router.post('/submit-book-form', async (req, res) => {
     const data = req.body;
     const eventConfig = getEventConfig();
 
@@ -50,3 +50,5 @@ router.post('/submit-event-form', async (req, res) => {
         }
     }
 });
+
+module.exports = router;

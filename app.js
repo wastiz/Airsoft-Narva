@@ -31,14 +31,14 @@ app.use('/open-games', routeController);
 app.use('/event', routeController);
 app.use('/update-event', routeController);
 
-// Маршруты для обработки с ивента
-app.use('/', eventController);
+// Маршруты для обработки с ивент странички
+app.use('/event', eventController);
 
-// Маршрут для обработки с открытых игр
-app.use('/', openGamesController);
+// Маршрут для обработки с открытых игр странички
+app.use('/open-games', openGamesController);
 
-//Марщрут для обработки с админ панели
-app.use('/', adminController);
+//Марщрут для обработки с админ панели странички
+app.use('/admin', adminController);
 
 
 

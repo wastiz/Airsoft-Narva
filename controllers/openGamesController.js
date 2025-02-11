@@ -3,7 +3,7 @@ const router = express.Router();
 const {sendMail} = require("../mail-service");
 
 
-router.post('/submit-open-game-form', async (req, res) => {
+router.post('/submit-book-form', async (req, res) => {
     const {name, email} = req.body;
 
     try {
@@ -61,3 +61,5 @@ router.post('/submit-open-game-form', async (req, res) => {
         }
     }
 });
+
+module.exports = router;

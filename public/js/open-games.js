@@ -18,7 +18,7 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
     };
 
     try {
-        const response = await fetch("/submit-open-game-form", {
+        const response = await fetch("open-games/submit-book-form", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const navTabs = document.querySelectorAll('.nav-item');
     const eventContents = [document.querySelector(".event-main"), document.querySelector(".event-plot"), document.querySelector(".event-rules"), document.querySelector(".event-teams")];
 
-    document.querySelector('.g-form').addEventListener('submit', async function(event) {
+    document.querySelector('#quoteForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         btnSend.disabled = true;
@@ -13,15 +13,10 @@ document.addEventListener("DOMContentLoaded", function() {
         let formData = new FormData(this);
 
         let data = {
-            game: document.getElementById('event-title').textContent,
-            name: formData.get('name'),
-            phone: formData.get('phone'),
-            email: formData.get('email'),
-            social: formData.get('social'),
-            age: formData.get("age"),
-            nickname: formData.get('nickname'),
-            aboutCharacter: formData.get('about-character'),
-            team: formData.get('team'),
+            name: formData.get('q_nam'),
+            phone: formData.get('q_phone'),
+            email: formData.get('q_email'),
+            message: formData.get('q_msg'),
         };
 
         try {

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-import path from "path";
-import fs from "fs";
-import {transformData} from "../functions";
+const path = require("path");
+const fs = require("fs");
+const {transformData} = require("../functions");
 
 router.post('/submit-update-event', async (req, res) => {
     try {
@@ -59,3 +59,5 @@ router.post('/submit-update-event', async (req, res) => {
         res.status(500).json({ message: 'Произошла ошибка на сервере.', error: error.message });
     }
 });
+
+module.exports = router;

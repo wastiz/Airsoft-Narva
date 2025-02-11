@@ -37,3 +37,5 @@ router.get('/update-event', async (req, res) => {
 
 
 //const landingConfig = require("../configs/landing-config.json");
+
+module.exports = router;
