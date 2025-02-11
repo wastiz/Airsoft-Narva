@@ -1,4 +1,6 @@
 const eventConfig = require('./configs/event-config.json');
+const path = require("path");
+const fs = require("fs");
 
 function transformData(input) {
     const output = {};
@@ -32,4 +34,10 @@ function transformData(input) {
     return output;
 }
 
-module.exports = {transformData};
+function getEventConfig() {
+    const filePath = path.join(__dirname, 'configs/event-config.json');
+    const data = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(data);
+}
+
+module.exports = {transformData, getEventConfig};
