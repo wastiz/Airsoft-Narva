@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const statusText = document.querySelector('.g-form__title_respond');
-    const btnSend = document.querySelector('.g-form__button');
-    const navTabs = document.querySelectorAll('.nav-item');
-    const eventContents = [document.querySelector(".event-main"), document.querySelector(".event-plot"), document.querySelector(".event-rules"), document.querySelector(".event-teams")];
+    const statusText = document.querySelector('.respond-text');
+    const btnSend = document.querySelector('#q_submit');
 
     document.querySelector('#quoteForm').addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -20,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         try {
-            const response = await fetch("event/submit-book-form", {
+            const response = await fetch("/submit-book-form", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,17 +42,4 @@ document.addEventListener("DOMContentLoaded", function() {
             btnSend.disabled = false;
         }
     });
-
-    navTabs.forEach((tab, index) => {
-        tab.addEventListener('click', function(event) {
-            eventContents.forEach(item => {
-                item.classList.add('hidden')
-            })
-            eventContents[index].classList.remove('hidden')
-            navTabs.forEach((tab) => {
-                tab.classList.remove('active')
-            })
-            navTabs[index].classList.add('active')
-        })
-    })
 })

@@ -9,6 +9,7 @@ const routeController = require('./controllers/routeController');
 const eventController = require('./controllers/eventController');
 const openGamesController = require('./controllers/openGamesController');
 const adminController = require('./controllers/adminController');
+const bookFormController = require('./controllers/bookFormController');
 
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
@@ -30,6 +31,9 @@ app.use('/', routeController);
 app.use('/open-games', routeController);
 app.use('/event', routeController);
 app.use('/update-event', routeController);
+
+//Маршруты для обработки форм бронирования
+app.use('/',bookFormController);
 
 // Маршруты для обработки с ивент странички
 app.use('/event', eventController);
