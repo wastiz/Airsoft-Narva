@@ -453,6 +453,8 @@
 .quoteFooter input[type="email"],
 .quoteFooter textarea,
 .quoteFooter [type="textarea"],
+.quoteFooter [type="time"],
+.quoteFooter [type="date"],
 .quoteFooter [type="number"]{
   height: 50px;
   background: #34313f;

@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
             phone: formData.get('q_phone'),
             email: formData.get('q_email'),
             message: formData.get('q_msg'),
+            date: formData.get('q_date'),
+            timeStart: formData.get('q_time_start'),
+            timeEnd: formData.get('q_time_end'),
+            players: formData.get('q_players'),
+            paymentMethod: formData.get('payment_method')
         };
 
         try {
