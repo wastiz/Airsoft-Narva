@@ -30,6 +30,10 @@ router.get('/event', async (req, res) => {
     }
 });
 
+router.get('/profile', (req, res) => {
+    res.render('pages/profile', { layout: 'layouts/main', currentPath: req.path, title: 'Ваш профиль'});
+});
+
 router.get('/update-event', async (req, res) => {
     const eventConfig = getEventConfig();
     res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });

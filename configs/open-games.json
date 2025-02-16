@@ -1,4 +1,5 @@
 {
+    "config-type": "open-games",
     "header": {
         "bg": "img/event/header-open.jpg",
         "type": "image",

@@ -1,4 +1,5 @@
 {
+  "config-type": "event",
   "header": {
     "bg": "img/event/death-zone4.png",
     "type": "image",

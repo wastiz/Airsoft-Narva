@@ -1,0 +1,21 @@
+<header class="profile-header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="/"><img src="img/logo2.png" alt="Logo"></a>
+            </div>
+            <nav class="profile-nav">
+                <ul>
+                    <li><a href="/profile" class="<%= currentPath === '/profile' ? 'active' : '' %>">Профиль</a></li>
+                    <li><a href="/profile/games" class="<%= currentPath === '/profile/games' ? 'active' : '' %>">Мои игры</a></li>
+                    <li><a href="/profile/settings" class="<%= currentPath === '/profile/settings' ? 'active' : '' %>">Настройки</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-logout" onclick="logout()">Выйти</button>
+                <a href="/login" class="btn btn-login">Войти</a>
+                <a href="/register" class="btn btn-register">Регистрация</a>
+            </div>
+        </div>
+    </div>
+</header> 

@@ -10,7 +10,7 @@ const eventController = require('./controllers/eventController');
 const openGamesController = require('./controllers/openGamesController');
 const adminController = require('./controllers/adminController');
 const bookFormController = require('./controllers/bookFormController');
-
+const profileController = require('./controllers/profileController');
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
 
@@ -41,11 +41,11 @@ app.use('/event', eventController);
 // Маршрут для обработки с открытых игр странички
 app.use('/open-games', openGamesController);
 
+// Маршрут для обработки с профиля странички
+app.use('/profile', profileController);
+
 //Марщрут для обработки с админ панели странички
 app.use('/admin', adminController);
-
-
-
 
 app.listen(port, host, () => {
     console.log(`Server running at http://localhost:${port}`);

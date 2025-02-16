@@ -1,0 +1,41 @@
+<%- include('partials/head') %>
+<%- include('partials/profile-header') %>
+
+<div class="profile-container">
+    <div class="container">
+        <div class="profile-content">
+            <div class="profile-info">
+                <h2>Личные данные</h2>
+                <div class="profile-fields">
+                    <div class="field-group">
+                        <label>Имя</label>
+                        <div class="field-content" data-field="firstName">
+                            <span class="field-value">Загрузка...</span>
+                            <button class="btn-edit" onclick="enableEdit(this)" style="display: none;">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <div class="edit-controls" style="display: none;">
+                                <input type="text" value="">
+                                <button class="btn-save" onclick="saveField(this, 'firstName')">Сохранить</button>
+                                <button class="btn-cancel" onclick="cancelEdit(this)">Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Аналогично для остальных полей -->
+                    <!-- ... -->
+                </div>
+            </div>
+            
+            <div class="games-stats">
+                <h2>Статистика игр</h2>
+                <div class="stats-card">
+                    <div class="stat-item">
+                        <span class="stat-value" id="gamesPlayed">...</span>
+                        <span class="stat-label">Игр сыграно</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -32,7 +32,15 @@
 </section>
 <section id="slider">
     <div class="bslide d-flex img-fit-cover ai-flex-end">
-
+        <div class="slider-top">
+            <div class="slider-logo">
+                <a href="/"><img src="img/logo2.png" alt=""></a>
+            </div>
+            <div class="slider-profile">
+                <i class="fa fa-user"></i>
+                <span>Профиль</span>
+            </div>
+        </div>
         <div class="bslide__desc d-flex fd-column">
             <div class="bslide__cat"><%= config.header["before-title"] %></div>
             <h2 class="bslide__title" id="event-title"><%= config.header["title"] %></h2>
@@ -43,7 +51,10 @@
             <% } %>
 
             <div class="bslide__btns d-flex ai-flex-end">
-                <a href="#rega" class="footer__btn btn"><%= config.header["button"] %></a>
+                <a href="#rega" class="footer__btn btn" style="margin-right: 10px;"><%= config.header["button"] %></a>
+                <% if (config["config-type"] === "landing") { %>
+                    <a href="/open-games" class="footer__btn btn" style="margin-top: 10px;"><%= config.header["button2"] %></a>
+                <% } %>
             </div>
         </div>
 
@@ -68,9 +79,17 @@
         <div class="row">
             <div class="col-sm-12">
                 <nav class="mainNav">
-                    <div class="mobileMenu"><span></span> <span></span> <span></span></div>
+                    <div class="mobile-header">
+                        <div class="mobile-logo">
+                            <a href="/"><img src="img/logo2.png" alt=""></a>
+                        </div>
+                        <div class="mobileMenu"><span></span> <span></span> <span></span></div>
+                    </div>
                     <ul>
-                        <li class="<%= currentPath === '/' ? 'active' : '' %>"><a href="/">Главная</a>
+                        <li class="desktop-profile <%= currentPath === '/profile' ? 'active' : '' %>">
+                            <a href="/profile"><i class="fa fa-user"></i> Профиль</a>
+                        </li>
+                        <li class="<%= currentPath === '/' ? 'active' : '' %>"><a href="/">Главная</a></li>
                         <li class="<%= currentPath === '/rules' ? 'active' : '' %>"><a href="/">Правила</a></li>
                         <li class="<%= currentPath === '/about' ? 'active' : '' %>"><a href="/">О нас</a></li>
                         <li class="<%= currentPath === '/open-games' ? 'active' : '' %>" id='link'>
