@@ -1,41 +1,60 @@
-<%- include('partials/head') %>
-<%- include('partials/profile-header') %>
+<%- contentFor('customCSS') %>
+<link rel="stylesheet" href="css/profile.css">
+
+<%- include('../partials/profile-header') %>
 
 <div class="profile-container">
     <div class="container">
-        <div class="profile-content">
-            <div class="profile-info">
-                <h2>Личные данные</h2>
-                <div class="profile-fields">
-                    <div class="field-group">
-                        <label>Имя</label>
-                        <div class="field-content" data-field="firstName">
-                            <span class="field-value">Загрузка...</span>
-                            <button class="btn-edit" onclick="enableEdit(this)" style="display: none;">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                            <div class="edit-controls" style="display: none;">
-                                <input type="text" value="">
-                                <button class="btn-save" onclick="saveField(this, 'firstName')">Сохранить</button>
-                                <button class="btn-cancel" onclick="cancelEdit(this)">Отмена</button>
+        <% if (!isAuthenticated) { %>
+            <div class="row">
+                <div class="col-12 vh-90 flex flex-col flex-center">
+                    <h2>Требуется авторизация</h2>
+                    <p><%= message || 'Для просмотра профиля необходимо войти в аккаунт' %></p>
+                    <div class="auth-buttons">
+                        <a href="/login" class="btn btn-primary">Войти</a>
+                        <a href="/register" class="btn btn-secondary">Зарегистрироваться</a>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="profile-content">
+                <div class="profile-info">
+                    <h2>Личные данные</h2>
+                    <div class="profile-fields">
+                        <div class="field-group">
+                            <label>Имя</label>
+                            <div class="field-content" data-field="firstName">
+                                <span class="field-value"><%= userData.firstName || 'Не указано' %></span>
+                                <button class="btn-edit" onclick="enableEdit(this)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <div class="edit-controls" style="display: none;">
+                                    <input type="text" value="<%= userData.firstName || '' %>">
+                                    <button class="btn-save" onclick="saveField(this, 'firstName')">Сохранить</button>
+                                    <button class="btn-cancel" onclick="cancelEdit(this)">Отмена</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Аналогично для остальных полей -->
-                    <!-- ... -->
+                        <!-- Аналогично для остальных полей -->
+                        <!-- ... -->
+                    </div>
                 </div>
-            </div>
-            
-            <div class="games-stats">
-                <h2>Статистика игр</h2>
-                <div class="stats-card">
-                    <div class="stat-item">
-                        <span class="stat-value" id="gamesPlayed">...</span>
-                        <span class="stat-label">Игр сыграно</span>
+                
+                <div class="games-stats">
+                    <h2>Статистика игр</h2>
+                    <div class="stats-card">
+                        <div class="stat-item">
+                            <span class="stat-value"><%= userData.gamesPlayed %></span>
+                            <span class="stat-label">Игр сыграно</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value"><%= userData.memberSince %></span>
+                            <span class="stat-label">Дата регистрации</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <% } %>
     </div>
 </div>

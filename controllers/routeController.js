@@ -4,6 +4,7 @@ const fs = require("fs");
 const openGamesConfig = require("../configs/open-games.json");
 const router = express.Router();
 const {getEventConfig} = require("../functions");
+const auth = require("../middleware/auth");
 
 
 router.get('/', (req, res) => {
@@ -30,8 +31,84 @@ router.get('/event', async (req, res) => {
     }
 });
 
-router.get('/profile', (req, res) => {
-    res.render('pages/profile', { layout: 'layouts/main', currentPath: req.path, title: 'Ваш профиль'});
+router.get('/profile', auth, async (req, res) => {
+    try {
+        if (!req.isAuthenticated) {
+            return res.render('pages/profile', { 
+                layout: 'layouts/main',
+                isAuthenticated: false,
+                userData: null,
+                message: 'Пожалуйста, войдите в аккаунт или зарегистрируйтесь',
+                currentPath: req.path
+            });
+        }
+
+        const userId = req.user.userId;
+        const userQuery = `
+            SELECT 
+                id,
+                first_name as "firstName",
+                last_name as "lastName",
+                callsign,
+                age,
+                email,
+                phone,
+                created_at as "createdAt"
+            FROM users 
+            WHERE id = $1
+        `;
+        
+        const userResult = await pool.query(userQuery, [userId]);
+        
+        if (userResult.rows.length === 0) {
+            return res.render('pages/profile', { 
+                isAuthenticated: false,
+                userData: null,
+                error: 'Пользователь не найден',
+                currentPath: req.path
+            });
+        }
+
+        const gamesQuery = `
+            SELECT COUNT(*) as games_count
+            FROM user_games 
+            WHERE user_id = $1
+        `;
+        
+        const gamesResult = await pool.query(gamesQuery, [userId]);
+        
+        const userData = {
+            ...userResult.rows[0],
+            gamesPlayed: parseInt(gamesResult.rows[0].games_count) || 0,
+            memberSince: new Date(userResult.rows[0].createdAt).toLocaleDateString('ru-RU'),
+            isProfileComplete: Boolean(
+                userResult.rows[0].firstName || 
+                userResult.rows[0].lastName || 
+                userResult.rows[0].callsign || 
+                userResult.rows[0].age
+            )
+        };
+
+        res.render('pages/profile', {
+            isAuthenticated: true,
+            userData,
+            isOwner: true,
+            currentPath: req.path
+        });
+
+    } catch (error) {
+        console.error('Error processing profile request:', error);
+        res.render('pages/profile', {
+            isAuthenticated: false,
+            userData: null,
+            error: 'Произошла ошибка при загрузке профиля',
+            currentPath: req.path
+        });
+    }
+});
+
+router.get('/login', (req, res) => {
+    res.render('pages/login', { layout: 'layouts/main', currentPath: req.path });
 });
 
 router.get('/update-event', async (req, res) => {

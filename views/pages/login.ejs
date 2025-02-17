@@ -1,0 +1,95 @@
+<%- contentFor('customCSS') %>
+<link rel="stylesheet" href="css/logForm.css">
+<%- include('../partials/profile-header') %>
+
+<section class="commonSection bg_black" style="min-height: calc(100vh - 80px);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="getaquote" style="margin-top: 50px;">
+                    <div class="quoteHeader">
+                        <h3>Вход в аккаунт</h3>
+                    </div>
+                    <div class="logForm">
+                        <form action="/login" method="post" id="loginForm">
+                            <input type="email" 
+                                   placeholder="Email" 
+                                   id="email" 
+                                   name="email" 
+                                   class="required">
+                            
+                            <input type="password" 
+                                   placeholder="Пароль" 
+                                   id="password" 
+                                   name="password" 
+                                   class="required">
+
+                            <div class="form-check" style="margin: 20px 0;">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       id="remember" 
+                                       name="remember"
+                                       style="width: auto; margin-right: 10px;">
+                                <label class="form-check-label" 
+                                       for="remember" 
+                                       style="color: white;">
+                                    Запомнить меня
+                                </label>
+                            </div>
+
+                            <input type="submit" value="Войти" id="submit">
+                            
+                            <div class="respond-text" style="color: white; text-align: center; margin-top: 15px;"></div>
+                            
+                            <div style="text-align: center; margin-top: 20px;">
+                                <a href="/register" style="color: #007bff;">Нет аккаунта? Зарегистрируйтесь</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.querySelector('#submit');
+    const statusText = document.querySelector('.respond-text');
+    
+    submitBtn.disabled = true;
+    statusText.innerHTML = 'Выполняется вход...';
+    
+    const formData = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        remember: document.getElementById('remember').checked
+    };
+    
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            statusText.innerHTML = 'Успешный вход!';
+            window.location.href = '/profile';
+        } else {
+            statusText.innerHTML = data.error || 'Ошибка при входе';
+            submitBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        statusText.innerHTML = 'Ошибка сервера. Попробуйте позже';
+        submitBtn.disabled = false;
+    }
+});
+</script>

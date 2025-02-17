@@ -1,21 +1,54 @@
-<header class="profile-header">
+<style>
+    .mainNav ul li a {
+    padding: 25px 0 25px;
+}
+</style>
+<header class="header isSticky fixedHeader" id="header1">
     <div class="container">
-        <div class="header-content">
-            <div class="logo">
-                <a href="/"><img src="img/logo2.png" alt="Logo"></a>
-            </div>
-            <nav class="profile-nav">
-                <ul>
-                    <li><a href="/profile" class="<%= currentPath === '/profile' ? 'active' : '' %>">Профиль</a></li>
-                    <li><a href="/profile/games" class="<%= currentPath === '/profile/games' ? 'active' : '' %>">Мои игры</a></li>
-                    <li><a href="/profile/settings" class="<%= currentPath === '/profile/settings' ? 'active' : '' %>">Настройки</a></li>
-                </ul>
-            </nav>
-            <div class="auth-buttons">
-                <button class="btn btn-logout" onclick="logout()">Выйти</button>
-                <a href="/login" class="btn btn-login">Войти</a>
-                <a href="/register" class="btn btn-register">Регистрация</a>
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="mainNav">
+                    <div class="mobile-header">
+                        <div class="mobileMenu"><span></span> <span></span> <span></span></div>
+                    </div>
+                    <ul>
+                        <li><a href="/"><img src="img/logo2.png" alt="" style="width: 75px; height: 50px;"></a></li>
+                        <li class="desktop-profile <%= currentPath === '/profile' ? 'active' : '' %>">
+                            <a href="/profile"><i class="fa fa-user"></i> Профиль</a>
+                        </li>
+                        <li class="<%= currentPath === '/' ? 'active' : '' %>"><a href="/">Главная</a></li>
+                        <li class="<%= currentPath === '/rules' ? 'active' : '' %>"><a href="/">Правила</a></li>
+                        <li class="<%= currentPath === '/about' ? 'active' : '' %>"><a href="/">О нас</a></li>
+                        <li class="<%= currentPath === '/open-games' ? 'active' : '' %>" id='link'>
+                            <a class='link-to-game' href="open-games">Open Games</a>
+                        </li>
+                        <li class="<%= currentPath === '/event' ? 'active' : '' %>" id='link'>
+                            <a class='link-to-game' href="event">Death Zone</a>
+                            <label class='new-label' for="link">New</label>
+                        </li>
+
+<!--                        <li class="has-menu-items"><a href="/booking">Аренда</a></li>-->
+<!--                        <li class="has-menu-items"><a href="/gallery">Галерея</a>-->
+<!--                            <ul class="sub-menu">-->
+<!--                                <li><a href="#">Regular</a>-->
+<!--                                    <ul class="sub-menu">-->
+<!--                                        <li><a href="gallery-regular-2col.html">Column Two</a></li>-->
+<!--                                        <li><a href="gallery-regular-3col.html">Column Three</a></li>-->
+<!--                                    </ul>-->
+<!--                                </li>-->
+<!--                                <li><a href="#">Fullwidth</a>-->
+<!--                                    <ul class="sub-menu">-->
+<!--                                        <li><a href="gallery-fullwidth-2col.html">Column Two</a></li>-->
+<!--                                        <li><a href="gallery-fullwidth-3col.html">Column Three</a></li>-->
+<!--                                        <li><a href="gallery-fullwidth-4col.html">Column Four</a></li>-->
+<!--                                    </ul>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+                        <!--<li class="has-menu-items"><a href="#">Ремонт</a></li>-->
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
-</header> 
+</header>

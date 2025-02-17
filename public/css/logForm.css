@@ -1,0 +1,108 @@
+.getaquote {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.quoteHeader {
+    background-color: #007bff;
+}
+
+.quoteHeader h3 {
+    color: white;
+    text-align: center;
+    font-size: 24px;
+}
+
+.logForm {
+    margin-top: 40px;
+}
+.logForm input[type="email"],
+.logForm input[type="password"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.logForm input[type="email"]:focus,
+.logForm input[type="password"]:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #0056b3;
+    outline: none;
+}
+
+.logForm input[type="submit"] {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.logForm input[type="submit"]:hover {
+    background: #0056b3;
+}
+
+.logForm input[type="submit"]:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.logForm a {
+    color: #007bff;
+}
+
+.logForm a:hover {
+    color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .getaquote {
+        margin: 20px;
+        padding: 20px;
+        backdrop-filter: none;
+    }
+
+    .quoteHeader h3 {
+        font-size: 20px;
+    }
+
+    .logForm input[type="email"],
+    .logForm input[type="password"] {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .logForm input[type="submit"] {
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .form-check-label {
+        font-size: 14px;
+    }
+
+    .logForm a {
+        font-size: 14px;
+    }
+}
