@@ -3775,6 +3775,25 @@ ol.commentList li ul.childCom li {
   height: 48px;
 }
 
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+
+
 @-webkit-keyframes ball-clip-rotate-pulse-rotate {
   0% {
     -webkit-transform: translate(-50%, -50%) rotate(0deg);

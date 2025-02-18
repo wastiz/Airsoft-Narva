@@ -5,6 +5,7 @@ const openGamesConfig = require("../configs/open-games.json");
 const router = express.Router();
 const {getEventConfig} = require("../functions");
 const auth = require("../middleware/auth");
+const { pool } = require('../db');
 
 
 router.get('/', (req, res) => {
@@ -68,18 +69,10 @@ router.get('/profile', auth, async (req, res) => {
                 currentPath: req.path
             });
         }
-
-        const gamesQuery = `
-            SELECT COUNT(*) as games_count
-            FROM user_games 
-            WHERE user_id = $1
-        `;
-        
-        const gamesResult = await pool.query(gamesQuery, [userId]);
+    
         
         const userData = {
             ...userResult.rows[0],
-            gamesPlayed: parseInt(gamesResult.rows[0].games_count) || 0,
             memberSince: new Date(userResult.rows[0].createdAt).toLocaleDateString('ru-RU'),
             isProfileComplete: Boolean(
                 userResult.rows[0].firstName || 
@@ -90,6 +83,7 @@ router.get('/profile', auth, async (req, res) => {
         };
 
         res.render('pages/profile', {
+            layout: 'layouts/main',
             isAuthenticated: true,
             userData,
             isOwner: true,
@@ -109,6 +103,10 @@ router.get('/profile', auth, async (req, res) => {
 
 router.get('/login', (req, res) => {
     res.render('pages/login', { layout: 'layouts/main', currentPath: req.path });
+});
+
+router.get('/register', (req, res) => {
+    res.render('pages/register', { layout: 'layouts/main', currentPath: req.path });
 });
 
 router.get('/update-event', async (req, res) => {

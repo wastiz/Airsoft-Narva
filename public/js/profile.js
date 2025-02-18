@@ -1,6 +1,8 @@
 async function loadUserData() {
     try {
-        const response = await fetch('/api/profile/data');
+        const response = await fetch('/api/profile/data', {
+            credentials: 'include'
+        });
         if (!response.ok) {
             throw new Error('Failed to load user data');
         }
@@ -81,6 +83,7 @@ async function saveField(button, fieldName) {
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
                 field: fieldName,
                 value: input.value

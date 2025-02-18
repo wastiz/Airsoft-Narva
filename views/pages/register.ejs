@@ -4,14 +4,26 @@
 
 <section class="commonSection bg_black" style="min-height: calc(100vh - 80px);">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row flex flex-center">
             <div class="col-md-6">
                 <div class="getaquote" style="margin-top: 50px;">
                     <div class="quoteHeader">
                         <h3>Регистрация аккаунта</h3>
                     </div>
                     <div class="logForm">
-                        <form action="/login" method="post" id="loginForm">
+                        <form action="/register" method="post" id="registerForm">
+                            <input type="text" 
+                                   placeholder="Имя" 
+                                   id="firstName" 
+                                   name="firstName" 
+                                   class="required">
+                            
+                            <input type="text" 
+                                   placeholder="Фамилия" 
+                                   id="lastName" 
+                                   name="lastName" 
+                                   class="required">
+
                             <input type="email" 
                                    placeholder="Email" 
                                    id="email" 
@@ -23,26 +35,19 @@
                                    id="password" 
                                    name="password" 
                                    class="required">
+                            
+                            <input type="password" 
+                                   placeholder="Повторите пароль" 
+                                   id="confirmPassword" 
+                                   name="confirmPassword" 
+                                   class="required">
 
-                            <div class="form-check" style="margin: 20px 0;">
-                                <input type="checkbox" 
-                                       class="form-check-input" 
-                                       id="remember" 
-                                       name="remember"
-                                       style="width: auto; margin-right: 10px;">
-                                <label class="form-check-label" 
-                                       for="remember" 
-                                       style="color: white;">
-                                    Запомнить меня
-                                </label>
-                            </div>
-
-                            <input type="submit" value="Войти" id="submit">
+                            <input type="submit" value="Зарегистрироваться" id="submit">
                             
                             <div class="respond-text" style="color: white; text-align: center; margin-top: 15px;"></div>
                             
                             <div style="text-align: center; margin-top: 20px;">
-                                <a href="/register" style="color: #007bff;">Нет аккаунта? Зарегистрируйтесь</a>
+                                <a href="/login" style="color: #007bff;">Уже есть аккаунт? Войти</a>
                             </div>
                         </form>
                     </div>
@@ -53,23 +58,46 @@
 </section>
 
 <script>
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const submitBtn = document.querySelector('#submit');
     const statusText = document.querySelector('.respond-text');
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    
+    // Проверка заполнения обязательных полей
+    if (!firstName || !lastName) {
+        statusText.innerHTML = 'Имя и фамилия обязательны для заполнения';
+        return;
+    }
+    
+    // Проверка совпадения паролей
+    if (password !== confirmPassword) {
+        statusText.innerHTML = 'Пароли не совпадают';
+        return;
+    }
+    
+    // Проверка длины пароля
+    if (password.length < 6) {
+        statusText.innerHTML = 'Пароль должен содержать минимум 6 символов';
+        return;
+    }
     
     submitBtn.disabled = true;
-    statusText.innerHTML = 'Выполняется вход...';
+    statusText.innerHTML = 'Выполняется регистрация...';
     
     const formData = {
+        firstName,
+        lastName,
         email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
-        remember: document.getElementById('remember').checked
+        password: password
     };
     
     try {
-        const response = await fetch('/login', {
+        const response = await fetch('/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,10 +108,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
         
         if (response.ok) {
-            statusText.innerHTML = 'Успешный вход!';
+            statusText.innerHTML = 'Регистрация успешна! Перенаправление...';
             window.location.href = '/profile';
         } else {
-            statusText.innerHTML = data.error || 'Ошибка при входе';
+            statusText.innerHTML = data.error || 'Ошибка при регистрации';
             submitBtn.disabled = false;
         }
     } catch (error) {
