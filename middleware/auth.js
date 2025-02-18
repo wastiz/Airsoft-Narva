@@ -30,6 +30,8 @@ const auth = async (req, res, next) => {
         };
         req.isAuthenticated = true;
         next();
+
+        console.log('Auth middleware - decoded token:', decoded);
     } catch (error) {
         console.error('Auth middleware error:', error);
         req.isAuthenticated = false;

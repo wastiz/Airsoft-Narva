@@ -28,17 +28,33 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
         <link rel="icon" type="image/png" href="img/favicon.png">
-        <link rel="stylesheet" href="css/event.css">
-        <link rel="stylesheet" href="css/update-event.css">
     
         <%- defineContent('customCSS') %>
     </head>
 </head>
 <body>
     <div class="box">
+
         <%- body %>
+
         <%- include('../partials/footer.ejs') %>
-        <%- include('../partials/scripts.ejs') %>
+
+        <script type="text/javascript" src="js/jquery/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/bootstrap/bootstrap.js"></script>
+        <script type="text/javascript" src="js/bootstrap/bootstrap2.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.themepunch.revolution.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.themepunch.tools.min.js"></script>
+        <script type="text/javascript" src="js/other/owl.carousel.js"></script>
+        <script type="text/javascript" src="../../maps/api/js?key=AIzaSyBHok7k4VSqgRzjM3g9q12LVoSVKvO4gAo"></script>
+        <script type="text/javascript" src="js/other/gmaps.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.appear.js"></script>
+        <script type="text/javascript" src="js/other/select2.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.magnific-popup.js"></script>
+        <script type="text/javascript" src="js/other/theme.js"></script>
+
+        <%- defineContent('customJS') %>
+        
     </div>
 </body>
 </html>

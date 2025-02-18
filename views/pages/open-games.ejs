@@ -1,3 +1,6 @@
+<%- contentFor('customCSS') %>
+<link rel="stylesheet" href="/css/open-games.css">
+
 <%- include('../partials/header.ejs') %>
 <section class="commonSection wearebest">
     <div class="container">
@@ -35,24 +38,51 @@
                     <h3 class="g-form__title g-form__title_main">Регистрация</h3>
                 </div>
                 <div class='quoteFooter getaquote'>
+                    <button class="user-register-btn g-form__button">
+                        <i class="fa fa-user-plus"></i> Зарегистрироваться как пользователь
+                    </button>
                     <form class="g-form" id="g-form-1" autocomplete="off">
+                        <p>Или зарегистрируйтесь как гость ниже:</p>
                         <div class="g-form__inputs">
                             <input type='text' id="name" name="name" placeholder="Имя / Фамилия" required>
                             <input type='text' id="tel" name="phone" placeholder="Номер телефона" required>
                             <input id="email" name="email" type="email" placeholder="Эмайл" required/>
                             <input id="age" name="age" type="number" placeholder="Введите ваш возраст" required/>
                             <br>
-                            <fieldset name="team" class='form-fieldset'>
-                                <label class="text-white">Оплата:</label><br>
-
-                                <input type="radio" class="form-check-input" id="bank-transfer" name="payment" value="bank-transfer" required>
-                                <label class="form-check-label" for="bank-transfer">Перевод</label> <br>
-
-                                <input type="radio" class="form-check-input" id="cash" name="payment" value="cash" required>
-                                <label class="form-check-label" for="cash">Наличные</label> <br>
+                            <fieldset name="team" class='form-fieldset payment-fieldset'>
+                                <label class="text-white">Оплата:</label>
+                                <div class="payment-options">
+                                    <div class="payment-option">
+                                        <input type="radio" class="form-check-input" id="bank-transfer" name="payment" value="bank-transfer" required>
+                                        <label class="form-check-label" for="bank-transfer">Перевод</label>
+                                    </div>
+                                    <div class="payment-option">
+                                        <input type="radio" class="form-check-input" id="cash" name="payment" value="cash" required>
+                                        <label class="form-check-label" for="cash">Наличные</label>
+                                    </div>
+                                </div>
+                                <div class="transfer-details" style="display: none;">
+                                    <div class="bank-info">
+                                        <div class="copy-field">
+                                            <span>Инициалы для перевода:</span>
+                                        </div>
+                                        <div class="copy-field">
+                                            <span>EE291010220279349223</span>
+                                            <button type="button" class="copy-btn" onclick="copyToClipboard(this)">
+                                                <i class="fa fa-copy"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div class="copy-field">
+                                            <span>V&V TRADE OÜ</span>
+                                            <button type="button" class="copy-btn" onclick="copyToClipboard(this)">
+                                                <i class="fa fa-copy"></i> Copy
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </fieldset>
                             <label class="text-white" for="honeypot">Вам придет письмо на эмайл о регистрации</label>
-                            <input style=" visibility: hidden; height: 1px; " id="honeypot" type="text" name="honeypot" value="">
+                            <input style="visibility: hidden; height: 1px;" id="honeypot" type="text" name="honeypot" value="">
                             <br>
                             <input class="g-form__button" type="submit" id="q_submit" value="Send">
                             <br/>
@@ -65,4 +95,6 @@
         </div>
     </div>
 </section>
+
+<%- contentFor('customJS') %>
 <script src="js/open-games.js"></script>

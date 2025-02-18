@@ -1,0 +1,94 @@
+.payment-fieldset {
+    text-align: left;
+}
+
+.payment-options {
+    margin: 10px 0;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.payment-option label {
+    margin: 0;
+}
+
+.transfer-details {
+    margin-top: 10px;
+}
+
+.copy-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+    color: gray;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.copy-btn:hover {
+    color: #0056b3;
+}
+
+.copy-btn.copied {
+    color: #28a745;
+}
+
+.user-register-btn {
+    display: block;
+    width: 100%;
+    background: #007bff;
+    color: white;
+    padding: 20px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-register-btn:hover {
+    background: #0056b3;
+    color: white;
+}
+
+.user-register-btn i {
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .user-register-btn {
+        font-size: 13px;
+        height: 50px;
+    }
+}
+
+.g-form p {
+    text-align: left;
+    color: white;
+    margin: 15px 0;
+    font-size: 16px;
+}
+

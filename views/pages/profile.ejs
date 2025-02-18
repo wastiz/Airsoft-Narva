@@ -3,7 +3,7 @@
 
 <%- include('../partials/profile-header') %>
 
-<div class="profile-container">
+<section class="commonSection bg_black" style="min-height: calc(100vh - 80px);">
     <div class="container">
         <% if (!isAuthenticated) { %>
             <div class="row">
@@ -17,8 +17,8 @@
                 </div>
             </div>
         <% } else { %>
-            <div class="profile-content">
-                <div class="profile-info">
+            <div class="profile-content flex flex-row justify-content-between">
+                <div class="profile-info flex flex-col">
                     <h2>Личные данные</h2>
                     <div class="profile-fields">
                         <div class="field-group">
@@ -30,14 +30,91 @@
                                 </button>
                                 <div class="edit-controls" style="display: none;">
                                     <input type="text" value="<%= userData.firstName || '' %>">
-                                    <button class="btn-save" onclick="saveField(this, 'firstName')">Сохранить</button>
-                                    <button class="btn-cancel" onclick="cancelEdit(this)">Отмена</button>
+                                    <button class="btn-save" onclick="saveField(this, 'first_name')">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn-cancel" onclick="cancelEdit(this)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Аналогично для остальных полей -->
-                        <!-- ... -->
+                        <div class="field-group">
+                            <label>Фамилия</label>
+                            <div class="field-content" data-field="lastName">
+                                <span class="field-value"><%= userData.lastName || 'Не указано' %></span>
+                                <button class="btn-edit" onclick="enableEdit(this)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <div class="edit-controls" style="display: none;">
+                                    <input type="text" value="<%= userData.lastName || '' %>">
+                                    <button class="btn-save" onclick="saveField(this, 'last_name')">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn-cancel" onclick="cancelEdit(this)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label>Позывной</label>
+                            <div class="field-content" data-field="callsign">
+                                <span class="field-value"><%= userData.callsign || 'Не указано' %></span>
+                                <button class="btn-edit" onclick="enableEdit(this)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <div class="edit-controls" style="display: none;">
+                                    <input type="text" value="<%= userData.callsign || '' %>">
+                                    <button class="btn-save" onclick="saveField(this, 'callsign')">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn-cancel" onclick="cancelEdit(this)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label>Email</label>
+                            <div class="field-content" data-field="email">
+                                <span class="field-value"><%= userData.email %></span>
+                                <button class="btn-edit" onclick="enableEdit(this)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <div class="edit-controls" style="display: none;">
+                                    <input type="email" value="<%= userData.email %>">
+                                    <button class="btn-save" onclick="saveField(this, 'email')">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn-cancel" onclick="cancelEdit(this)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label>Телефон</label>
+                            <div class="field-content" data-field="phone">
+                                <span class="field-value"><%= userData.phone || 'Не указано' %></span>
+                                <button class="btn-edit" onclick="enableEdit(this)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <div class="edit-controls" style="display: none;">
+                                    <input type="text" value="<%= userData.phone || '' %>">
+                                    <button class="btn-save" onclick="saveField(this, 'phone')">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn-cancel" onclick="cancelEdit(this)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -57,4 +134,7 @@
             </div>
         <% } %>
     </div>
-</div>
+</section>
+
+<%- contentFor('customJS') %>
+<script src="js/profile.js"></script>

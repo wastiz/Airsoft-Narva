@@ -4118,6 +4118,9 @@ button,
   align-items: center;
   justify-content: center;
 }
+.justify-content-between {
+  justify-content: space-between;
+}
 .link-to-game {
   position: relative;
 }

@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const {pool} = require("../db");
 
 
 router.post('/update', auth, async (req, res) => {
     try {
         const { field, value } = req.body;
         
-        const allowedFields = ['firstName', 'lastName', 'callsign', 'age', 'email', 'phone'];
+        const allowedFields = ['first_name', 'last_name', 'callsign', 'age', 'email', 'phone'];
         if (!allowedFields.includes(field)) {
             return res.status(400).json({ error: 'Недопустимое поле для обновления' });
         }

@@ -4,6 +4,7 @@ const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const cron = require('node-cron');
 const port = process.env.SERVER_PORT;
 const host = process.env.HOST || 3000;
 const routeController = require('./controllers/routeController');
@@ -53,6 +54,17 @@ app.use('/admin', adminController);
 
 //Маршрут для обработки с регистрации и авторизации странички
 app.use('/auth', authController);
+
+
+// Запускаем задачу каждый понедельник в 00:01
+cron.schedule('1 0 * * 1', async () => {
+    console.log('Running scheduled task to create next open game...');
+    try {
+        await createNextOpenGame();
+    } catch (error) {
+        console.error('Failed to create next open game:', error);
+    }
+});
 
 app.listen(port, host, () => {
     console.log(`Server running at http://localhost:${port}`);
