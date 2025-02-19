@@ -3,6 +3,8 @@ const router = express.Router();
 const path = require("path");
 const fs = require("fs");
 const {transformData} = require("../functions");
+const {pool} = require('../db');
+const {checkAdmin} = require("../middleware/auth");
 
 router.post('/submit-update-event', async (req, res) => {
     try {
@@ -57,6 +59,94 @@ router.post('/submit-update-event', async (req, res) => {
     } catch (error) {
         console.error("Ошибка:", error);
         res.status(500).json({ message: 'Произошла ошибка на сервере.', error: error.message });
+    }
+});
+
+
+router.post('/delete-current-game', checkAdmin, async (req, res) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Проверяем, есть ли регистрации на игру
+        const registrationsResult = await client.query(`
+            SELECT COUNT(*) as count
+            FROM open_games og
+            JOIN open_games_registrations ogr ON og.id = ogr.game_id
+            WHERE og.current = true
+        `);
+
+        if (registrationsResult.rows[0].count > 0) {
+            // Если есть регистрации, отправляем уведомления
+            const registeredUsers = await client.query(`
+                SELECT email
+                FROM open_games og
+                JOIN open_games_registrations ogr ON og.id = ogr.game_id
+                WHERE og.current = true
+            `);
+
+            // Здесь можно добавить отправку уведомлений зарегистрированным пользователям
+            // await sendCancellationEmails(registeredUsers.rows);
+        }
+
+        // Удаляем текущую игру
+        await client.query('DELETE FROM open_games WHERE current = true');
+
+        await client.query('COMMIT');
+        res.status(200).send('Игра успешно отменена');
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error deleting game:', error);
+        res.status(500).send('Ошибка при отмене игры');
+    } finally {
+        client.release();
+    }
+});
+
+// Получение деталей игрока
+router.get('/player-details/:playerId', checkAdmin, async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT first_name, last_name, callsign, email, phone, age FROM users WHERE id = $1',
+            [req.params.playerId]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Игрок не найден' });
+        }
+        
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+});
+
+// Переключение статуса оплаты
+router.post('/toggle-payment-status/:playerId', checkAdmin, async (req, res) => {
+    try {
+        await pool.query(
+            'UPDATE open_games_registrations SET payment_status = CASE WHEN payment_status = \'paid\' THEN \'pending\' ELSE \'paid\' END WHERE id = $1',
+            [req.params.playerId]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Переключение статуса прибытия
+router.post('/toggle-arrival-status/:playerId', checkAdmin, async (req, res) => {
+    try {
+        await pool.query(
+            'UPDATE open_games_registrations SET arrived = NOT arrived WHERE id = $1',
+            [req.params.playerId]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server Error');
     }
 });
 

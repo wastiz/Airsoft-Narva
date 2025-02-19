@@ -130,4 +130,28 @@ router.post('/logout', (req, res) => {
     });
 });
 
+
+// Обработка логина
+router.post('/admin-login', (req, res) => {
+    const { login, password } = req.body;
+    
+    if (login === process.env.ADMIN_LOGIN && password === process.env.ADMIN_PASSWORD) {
+        res.cookie('adminToken', 'true', { 
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 24 * 60 * 60 * 1000 // 24 часа
+        });
+        res.status(200).send('OK');
+    } else {
+        res.status(401).send('Неверный логин или пароль');
+    }
+});
+
+// Выход из админки
+router.post('/admin-logout', (req, res) => {
+    res.clearCookie('adminToken');
+    res.redirect('/admin/login');
+});
+
+
 module.exports = router; 

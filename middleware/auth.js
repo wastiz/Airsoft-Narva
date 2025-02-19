@@ -40,4 +40,11 @@ const auth = async (req, res, next) => {
     }
 };
 
-module.exports = auth; 
+const checkAdmin = (req, res, next) => {
+    if (!req.cookies.adminToken) {
+        return res.redirect('/admin/login');
+    }
+    next();
+};
+
+module.exports = { auth, checkAdmin }; 

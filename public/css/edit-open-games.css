@@ -1,0 +1,36 @@
+.info-message {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+.current-game-info {
+    margin-top: 30px;
+}
+
+.delete-game-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.delete-game-btn:hover {
+    background-color: #c82333;
+}
+
+.dashboard-card {
+    max-width: 600px;
+    margin: 0 auto;
+} 
+
+.admin-container {
+    padding: 20px;
+}

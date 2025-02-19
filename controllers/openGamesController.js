@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {sendMail} = require("../mail-service");
 const {pool} = require('../db');
-const auth = require("../middleware/auth");
+const {auth} = require("../middleware/auth");
 
 
 router.post('/submit-book-form', async (req, res) => {

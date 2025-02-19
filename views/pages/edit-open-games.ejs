@@ -1,0 +1,40 @@
+<%- contentFor('customCSS') %>
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/edit-open-games.css">
+
+<%- include('../partials/admin-header') %>
+
+<div class="admin-container">
+    <div class="admin-welcome">
+        <h4>Управление открытой игрой</h4>
+    </div>
+
+    <div class="info-message">
+        <p>Сейчас работает скрипт, который каждый понедельник создает новую открытую игру и дает зарегистрироваться пользователям. 
+        Если открытой игры на этой неделе не будет, то надо бы ее отменить.</p>
+    </div>
+    
+    <div class="current-game-info">
+        <div class="dashboard-card">
+            <h3>Текущая открытая игра</h3>
+            <div class="dashboard-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Зарегистрировано:</span>
+                    <span class="stat-value" id="openGameRegistrations">
+                        <%= openGameStats.registrationsCount %>
+                    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Дата игры:</span>
+                    <span class="stat-value" id="openGameDate">
+                        <%= openGameStats.date %>
+                    </span>
+                </div>
+            </div>
+            <button class="delete-game-btn" id="deleteGameBtn">Отменить игру</button>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('customJS') %>
+<script src="/js/edit-open-games.js"></script>

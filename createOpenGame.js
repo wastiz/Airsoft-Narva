@@ -6,13 +6,12 @@ async function createNextOpenGame() {
     try {
         await client.query('BEGIN');
 
-        // Получаем следующую пятницу
         const today = new Date();
-        const nextFriday = new Date();
-        nextFriday.setDate(today.getDate() + ((7 - today.getDay() + 5) % 7 || 7));
+        const nextSaturday = new Date();
+        nextSaturday.setDate(today.getDate() + ((7 - today.getDay() + 6) % 7 || 7));
         
         // Форматируем дату для PostgreSQL
-        const formattedDate = nextFriday.toISOString().split('T')[0];
+        const formattedDate = nextSaturday.toISOString().split('T')[0];
 
         // Проверяем, существует ли уже игра на эту дату
         const existingGame = await client.query(
@@ -49,7 +48,7 @@ async function createNextOpenGame() {
             '18:45',
             '19:00',
             '22:00',
-            `Открытая игра ${nextFriday.toLocaleDateString('ru-RU')} на территории NarvaCQB`,
+            `Открытая игра ${nextSaturday.toLocaleDateString('ru-RU')} на территории NarvaCQB`,
             true
         ];
 

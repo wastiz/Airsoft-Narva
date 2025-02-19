@@ -1,0 +1,33 @@
+<style>
+    .mainNav ul li a {
+    padding: 25px 0 25px;
+}
+</style>
+<header class="header isSticky fixedHeader" id="header1">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="mainNav">
+                    <div class="mobile-header">
+                        <div class="mobileMenu"><span></span> <span></span> <span></span></div>
+                    </div>
+                    <ul>
+                        <li><a href="/"><img src="img/logo2.png" alt="" style="width: 75px; height: 50px;"></a></li>
+                        <li class="desktop-profile <%= currentPath === '/' ? 'active' : '' %>">
+                            <a href="/">На сайт</a>
+                        </li>
+                        <li class="<%= currentPath === '/admin' ? 'active' : '' %>"><a href="/admin">Overview</a></li>
+                        <li class="<%= currentPath === '/edit-open-games' ? 'active' : '' %>"><a href="/edit-open-games">Edit Open Games</a></li>
+                        <li class="<%= currentPath === '/update-event' ? 'active' : '' %>"><a href="/update-event">Edit Event</a></li>
+                        <li>
+                            <div class="admin-user">
+                                <span>Админ</span>
+                                <button class="admin-logout-btn">Выйти</button>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

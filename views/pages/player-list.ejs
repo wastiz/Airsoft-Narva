@@ -1,0 +1,72 @@
+<%- contentFor('customCSS') %>
+<link rel="stylesheet" href="/css/player-list.css">
+
+<%- include('../partials/admin-header') %>
+
+<div class="admin-container">
+    <div class="admin-welcome">
+        <h4><%= gameType === 'open-games' ? 'Список игроков открытой игры' : 'Список игроков ивента' %></h4>
+        <p>Дата: <%= gameDate %></p>
+    </div>
+
+    <div class="player-list-container">
+        <table class="player-table">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Позывной</th>
+                    <th>Статус оплаты</th>
+                    <th>Присутствие</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% players.forEach(player => { %>
+                    <tr data-player-id="<%= player.id %>">
+                        <td><%= player.first_name %></td>
+                        <td><%= player.last_name %></td>
+                        <td><%= player.callsign || '-' %></td>
+                        <td>
+                            <span class="status-badge payment-status <%= player.payment_status === 'paid' ? 'status-paid' : 'status-pending' %>">
+                                <%= player.payment_status === 'paid' ? 'Оплачено' : 'Не оплачено' %>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge arrival-status <%= player.arrived ? 'status-arrived' : 'status-not-arrived' %>">
+                                <%= player.arrived ? 'Прибыл' : 'Не прибыл' %>
+                            </span>
+                        </td>
+                        <td>
+                            <button class="action-btn view-btn" onclick="showPlayerDetails('<%- player.id %>')">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="action-btn payment-btn <%= player.payment_status === 'paid' ? 'active' : '' %>" 
+                                    onclick="togglePaymentStatus('<%- player.id %>')">
+                                <i class="fa fa-money" style="color: white;"></i>
+                            </button>
+                            <button class="action-btn arrival-btn <%= player.arrived ? 'active' : '' %>" 
+                                    onclick="toggleArrivalStatus('<%- player.id %>')">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Модальное окно с деталями игрока -->
+<div id="playerModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Информация об игроке</h2>
+        <div id="playerDetails">
+            <!-- Данные будут загружены динамически -->
+        </div>
+    </div>
+</div>
+
+<%- contentFor('customJS') %>
+<script src="/js/player-list.js"></script>

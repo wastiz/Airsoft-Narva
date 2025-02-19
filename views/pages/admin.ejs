@@ -1,0 +1,50 @@
+<%- contentFor('customCSS') %>
+<link rel="stylesheet" href="/css/admin.css">
+
+<%- include('../partials/admin-header') %>
+
+<div class="admin-container">
+    <div class="admin-welcome">
+        <h4>Панель администратора</h4>
+        <p>Добро пожаловать в панель управления NarvaCQB</p>
+    </div>
+    
+    <div class="admin-dashboard">
+        <div class="dashboard-card">
+            <h3>Открытая игра</h3>
+            <div class="dashboard-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Зарегистрировано:</span>
+                    <span class="stat-value" id="openGameRegistrations">
+                        <%= openGameStats.registrationsCount %>
+                    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Дата игры:</span>
+                    <span class="stat-value" id="openGameDate">
+                        <%= openGameStats.date %>
+                    </span>
+                </div>
+            </div>
+            <a href="/player-list/open-games/<%= openGameStats.id %>" class="dashboard-btn">Управление регистрациями</a>
+        </div>
+        
+        <div class="dashboard-card">
+            <h3>Ивент</h3>
+            <div class="dashboard-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Зарегистрировано:</span>
+                    <span class="stat-value" id="eventRegistrations">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Дата ивента:</span>
+                    <span class="stat-value" id="eventDate">-</span>
+                </div>
+            </div>
+            <a href="/admin/event" class="dashboard-btn">Управление ивентом</a>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('customJS') %>
+<script src="/js/admin.js"></script>

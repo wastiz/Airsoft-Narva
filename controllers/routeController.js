@@ -4,7 +4,7 @@ const fs = require("fs");
 const openGamesConfig = require("../configs/open-games.json");
 const router = express.Router();
 const {getEventConfig} = require("../functions");
-const auth = require("../middleware/auth");
+const {auth, checkAdmin} = require("../middleware/auth");
 const { pool } = require('../db');
 
 
@@ -109,11 +109,160 @@ router.get('/register', (req, res) => {
     res.render('pages/register', { layout: 'layouts/main', currentPath: req.path });
 });
 
-router.get('/update-event', async (req, res) => {
+router.get('/admin-login', (req, res) => {
+    if (req.cookies.adminToken) {
+        return res.redirect('/admin');
+    }
+    res.render('pages/admin-login', { layout: 'layouts/main', currentPath: req.path });
+});
+
+router.get('/admin', checkAdmin, async (req, res) => {
+    if (!req.cookies.adminToken) {
+        return res.redirect('/admin-login');
+    }
+
+    try {
+        // Получаем данные о текущей открытой игре и количестве регистраций
+        const result = await pool.query(`
+            SELECT 
+                og.id,
+                og.game_date,
+                COUNT(ogr.id) as registrations_count
+            FROM open_games og
+            LEFT JOIN open_games_registrations ogr ON og.id = ogr.game_id
+            WHERE og.current = true
+            GROUP BY og.id, og.game_date
+        `);
+
+        let openGameStats = {
+            registrationsCount: 0,
+            date: '-'
+        };
+
+        if (result.rows.length > 0) {
+            const gameData = result.rows[0];
+            openGameStats = {
+                id: gameData.id,
+                registrationsCount: parseInt(gameData.registrations_count),
+                date: new Date(gameData.game_date).toLocaleDateString('ru-RU')
+            };
+        }
+
+        res.render('pages/admin', { 
+            layout: 'layouts/main', 
+            currentPath: req.path,
+            openGameStats,
+            eventStats: {
+                registrationsCount: 0,
+                date: '-'
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching admin stats:', error);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+router.get('/edit-open-games', checkAdmin, async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                og.id,
+                og.game_date,
+                COUNT(ogr.id) as registrations_count
+            FROM open_games og
+            LEFT JOIN open_games_registrations ogr ON og.id = ogr.game_id
+            WHERE og.current = true
+            GROUP BY og.id, og.game_date
+        `);
+
+        let openGameStats = {
+            registrationsCount: 0,
+            date: '-'
+        };
+
+        if (result.rows.length > 0) {
+            const gameData = result.rows[0];
+            openGameStats = {
+                registrationsCount: parseInt(gameData.registrations_count),
+                date: new Date(gameData.game_date).toLocaleDateString('ru-RU')
+            };
+        }
+
+        res.render('pages/edit-open-games', { 
+            layout: 'layouts/main',
+            openGameStats,
+            currentPath: req.path
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+router.get('/update-event', checkAdmin, async (req, res) => {
+    if (!req.cookies.adminToken) {
+        return res.redirect('/admin-login');
+    }
     const eventConfig = getEventConfig();
     res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
-})
+});
 
+router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
+    try {
+        const { gameType, gameId } = req.params;
+        
+        let query;
+        if (gameType === 'open-games') {
+            query = `
+                SELECT 
+                    ogr.id,
+                    u.first_name,
+                    u.last_name,
+                    u.callsign,
+                    ogr.payment_status,
+                    ogr.arrived
+                FROM open_games_registrations ogr
+                JOIN users u ON ogr.user_id = u.id
+                WHERE ogr.game_id = $1
+                ORDER BY ogr.created_at ASC
+            `;
+        } else {
+            query = `
+                SELECT 
+                    ogr.id,
+                    u.first_name,
+                    u.last_name,
+                    u.callsign,
+                    ogr.payment_status,
+                    ogr.arrived
+                FROM open_games_registrations ogr
+                JOIN users u ON ogr.user_id = u.id
+                WHERE ogr.game_id = $1
+                ORDER BY ogr.created_at ASC
+            `;
+        }
+
+        const result = await pool.query(query, [gameId]);
+        const gameResult = await pool.query(
+            'SELECT game_date FROM open_games WHERE id = $1',
+            [gameId]
+        );
+
+        res.render('pages/player-list', {
+            layout: 'layouts/main',
+            currentPath: req.path,
+            players: result.rows,
+            gameType,
+            gameDate: new Date(gameResult.rows[0].game_date).toLocaleDateString('ru-RU'),
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server Error');
+    }
+});
 
 //const landingConfig = require("../configs/landing-config.json");
 
