@@ -1,16 +1,199 @@
+#update-event {
+    padding: 20px;
+}
 #update-event form h6 {
     color: white;
     font-weight: bold;
     font-size: 18px;
 }
 .update-event-field {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .gap-5 {
     gap: 5px;
 }
 .mb-20 {
     margin-bottom: 20px;
+}
+
+.update-event-field label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.update-event-field input,
+.update-event-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 14px;
+}
+
+.update-event-field textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Заголовки секций */
+h6 {
+    color: #fff;
+    font-size: 18px;
+    margin: 30px 0 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #444;
+}
+
+/* Стили для радио кнопок */
+.d-flex.flex-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+/* Стили для файловых инпутов */
+input[type="file"] {
+    background-color: transparent;
+    border: 1px dashed #444;
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Стили для расписания */
+.schedule-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.schedule-section label {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.schedule-section input {
+    width: 100%;
+}
+
+/* Стили для правил */
+.rule-list-item {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.rule-items {
+    margin: 10px 0;
+}
+
+/* Стили для команд */
+.team-list-item {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Стили для ценовой секции */
+.pricing-section {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Кнопки */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 16px;
+    padding: 12px;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .d-flex.flex-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .schedule-section {
+        grid-template-columns: 1fr;
+    }
+
+    .team-list-item,
+    .rule-list-item {
+        padding: 10px;
+    }
+
+    input[type="file"] {
+        width: 100%;
+    }
+
+    h6 {
+        font-size: 16px;
+    }
+}
+
+/* Дополнительные улучшения */
+.text-handler {
+    color: #fff;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-check-input {
+    margin-right: 8px;
+}
+
+.form-check-label {
+    color: #fff;
+}
+
+/* Анимации */
+.update-event-field input:focus,
+.update-event-field textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+button {
+    transform: translateY(0);
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+button:active {
+    transform: translateY(2px);
 }

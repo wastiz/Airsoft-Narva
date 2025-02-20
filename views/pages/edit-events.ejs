@@ -7,7 +7,9 @@
 <div class="admin-container">
     <div class="admin-welcome">
         <h4>Управление ивентами</h4>
-        <p>Зарегаться можно только на текущий ивент. Если хотите что-то поменять на страничке ивента, то кнопка ниже.</p>
+        <div class="info-message">
+            <p>Зарегаться можно только на текущий ивент. Если хотите что-то поменять на страничке ивента, то кнопка ниже.</p>
+        </div>
         <button class="create-event-btn" onclick="openCreateModal()">
             <i class="fa fa-plus"></i> Создать новый ивент
         </button>
@@ -50,9 +52,8 @@
                 <thead>
                     <tr>
                         <th>Название</th>
-                        <th>Дата проведения</th>
-                        <th>Создан</th>
-                        <th>Обновлен</th>
+                        <th>Дата</th>
+                        <th>Регистраций</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
@@ -61,8 +62,7 @@
                         <tr>
                             <td><%= event.name %></td>
                             <td><%= new Date(event.event_date).toLocaleDateString('ru-RU') %></td>
-                            <td><%= new Date(event.created_at).toLocaleDateString('ru-RU') %></td>
-                            <td><%= new Date(event.updated_at).toLocaleDateString('ru-RU') %></td>
+                            <td><%= event.registrations_count || 0 %></td>
                             <td class="action-buttons">
                                 <a href="/player-list/event/<%= event.id %>" class="dashboard-btn">
                                     <button class="btn mb-20"><i class="fa fa-eye"></i></button>

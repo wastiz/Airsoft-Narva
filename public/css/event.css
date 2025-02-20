@@ -53,3 +53,42 @@ ol {
 .event-rules .important {
     color: red;
 }
+
+.user-register-btn {
+    display: block;
+    width: 100%;
+    background: #007bff;
+    color: white;
+    padding: 20px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-register-btn:hover {
+    background: #0056b3;
+    color: white;
+}
+
+.user-register-btn i {
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .user-register-btn {
+        font-size: 13px;
+        height: 50px;
+    }
+}

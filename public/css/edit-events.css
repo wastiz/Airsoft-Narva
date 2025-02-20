@@ -1,3 +1,13 @@
+.info-message {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+
 .create-event-btn {
     background-color: #28a745;
     color: white;

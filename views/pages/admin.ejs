@@ -36,14 +36,24 @@
             <div class="dashboard-stats">
                 <div class="stat-item">
                     <span class="stat-label">Зарегистрировано:</span>
-                    <span class="stat-value" id="eventRegistrations">0</span>
+                    <span class="stat-value" id="eventRegistrations">
+                        <%= eventStats.registrationsCount %>
+                    </span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Дата ивента:</span>
-                    <span class="stat-value" id="eventDate">-</span>
+                    <span class="stat-value" id="eventDate">
+                        <%= eventStats.date %>
+                    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Название:</span>
+                    <span class="stat-value" id="eventName">
+                        <%= eventStats.name %>
+                    </span>
                 </div>
             </div>
-            <a href="/player-list/event/<%= openGameStats.id %>" class="dashboard-btn">
+            <a href="/player-list/event/<%= eventStats.id %>" class="dashboard-btn">
                 <button class="btn mb-20">Управление регистрациями</button>
             </a>
         </div>

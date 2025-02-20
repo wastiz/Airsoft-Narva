@@ -48,3 +48,24 @@ async function saveField(button, field) {
     }
 }
 
+async function logout() {
+    try {
+        const response = await fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            // Перенаправляем на главную страницу после успешного выхода
+            window.location.href = '/';
+        } else {
+            alert('Ошибка при выходе из системы');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ошибка сервера');
+    }
+}
+

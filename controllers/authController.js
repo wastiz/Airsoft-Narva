@@ -45,8 +45,9 @@ router.post('/register', async (req, res) => {
         );
 
         res.cookie('token', token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax',
             maxAge: 3 * 24 * 60 * 60 * 1000
         });
 
@@ -103,8 +104,9 @@ router.post('/login', async (req, res) => {
         );
 
         res.cookie('token', token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax',
             maxAge
         });
 
@@ -121,15 +123,17 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Выход пользователя
 router.post('/logout', (req, res) => {
-    res.clearCookie('token');
-    res.json({
-        success: true,
-        message: 'Выход выполнен успешно'
-    });
+    try {
+        res.clearCookie('token');
+        res.clearCookie('connect.sid');
+        
+        res.status(200).json({ message: 'Успешный выход из системы' });
+    } catch (error) {
+        console.error('Logout error:', error);
+        res.status(500).json({ message: 'Ошибка сервера' });
+    }
 });
-
 
 // Обработка логина
 router.post('/admin-login', (req, res) => {
@@ -152,6 +156,5 @@ router.post('/admin-logout', (req, res) => {
     res.clearCookie('adminToken');
     res.redirect('/admin/login');
 });
-
 
 module.exports = router; 

@@ -101,8 +101,8 @@ router.get('/profile', auth, async (req, res) => {
     }
 });
 
-router.get('/login', (req, res) => {
-    res.render('pages/login', { layout: 'layouts/main', currentPath: req.path });
+router.get('/login', auth, (req, res) => {
+    res.render('pages/login', { layout: 'layouts/main', currentPath: req.path, isAuthenticated: req.isAuthenticated });
 });
 
 router.get('/register', (req, res) => {
@@ -117,49 +117,60 @@ router.get('/admin-login', (req, res) => {
 });
 
 router.get('/admin', checkAdmin, async (req, res) => {
-    if (!req.cookies.adminToken) {
-        return res.redirect('/admin-login');
-    }
-
     try {
-        // Получаем данные о текущей открытой игре и количестве регистраций
-        const result = await pool.query(`
-            SELECT 
-                og.id,
-                og.game_date,
-                COUNT(ogr.id) as registrations_count
+        // Получаем статистику открытой игры
+        const openGameResult = await pool.query(`
+            SELECT og.id, og.game_date,
+                   COUNT(ogr.id) as registrations_count
             FROM open_games og
             LEFT JOIN open_games_registrations ogr ON og.id = ogr.game_id
             WHERE og.current = true
             GROUP BY og.id, og.game_date
         `);
 
-        let openGameStats = {
-            registrationsCount: 0,
-            date: '-'
+        // Получаем статистику ивента
+        const eventResult = await pool.query(`
+            SELECT e.id, e.name, e.event_date,
+                   COUNT(er.id) as registrations_count,
+                   COUNT(CASE WHEN er.payment_status = 'paid' THEN 1 END) as paid_count
+            FROM events e
+            LEFT JOIN event_registrations er ON e.id = er.event_id
+            WHERE e.current = true
+            GROUP BY e.id, e.name, e.event_date
+        `);
+
+        const openGameStats = openGameResult.rows[0] || {
+            id: null,
+            game_date: null,
+            registrations_count: 0
         };
 
-        if (result.rows.length > 0) {
-            const gameData = result.rows[0];
-            openGameStats = {
-                id: gameData.id,
-                registrationsCount: parseInt(gameData.registrations_count),
-                date: new Date(gameData.game_date).toLocaleDateString('ru-RU')
-            };
-        }
+        const eventStats = eventResult.rows[0] || {
+            id: null,
+            name: 'Нет активного ивента',
+            event_date: null,
+            registrations_count: 0,
+            paid_count: 0
+        };
 
-        res.render('pages/admin', { 
-            layout: 'layouts/main', 
+        res.render('pages/admin', {
             currentPath: req.path,
-            openGameStats,
+            openGameStats: {
+                id: openGameStats.id,
+                date: openGameStats.game_date ? new Date(openGameStats.game_date).toLocaleDateString('ru-RU') : '-',
+                registrationsCount: parseInt(openGameStats.registrations_count)
+            },
             eventStats: {
-                registrationsCount: 0,
-                date: '-'
+                id: eventStats.id,
+                name: eventStats.name,
+                date: eventStats.event_date ? new Date(eventStats.event_date).toLocaleDateString('ru-RU') : '-',
+                registrationsCount: parseInt(eventStats.registrations_count),
+                paidCount: parseInt(eventStats.paid_count)
             }
         });
     } catch (error) {
-        console.error('Error fetching admin stats:', error);
-        res.status(500).send('Server Error');
+        console.error('Error:', error);
+        res.status(500).send('Ошибка сервера');
     }
 });
 
@@ -274,33 +285,28 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
 
 router.get('/edit-events', checkAdmin, async (req, res) => {
     try {
-        // Получаем текущий ивент
+        // Получаем текущий ивент с количеством регистраций
         const currentEventResult = await pool.query(`
             SELECT 
-                id, name, event_date, created_at, updated_at
-            FROM events 
-            WHERE current = true
+                e.id, e.name, e.event_date, e.created_at, e.updated_at,
+                COUNT(er.id) as registrations_count
+            FROM events e
+            LEFT JOIN event_registrations er ON e.id = er.event_id
+            WHERE e.current = true
+            GROUP BY e.id, e.name, e.event_date, e.created_at, e.updated_at
         `);
 
-        // Получаем все предыдущие ивенты
+        // Получаем все предыдущие ивенты с количеством регистраций
         const previousEventsResult = await pool.query(`
             SELECT 
-                id, name, event_date, created_at, updated_at
-            FROM events 
-            WHERE current = false
-            ORDER BY event_date DESC
+                e.id, e.name, e.event_date, e.created_at, e.updated_at,
+                COUNT(er.id) as registrations_count
+            FROM events e
+            LEFT JOIN event_registrations er ON e.id = er.event_id
+            WHERE e.current = false
+            GROUP BY e.id, e.name, e.event_date, e.created_at, e.updated_at
+            ORDER BY e.event_date DESC
         `);
-
-        // Получаем количество регистраций для текущего ивента
-        let registrationsCount = 0;
-        if (currentEventResult.rows[0]) {
-            const countResult = await pool.query(`
-                SELECT COUNT(*) as count
-                FROM event_registrations
-                WHERE event_id = $1
-            `, [currentEventResult.rows[0].id]);
-            registrationsCount = parseInt(countResult.rows[0].count);
-        }
 
         res.render('pages/edit-events', { 
             layout: 'layouts/main',
@@ -309,7 +315,7 @@ router.get('/edit-events', checkAdmin, async (req, res) => {
             previousEvents: previousEventsResult.rows,
             eventStats: {
                 id: currentEventResult.rows[0]?.id || null,
-                registrationsCount
+                registrationsCount: parseInt(currentEventResult.rows[0]?.registrations_count || 0)
             }
         });
     } catch (error) {

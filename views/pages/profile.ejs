@@ -125,6 +125,48 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="field-group">
+                                    <label>Возраст</label>
+                                    <div class="field-content" data-field="age">
+                                        <span class="field-value">
+                                            <%= userData.age || 'Не указано' %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="number" min="0" value="<%= userData.age || '' %>">
+                                            <button class="btn-save" onclick="saveField(this, 'age')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <label>Ссылка на соцсеть</label>
+                                    <div class="field-content" data-field="social_link">
+                                        <span class="field-value">
+                                            <%= userData.social_link || 'Не указано' %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="url" value="<%= userData.social_link || '' %>">
+                                            <button class="btn-save" onclick="saveField(this, 'social_link')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

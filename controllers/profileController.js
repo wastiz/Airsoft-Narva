@@ -8,7 +8,7 @@ router.post('/update', auth, async (req, res) => {
     try {
         const { field, value } = req.body;
         
-        const allowedFields = ['first_name', 'last_name', 'callsign', 'age', 'email', 'phone'];
+        const allowedFields = ['first_name', 'last_name', 'callsign', 'age', 'email', 'phone', 'social_link'];
         if (!allowedFields.includes(field)) {
             return res.status(400).json({ error: 'Недопустимое поле для обновления' });
         }
