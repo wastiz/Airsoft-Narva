@@ -258,6 +258,14 @@
 }
 
 @media (max-width: 768px) {
+
+    .fixedHeader .mainNav ul li a {
+        padding: 10px 0 10px;
+    }
+    .mainNav ul li  {
+        line-height: 2.3;
+    }
+
     .profile-form {
         grid-template-columns: 1fr;
     }
@@ -369,7 +377,7 @@
     .profile-content {
         margin: 20px;
         padding: 20px;
-        backdrop-filter: blur(5px);
+        backdrop-filter: none;
     }
 
     .field-group {

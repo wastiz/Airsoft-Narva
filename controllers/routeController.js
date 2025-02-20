@@ -202,19 +202,21 @@ router.get('/edit-open-games', checkAdmin, async (req, res) => {
 });
 
 
-router.get('/update-event', checkAdmin, async (req, res) => {
+
+router.get('/update-event-page', checkAdmin, async (req, res) => {
     if (!req.cookies.adminToken) {
         return res.redirect('/admin-login');
     }
     const eventConfig = getEventConfig();
-    res.render('pages/update-event', { layout: 'layouts/main', event: eventConfig });
+    res.render('pages/update-event-page', { layout: 'layouts/main', event: eventConfig });
 });
 
 router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
     try {
         const { gameType, gameId } = req.params;
         
-        let query;
+        let query, gameResult;
+
         if (gameType === 'open-games') {
             query = `
                 SELECT 
@@ -229,27 +231,33 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
                 WHERE ogr.game_id = $1
                 ORDER BY ogr.created_at ASC
             `;
-        } else {
+            
+            gameResult = await pool.query(
+                'SELECT game_date FROM open_games WHERE id = $1',
+                [gameId]
+            );
+        } else if (gameType === 'event') {
             query = `
                 SELECT 
-                    ogr.id,
-                    u.first_name,
-                    u.last_name,
-                    u.callsign,
-                    ogr.payment_status,
-                    ogr.arrived
-                FROM open_games_registrations ogr
-                JOIN users u ON ogr.user_id = u.id
-                WHERE ogr.game_id = $1
-                ORDER BY ogr.created_at ASC
+                    er.id,
+                    COALESCE(u.first_name, er.name) as first_name,
+                    COALESCE(u.last_name, '') as last_name,
+                    COALESCE(u.callsign, '') as callsign,
+                    er.payment_status,
+                    er.arrived
+                FROM event_registrations er
+                LEFT JOIN users u ON er.user_id = u.id
+                WHERE er.event_id = $1
+                ORDER BY er.created_at ASC
             `;
+            
+            gameResult = await pool.query(
+                'SELECT event_date as game_date FROM events WHERE id = $1',
+                [gameId]
+            );
         }
 
         const result = await pool.query(query, [gameId]);
-        const gameResult = await pool.query(
-            'SELECT game_date FROM open_games WHERE id = $1',
-            [gameId]
-        );
 
         res.render('pages/player-list', {
             layout: 'layouts/main',
@@ -260,6 +268,52 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
         });
     } catch (error) {
         console.error('Error:', error);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get('/edit-events', checkAdmin, async (req, res) => {
+    try {
+        // Получаем текущий ивент
+        const currentEventResult = await pool.query(`
+            SELECT 
+                id, name, event_date, created_at, updated_at
+            FROM events 
+            WHERE current = true
+        `);
+
+        // Получаем все предыдущие ивенты
+        const previousEventsResult = await pool.query(`
+            SELECT 
+                id, name, event_date, created_at, updated_at
+            FROM events 
+            WHERE current = false
+            ORDER BY event_date DESC
+        `);
+
+        // Получаем количество регистраций для текущего ивента
+        let registrationsCount = 0;
+        if (currentEventResult.rows[0]) {
+            const countResult = await pool.query(`
+                SELECT COUNT(*) as count
+                FROM event_registrations
+                WHERE event_id = $1
+            `, [currentEventResult.rows[0].id]);
+            registrationsCount = parseInt(countResult.rows[0].count);
+        }
+
+        res.render('pages/edit-events', { 
+            layout: 'layouts/main',
+            currentPath: req.path,
+            currentEvent: currentEventResult.rows[0] || null,
+            previousEvents: previousEventsResult.rows,
+            eventStats: {
+                id: currentEventResult.rows[0]?.id || null,
+                registrationsCount
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching events:', error);
         res.status(500).send('Server Error');
     }
 });

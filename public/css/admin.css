@@ -33,6 +33,10 @@
     font-size: 16px;
 }
 
+.admin-container {
+    padding: 20px;
+}
+
 .admin-login-btn {
     width: 100%;
     padding: 12px;
@@ -124,3 +128,12 @@
     font-weight: bold;
     color: #2c3e50;
 } 
+
+@media (max-width: 768px) {
+    .fixedHeader .mainNav ul li a {
+        padding: 10px 0 10px;
+    }
+    .mainNav ul li  {
+        line-height: 2.3;
+    }
+}

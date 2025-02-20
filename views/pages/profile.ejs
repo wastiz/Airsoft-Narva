@@ -1,140 +1,154 @@
 <%- contentFor('customCSS') %>
-<link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/profile.css">
 
-<%- include('../partials/profile-header') %>
+    <%- include('../partials/profile-header') %>
 
-<section class="commonSection bg_black" style="min-height: calc(100vh - 80px);">
-    <div class="container">
-        <% if (!isAuthenticated) { %>
-            <div class="row">
-                <div class="col-12 vh-90 flex flex-col flex-center">
-                    <h2>Требуется авторизация</h2>
-                    <p>Для просмотра профиля необходимо войти в аккаунт</p>
-                    <div class="auth-buttons">
-                        <a href="/login" class="btn btn-primary">Войти</a>
-                        <a href="/register" class="btn btn-secondary">Зарегистрироваться</a>
-                    </div>
-                </div>
-            </div>
-        <% } else { %>
-            <div class="profile-content flex flex-row justify-content-between">
-                <div class="profile-info flex flex-col">
-                    <h2>Личные данные</h2>
-                    <div class="profile-fields">
-                        <div class="field-group">
-                            <label>Имя</label>
-                            <div class="field-content" data-field="firstName">
-                                <span class="field-value"><%= userData.firstName || 'Не указано' %></span>
-                                <button class="btn-edit" onclick="enableEdit(this)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <div class="edit-controls" style="display: none;">
-                                    <input type="text" value="<%= userData.firstName || '' %>">
-                                    <button class="btn-save" onclick="saveField(this, 'first_name')">
-                                        <i class="fa fa-check"></i>
-                                    </button>
-                                    <button class="btn-cancel" onclick="cancelEdit(this)">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label>Фамилия</label>
-                            <div class="field-content" data-field="lastName">
-                                <span class="field-value"><%= userData.lastName || 'Не указано' %></span>
-                                <button class="btn-edit" onclick="enableEdit(this)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <div class="edit-controls" style="display: none;">
-                                    <input type="text" value="<%= userData.lastName || '' %>">
-                                    <button class="btn-save" onclick="saveField(this, 'last_name')">
-                                        <i class="fa fa-check"></i>
-                                    </button>
-                                    <button class="btn-cancel" onclick="cancelEdit(this)">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label>Позывной</label>
-                            <div class="field-content" data-field="callsign">
-                                <span class="field-value"><%= userData.callsign || 'Не указано' %></span>
-                                <button class="btn-edit" onclick="enableEdit(this)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <div class="edit-controls" style="display: none;">
-                                    <input type="text" value="<%= userData.callsign || '' %>">
-                                    <button class="btn-save" onclick="saveField(this, 'callsign')">
-                                        <i class="fa fa-check"></i>
-                                    </button>
-                                    <button class="btn-cancel" onclick="cancelEdit(this)">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label>Email</label>
-                            <div class="field-content" data-field="email">
-                                <span class="field-value"><%= userData.email %></span>
-                                <button class="btn-edit" onclick="enableEdit(this)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <div class="edit-controls" style="display: none;">
-                                    <input type="email" value="<%= userData.email %>">
-                                    <button class="btn-save" onclick="saveField(this, 'email')">
-                                        <i class="fa fa-check"></i>
-                                    </button>
-                                    <button class="btn-cancel" onclick="cancelEdit(this)">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <label>Телефон</label>
-                            <div class="field-content" data-field="phone">
-                                <span class="field-value"><%= userData.phone || 'Не указано' %></span>
-                                <button class="btn-edit" onclick="enableEdit(this)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <div class="edit-controls" style="display: none;">
-                                    <input type="text" value="<%= userData.phone || '' %>">
-                                    <button class="btn-save" onclick="saveField(this, 'phone')">
-                                        <i class="fa fa-check"></i>
-                                    </button>
-                                    <button class="btn-cancel" onclick="cancelEdit(this)">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </div>
+        <section class="commonSection bg_black" style="min-height: calc(100vh - 80px);">
+            <div class="container">
+                <% if (!isAuthenticated) { %>
+                    <div class="row">
+                        <div class="col-12 vh-90 flex flex-col flex-center">
+                            <h2>Требуется авторизация</h2>
+                            <p>Для просмотра профиля необходимо войти в аккаунт</p>
+                            <div class="auth-buttons">
+                                <a href="/login" class="btn btn-primary">Войти</a>
+                                <a href="/register" class="btn btn-secondary">Зарегистрироваться</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="games-stats">
-                    <h2>Статистика игр</h2>
-                    <div class="stats-card">
-                        <div class="stat-item">
-                            <span class="stat-value"><%= userData.gamesPlayed %></span>
-                            <span class="stat-label">Игр сыграно</span>
+                    <% } else { %>
+                    <div class="row profile-content justify-content-between">
+                        <div class=" profile-info flex flex-col col-12 col-sm-12 col-md-6 col-lg-6">
+                            <h2>Личные данные</h2>
+                            <div class="profile-fields">
+                                <div class="field-group">
+                                    <label>Имя</label>
+                                    <div class="field-content" data-field="firstName">
+                                        <span class="field-value">
+                                            <%= userData.firstName || 'Не указано' %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="text" value="<%= userData.firstName || '' %>">
+                                            <button class="btn-save" onclick="saveField(this, 'first_name')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <label>Фамилия</label>
+                                    <div class="field-content" data-field="lastName">
+                                        <span class="field-value">
+                                            <%= userData.lastName || 'Не указано' %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="text" value="<%= userData.lastName || '' %>">
+                                            <button class="btn-save" onclick="saveField(this, 'last_name')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <label>Никнейм</label>
+                                    <div class="field-content" data-field="callsign">
+                                        <span class="field-value">
+                                            <%= userData.callsign || 'Не указано' %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="text" value="<%= userData.callsign || '' %>">
+                                            <button class="btn-save" onclick="saveField(this, 'callsign')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <label>Email</label>
+                                    <div class="field-content" data-field="email">
+                                        <span class="field-value">
+                                            <%= userData.email %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="email" value="<%= userData.email %>">
+                                            <button class="btn-save" onclick="saveField(this, 'email')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <label>Телефон</label>
+                                    <div class="field-content" data-field="phone">
+                                        <span class="field-value">
+                                            <%= userData.phone || 'Не указано' %>
+                                        </span>
+                                        <button class="btn-edit" onclick="enableEdit(this)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <div class="edit-controls" style="display: none;">
+                                            <input type="text" value="<%= userData.phone || '' %>">
+                                            <button class="btn-save" onclick="saveField(this, 'phone')">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <button class="btn-cancel" onclick="cancelEdit(this)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-value"><%= userData.memberSince %></span>
-                            <span class="stat-label">Дата регистрации</span>
+
+                        <div class="games-stats col-12 col-sm-12 col-md-6 col-lg-6">
+                            <h4>Статистика игр</h4>
+                            <div class="stats-card">
+                                <div class="stat-item">
+                                    <span class="stat-value">
+                                        <%= userData.gamesPlayed %>
+                                    </span>
+                                    <span class="stat-label">Игр сыграно</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">
+                                        <%= userData.memberSince %>
+                                    </span>
+                                    <span class="stat-label">Дата регистрации</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+            <% } %>
                 </div>
-            </div>
-        <% } %>
-    </div>
-</section>
+        </section>
 
-<%- contentFor('customJS') %>
-<script src="js/profile.js"></script>
+        <%- contentFor('customJS') %>
+            <script src="js/profile.js"></script>

@@ -3792,6 +3792,15 @@ ol.commentList li ul.childCom li {
   justify-content: center;
 }
 
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+
 
 
 @-webkit-keyframes ball-clip-rotate-pulse-rotate {

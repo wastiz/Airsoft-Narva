@@ -150,4 +150,100 @@ router.post('/toggle-arrival-status/:playerId', checkAdmin, async (req, res) => 
     }
 });
 
+// Создание нового ивента
+router.post('/create-event', checkAdmin, async (req, res) => {
+    const client = await pool.connect();
+    try {
+        const { name, event_date, make_current } = req.body;
+        
+        await client.query('BEGIN');
+
+        // Если новый ивент должен быть текущим, сбрасываем current у остальных
+        if (make_current) {
+            await client.query('UPDATE events SET current = false WHERE current = true');
+        }
+
+        // Создаем новый ивент
+        const result = await client.query(`
+            INSERT INTO events (name, event_date, current)
+            VALUES ($1, $2, $3)
+            RETURNING id
+        `, [name, event_date, make_current]);
+
+        await client.query('COMMIT');
+        
+        res.status(201).json({ 
+            message: 'Ивент успешно создан',
+            eventId: result.rows[0].id 
+        });
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error creating event:', error);
+        res.status(500).json({ message: 'Ошибка при создании ивента' });
+    } finally {
+        client.release();
+    }
+});
+
+// Удаление ивента
+router.delete('/delete-event/:eventId', checkAdmin, async (req, res) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Проверяем, есть ли регистрации на ивент
+        const registrationsResult = await client.query(`
+            SELECT COUNT(*) as count
+            FROM event_registrations
+            WHERE event_id = $1
+        `, [req.params.eventId]);
+
+        if (registrationsResult.rows[0].count > 0) {
+            // Если есть регистрации, можно добавить отправку уведомлений
+            // await sendCancellationEmails(eventId);
+            
+            // Удаляем регистрации
+            await client.query('DELETE FROM event_registrations WHERE event_id = $1', 
+                [req.params.eventId]);
+        }
+
+        // Удаляем сам ивент
+        await client.query('DELETE FROM events WHERE id = $1', 
+            [req.params.eventId]);
+
+        await client.query('COMMIT');
+        res.status(200).json({ message: 'Ивент успешно удален' });
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error deleting event:', error);
+        res.status(500).json({ message: 'Ошибка при удалении ивента' });
+    } finally {
+        client.release();
+    }
+});
+
+// Установка ивента текущим
+router.post('/make-event-current/:eventId', checkAdmin, async (req, res) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Сначала убираем current у всех ивентов
+        await client.query('UPDATE events SET current = false');
+
+        // Устанавливаем current для выбранного ивента
+        await client.query('UPDATE events SET current = true WHERE id = $1',
+            [req.params.eventId]);
+
+        await client.query('COMMIT');
+        res.status(200).json({ message: 'Статус ивента успешно обновлен' });
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error updating event status:', error);
+        res.status(500).json({ message: 'Ошибка при обновлении статуса ивента' });
+    } finally {
+        client.release();
+    }
+});
+
 module.exports = router;
