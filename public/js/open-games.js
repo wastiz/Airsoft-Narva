@@ -14,7 +14,7 @@ document.querySelector('.g-form').addEventListener('submit', async function(even
         phone: formData.get('phone'),
         email: formData.get('email'),
         age: formData.get("age"),
-        payment: formData.get('payment'),
+        payment_method: document.querySelector('input[name="payment"]:checked')?.value || 'bank-transfer',
     };
 
     try {

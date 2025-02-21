@@ -22,7 +22,10 @@ document.addEventListener("DOMContentLoaded", function() {
             nickname: formData.get('nickname'),
             aboutCharacter: formData.get('about-character'),
             team: formData.get('team'),
+            payment_method: 'bank-transfer',
         };
+
+        console.log(data);
 
         try {
             const response = await fetch("event/submit-book-form", {

@@ -4,12 +4,21 @@ const {sendMail} = require("../mail-service");
 const {pool} = require('../db');
 const {auth} = require("../middleware/auth");
 
-
 router.post('/submit-book-form', async (req, res) => {
-    const {name, email} = req.body;
+    const { name, email, phone, age, payment_method } = req.body;
 
     try {
-        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
+        const currentGameResult = await pool.query(
+            'SELECT id FROM open_games WHERE current = true'
+        );
+
+        if (currentGameResult.rows.length === 0) {
+            return res.status(404).send('Нет текущих игр для регистрации');
+        }
+
+        const gameId = currentGameResult.rows[0].id;
+
+        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
 
         const mailOptions = {
             from: {
@@ -30,10 +39,10 @@ router.post('/submit-book-form', async (req, res) => {
                 EE291010220279349223
                 V&V TRADE OÜ
             `,
+        };
 
-        }
-        await sendMail(mailOptions)
-        console.log('email sent')
+        await sendMail(mailOptions);
+        console.log('email sent');
 
         const appLink = "https://script.google.com/macros/s/AKfycbyXhQZllYFroiCsbKALdb4HpB36UiDzKTiN5_i5CfQtY2FqigVnCfqMW3XDM57pbs2i/exec";
         const requestBody = {
@@ -52,6 +61,12 @@ router.post('/submit-book-form', async (req, res) => {
 
         console.log('inserted to table');
 
+        const insertGuestQuery = `
+            INSERT INTO open_games_registrations (game_id, name, email, phone, age, payment_method)
+            VALUES ($1, $2, $3, $4, $5, $6)
+        `;
+
+        await pool.query(insertGuestQuery, [gameId, name, email, phone, age, payment_method]);
 
         res.status(200).send('Все сделано');
     } catch (error) {
@@ -59,7 +74,7 @@ router.post('/submit-book-form', async (req, res) => {
             res.status(409).send('Емайл уже зарегистрирован');
         } else {
             console.error(error);
-            res.status(500).send('Ошибка при заполнении даты');
+            res.status(500).send('Ошибка при заполнении данных');
         }
     }
 });

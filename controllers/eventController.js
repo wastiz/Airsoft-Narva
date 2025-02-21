@@ -8,10 +8,9 @@ const {pool} = require("../db");
 
 router.post('/submit-book-form', async (req, res) => {
     const data = req.body;
-    const eventConfig = getEventConfig();
 
     try {
-        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10
+        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
 
         const mailOptions = {
             from: {
@@ -19,28 +18,48 @@ router.post('/submit-book-form', async (req, res) => {
                 address: process.env.MAIL_USER,
             },
             to: ["dmitripersitski@gmail.com", data.email],
-            subject: `Вы зарегистрировались на ${eventConfig["event-title"]}`,
+            subject: `Вы зарегистрировались на событие`,
             text: `
-                Здравствуй, ${data.name.split(" ")[0]}. Ты зарегистрировался на игру "${eventConfig.header.title}". Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав при оплате свой уникальный номер:
+                Здравствуй, ${data.name.split(" ")[0]}. Ты зарегистрировался на событие. Смотри обновления в наших соц сетях. Просим оплатить счет в течении 5 дней по этому счету, указав при оплате свой уникальный номер:
                 Ваш уникальный номер: ${uniqueNumber}
                 EE291010220279349223
                 V&V TRADE OÜ
                 
                 Если есть вопросы - обращайтесь по номеру: +372 5696 9372, Дмитрий
             `,
+        };
 
-        }
-        await sendMail(mailOptions)
-        console.log('email sent')
+        await sendMail(mailOptions);
+        console.log('email sent');
 
         const appLink = "https://script.google.com/macros/s/AKfycbyXhQZllYFroiCsbKALdb4HpB36UiDzKTiN5_i5CfQtY2FqigVnCfqMW3XDM57pbs2i/exec";
         data["id"] = uniqueNumber;
         console.log(data);
+        
         await fetch(appLink, {
             method: "POST",
             body: JSON.stringify(data)
-        })
-        console.log('inserted to table')
+        });
+        console.log('inserted to table');
+
+        // Fetch the current event ID from the database
+        const currentEventResult = await pool.query(
+            'SELECT id FROM events WHERE current = true'
+        );
+
+        if (currentEventResult.rows.length === 0) {
+            return res.status(404).send('Нет текущих событий для регистрации');
+        }
+
+        const eventId = currentEventResult.rows[0].id; // Get the current event ID
+
+        // Save guest registration to the database
+        const insertGuestQuery = `
+            INSERT INTO event_registrations (event_id, name, email, phone, age, payment_method, unique_number, team)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+
+        await pool.query(insertGuestQuery, [eventId, data.name, data.email, data.phone, data.age, data.payment_method, uniqueNumber, data.team]);
 
         res.status(200).send('Все сделано');
     } catch (error) {
@@ -48,7 +67,7 @@ router.post('/submit-book-form', async (req, res) => {
             res.status(409).send('Емайл уже зарегистрирован');
         } else {
             console.error(error);
-            res.status(500).send('Ошибка при заполнении даты');
+            res.status(500).send('Ошибка при заполнении данных');
         }
     }
 });
@@ -67,7 +86,7 @@ router.post('/submit-user-register', async (req, res) => {
 
         // Получаем данные пользователя
         const userResult = await pool.query(`
-            SELECT first_name, email, phone, age, social_link
+            SELECT first_name, last_name, email, phone, age, social_link
             FROM users
             WHERE id = $1
         `, [userId]);
@@ -159,11 +178,12 @@ router.post('/submit-user-register', async (req, res) => {
         `, [
             eventId,
             userId,
-            user.first_name,
+            user.first_name + ' ' + user.last_name,
             user.email,
             user.phone,
             user.age,
             selectedTeam,
+            user.social_link,
             req.body.payment_method || 'bank-transfer',
             uniqueNumber
         ]);
