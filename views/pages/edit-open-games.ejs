@@ -34,7 +34,97 @@
             <button class="delete-game-btn" id="deleteGameBtn">Отменить игру</button>
         </div>
     </div>
+
+    <div class="game-type-control">
+        <div class="dashboard-card">
+            <h3>Настройки текущей игры</h3>
+            <div class="type-selector">
+                <button class="type-btn <%= currentGame?.type === 'morning' ? 'active' : '' %>" 
+                        onclick="changeGameType('morning')">Утренняя</button>
+                <button class="type-btn <%= currentGame?.type === 'evening' ? 'active' : '' %>"
+                        onclick="changeGameType('evening')">Вечерняя</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="config-section">
+        <div class="dashboard-card">
+            <h3>Конфигурация игр</h3>
+            <div class="config-buttons">
+                <button onclick="openConfigModal('morning')" class="config-btn">
+                    <i class="fa fa-sun-o"></i> Настройки утренней игры
+                </button>
+                <button onclick="openConfigModal('evening')" class="config-btn">
+                    <i class="fa fa-moon-o"></i> Настройки вечерней игры
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="previous-events-section">
+        <h4>Предыдущие открытые игры</h4>
+        <% if (previousGames && previousGames.length > 0) { %>
+            <table class="events-table">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Регистраций</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% previousGames.forEach(game => { %>
+                        <tr>
+                            <td><%= new Date(game.game_date).toLocaleDateString('ru-RU') %></td>
+                            <td><%= game.registrations_count || 0 %></td>
+                            <td class="action-buttons">
+                                <a href="/player-list/open-game/<%= game.id %>" class="dashboard-btn">
+                                    <button class="btn mb-20"><i class="fa fa-eye"></i></button>
+                                </a>
+                                <button class="make-current-btn" onclick="makeGameCurrent('<%= game.id %>')" title="Сделать текущим">
+                                    <i class="fa fa-star"></i>
+                                </button>
+                                <button class="delete-btn" onclick="deleteGame('<%= game.id %>')" title="Удалить">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="no-data">Нет предыдущих игр</p>
+        <% } %>
+    </div>
 </div>
+
+<!-- Модальное окно конфигурации -->
+<div id="configModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h4 id="modalTitle">Настройки игры</h4>
+        <form id="configForm">
+            <div class="form-group">
+                <label>Время прибытия:</label>
+                <input type="time" name="arrival_time" required>
+            </div>
+            <div class="form-group">
+                <label>Время брифинга:</label>
+                <input type="time" name="briefing_time" required>
+            </div>
+            <div class="form-group">
+                <label>Время начала:</label>
+                <input type="time" name="start_time" required>
+            </div>
+            <div class="form-group">
+                <label>Время окончания:</label>
+                <input type="time" name="end_time" required>
+            </div>
+            <button type="submit" class="save-btn">Сохранить</button>
+        </form>
+    </div>
+</div>
+
 
 <%- contentFor('customJS') %>
 <script src="/js/edit-open-games.js"></script>

@@ -28,9 +28,254 @@
 
 .dashboard-card {
     max-width: 600px;
-    margin: 0 auto;
-} 
+    margin: 0 0 20px 0;
+}
 
 .admin-container {
     padding: 20px;
+    margin: 0 40px;
+}
+
+.games-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.games-table th,
+.games-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+.games-table th {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-weight: 500;
+}
+
+.games-table td {
+    color: #ddd;
+}
+
+.games-table tr:last-child td {
+    border-bottom: none;
+}
+
+.games-table tr:hover td {
+    background-color: #333;
+}
+
+@media (max-width: 768px) {
+    .games-table {
+        font-size: 14px;
+    }
+
+    .games-table th,
+    .games-table td {
+        padding: 8px;
+    }
+}
+
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.events-table th,
+.events-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.events-table th {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-weight: 500;
+}
+
+.events-table td {
+    color: #ddd;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.action-buttons button {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-buttons .btn {
+    background-color: #007bff;
+}
+
+.action-buttons .make-current-btn {
+    background-color: #ffc107;
+}
+
+.action-buttons .delete-btn {
+    background-color: #dc3545;
+}
+
+.action-buttons button:hover {
+    opacity: 0.8;
+}
+
+.action-buttons i {
+    color: white;
+}
+
+.no-data {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .events-table {
+        font-size: 14px;
+    }
+
+    .events-table th,
+    .events-table td {
+        padding: 8px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+}
+
+.type-selector {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.type-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #444;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.type-btn.active {
+    background-color: #007bff;
+}
+
+.config-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-btn {
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #2a2a2a;
+    color: #fff;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.config-btn i {
+    margin-right: 10px;
+}
+
+.config-btn:hover {
+    background-color: #333;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #2a2a2a;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #888;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
 }

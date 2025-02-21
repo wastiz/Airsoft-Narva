@@ -14,9 +14,40 @@ router.get('/', (req, res) => {
 
 router.get('/open-games', async (req, res) => {
     try {
-        res.render('pages/open-games', { layout: 'layouts/main', restrictedTeam: '', config: openGamesConfig, currentPath: req.path });
+        const currentGameResult = await pool.query(`
+            SELECT type
+            FROM open_games
+            WHERE current = true
+        `);
+
+        const gameType = currentGameResult.rows[0]?.type || 'evening';
+        const configResult = await pool.query(`
+            SELECT arrival_time, briefing_time, start_time, end_time
+            FROM open_games_config
+            WHERE type = $1
+        `, [gameType]);
+
+        const baseConfig = openGamesConfig;
+
+        const config = {
+            ...baseConfig,
+            gameType,
+            schedule: {
+                arrivalTime: configResult.rows[0]?.arrival_time || '19:00',
+                briefingTime: configResult.rows[0]?.briefing_time || '19:30',
+                startTime: configResult.rows[0]?.start_time || '20:00',
+                endTime: configResult.rows[0]?.end_time || '22:00'
+            }
+        };
+
+        res.render('pages/open-games', { 
+            layout: 'layouts/main', 
+            restrictedTeam: '', 
+            config, 
+            currentPath: req.path 
+        });
     } catch (e) {
-        console.error('Error in checkTeam:', e);
+        console.error('Error in open games:', e);
         res.status(500).send('Internal Server Error');
     }
 });
@@ -54,6 +85,7 @@ router.get('/profile', auth, async (req, res) => {
                 age,
                 email,
                 phone,
+                games_attended,
                 created_at as "createdAt"
             FROM users 
             WHERE id = $1
@@ -177,38 +209,55 @@ router.get('/admin', checkAdmin, async (req, res) => {
 
 router.get('/edit-open-games', checkAdmin, async (req, res) => {
     try {
-        const result = await pool.query(`
-            SELECT 
-                og.id,
-                og.game_date,
-                COUNT(ogr.id) as registrations_count
+        // Получаем текущую открытую игру со всеми данными
+        const currentGameResult = await pool.query(`
+            SELECT og.id, og.game_date, og.type,
+                   COUNT(ogr.id) as registrations_count
             FROM open_games og
             LEFT JOIN open_games_registrations ogr ON og.id = ogr.game_id
             WHERE og.current = true
-            GROUP BY og.id, og.game_date
+            GROUP BY og.id, og.game_date, og.type
         `);
 
-        let openGameStats = {
-            registrationsCount: 0,
-            date: '-'
+        // Получаем предыдущие игры со статистикой
+        const previousGamesResult = await pool.query(`
+            SELECT 
+                og.id, 
+                og.game_date,
+                og.type,
+                COUNT(ogr.id) as registrations_count,
+                COUNT(CASE WHEN ogr.payment_status = 'paid' THEN 1 END) as paid_count,
+                COUNT(CASE WHEN ogr.arrived = true THEN 1 END) as arrived_count
+            FROM open_games og
+            LEFT JOIN open_games_registrations ogr ON og.id = ogr.game_id
+            WHERE og.current = false
+            GROUP BY og.id, og.game_date, og.type
+            ORDER BY og.game_date DESC
+        `);
+
+        const openGameStats = currentGameResult.rows[0] || {
+            id: null,
+            game_date: null,
+            type: 'evening', // дефолтное значение
+            registrations_count: 0
         };
 
-        if (result.rows.length > 0) {
-            const gameData = result.rows[0];
-            openGameStats = {
-                registrationsCount: parseInt(gameData.registrations_count),
-                date: new Date(gameData.game_date).toLocaleDateString('ru-RU')
-            };
-        }
-
-        res.render('pages/edit-open-games', { 
-            layout: 'layouts/main',
-            openGameStats,
-            currentPath: req.path
+        res.render('pages/edit-open-games', {
+            currentPath: '/edit-open-games',
+            currentGame: {
+                id: openGameStats.id,
+                type: openGameStats.type
+            },
+            openGameStats: {
+                id: openGameStats.id,
+                date: openGameStats.game_date ? new Date(openGameStats.game_date).toLocaleDateString('ru-RU') : '-',
+                registrationsCount: parseInt(openGameStats.registrations_count)
+            },
+            previousGames: previousGamesResult.rows
         });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send('Server Error');
+        res.status(500).send('Ошибка сервера');
     }
 });
 

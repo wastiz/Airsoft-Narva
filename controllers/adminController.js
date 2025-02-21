@@ -246,4 +246,141 @@ router.post('/make-event-current/:eventId', checkAdmin, async (req, res) => {
     }
 });
 
+// Изменение типа текущей игры
+router.post('/open-games/change-type', checkAdmin, async (req, res) => {
+    try {
+        const { type } = req.body;
+        
+        // Проверяем корректность типа
+        if (!['morning', 'evening'].includes(type)) {
+            return res.status(400).send('Некорректный тип игры');
+        }
+
+        // Обновляем тип текущей игры
+        await pool.query(`
+            UPDATE open_games 
+            SET type = $1,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE current = true
+        `, [type]);
+
+        res.status(200).send('Тип игры успешно изменен');
+    } catch (error) {
+        console.error('Error changing game type:', error);
+        res.status(500).send('Ошибка сервера');
+    }
+});
+
+// Получение конфигурации для определенного типа игры
+router.get('/open-games/config/:type', checkAdmin, async (req, res) => {
+    try {
+        const { type } = req.params;
+
+        // Проверяем корректность типа
+        if (!['morning', 'evening'].includes(type)) {
+            return res.status(400).send('Некорректный тип игры');
+        }
+
+        const result = await pool.query(`
+            SELECT arrival_time, briefing_time, start_time, end_time
+            FROM open_games_config
+            WHERE type = $1
+        `, [type]);
+
+        if (result.rows.length === 0) {
+            // Возвращаем дефолтные значения, если конфигурация не найдена
+            const defaultTimes = {
+                morning: {
+                    arrival_time: '09:00',
+                    briefing_time: '09:30',
+                    start_time: '10:00',
+                    end_time: '12:00'
+                },
+                evening: {
+                    arrival_time: '19:00',
+                    briefing_time: '19:30',
+                    start_time: '20:00',
+                    end_time: '22:00'
+                }
+            };
+            
+            // Создаем конфигурацию с дефолтными значениями
+            await pool.query(`
+                INSERT INTO open_games_config 
+                (type, arrival_time, briefing_time, start_time, end_time)
+                VALUES ($1, $2, $3, $4, $5)
+            `, [
+                type,
+                defaultTimes[type].arrival_time,
+                defaultTimes[type].briefing_time,
+                defaultTimes[type].start_time,
+                defaultTimes[type].end_time
+            ]);
+
+            return res.json(defaultTimes[type]);
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error fetching game config:', error);
+        res.status(500).send('Ошибка сервера');
+    }
+});
+
+// Сохранение конфигурации
+router.post('/open-games/config', checkAdmin, async (req, res) => {
+    try {
+        const { type, arrival_time, briefing_time, start_time, end_time } = req.body;
+
+        // Проверяем корректность типа
+        if (!['morning', 'evening'].includes(type)) {
+            return res.status(400).send('Некорректный тип игры');
+        }
+
+        // Проверяем, что все времена указаны
+        if (!arrival_time || !briefing_time || !start_time || !end_time) {
+            return res.status(400).send('Все поля времени должны быть заполнены');
+        }
+
+        // Проверяем последовательность времени
+        const times = [arrival_time, briefing_time, start_time, end_time].map(t => new Date(`1970-01-01T${t}`));
+        for (let i = 0; i < times.length - 1; i++) {
+            if (times[i] >= times[i + 1]) {
+                return res.status(400).send('Некорректная последовательность времени');
+            }
+        }
+
+        // Проверяем существует ли уже конфигурация для этого типа
+        const existingConfig = await pool.query(
+            'SELECT id FROM open_games_config WHERE type = $1',
+            [type]
+        );
+
+        if (existingConfig.rows.length > 0) {
+            // Обновляем существующую конфигурацию
+            await pool.query(`
+                UPDATE open_games_config 
+                SET arrival_time = $2,
+                    briefing_time = $3,
+                    start_time = $4,
+                    end_time = $5,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE type = $1
+            `, [type, arrival_time, briefing_time, start_time, end_time]);
+        } else {
+            // Создаем новую конфигурацию
+            await pool.query(`
+                INSERT INTO open_games_config 
+                (type, arrival_time, briefing_time, start_time, end_time)
+                VALUES ($1, $2, $3, $4, $5)
+            `, [type, arrival_time, briefing_time, start_time, end_time]);
+        }
+
+        res.status(200).send('Конфигурация успешно сохранена');
+    } catch (error) {
+        console.error('Error saving game config:', error);
+        res.status(500).send('Ошибка сервера');
+    }
+});
+
 module.exports = router;
