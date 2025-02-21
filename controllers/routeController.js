@@ -137,8 +137,8 @@ router.get('/login', auth, (req, res) => {
     res.render('pages/login', { layout: 'layouts/main', currentPath: req.path, isAuthenticated: req.isAuthenticated });
 });
 
-router.get('/register', (req, res) => {
-    res.render('pages/register', { layout: 'layouts/main', currentPath: req.path });
+router.get('/register', auth, (req, res) => {
+    res.render('pages/register', { layout: 'layouts/main', currentPath: req.path, isAuthenticated: req.isAuthenticated });
 });
 
 router.get('/admin-login', (req, res) => {
