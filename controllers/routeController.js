@@ -22,8 +22,8 @@ router.get('/open-games', async (req, res) => {
 
         const gameType = currentGameResult.rows[0]?.type || 'evening';
         const configResult = await pool.query(`
-            SELECT arrival_time, briefing_time, start_time, end_time
-            FROM open_games_config
+            SELECT game_date, arrival_time, briefing_time, start_time, end_time
+            FROM open_games
             WHERE type = $1
         `, [gameType]);
 
@@ -31,6 +31,7 @@ router.get('/open-games', async (req, res) => {
 
         const config = {
             ...baseConfig,
+            date: configResult.rows[0]?.game_date || '',
             gameType,
             schedule: {
                 arrivalTime: configResult.rows[0]?.arrival_time || '19:00',

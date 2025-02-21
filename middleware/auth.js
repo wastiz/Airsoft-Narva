@@ -42,7 +42,7 @@ const auth = async (req, res, next) => {
 
 const checkAdmin = (req, res, next) => {
     if (!req.cookies.adminToken) {
-        return res.redirect('/admin/login');
+        return res.redirect('/admin-login');    
     }
     next();
 };

@@ -46,7 +46,7 @@ router.post('/submit-update-event', async (req, res) => {
 
         data = transformData(data);
 
-        const filePath = path.join(__dirname, 'configs/event-config.json');
+        const filePath = path.join(__dirname, '../configs/event-config.json');
         const fileContent = await fs.promises.readFile(filePath, 'utf8');
 
         const parsedContent = JSON.parse(fileContent);

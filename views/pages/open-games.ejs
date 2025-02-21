@@ -12,7 +12,7 @@
                         <h2 class="color_white">GAMES</h2>
                     </div>
                 </div>
-                <h5 class="text-white">Открытая игра <%= new Date().toLocaleDateString('ru-RU') %> на территории NarvaCQB</h5>
+                <h5 class="text-white">Открытая игра <%= new Date(new Date().setDate(new Date().getDate() + (6 - new Date().getDay() + 7) % 7)).toLocaleDateString('ru-RU') %> на территории NarvaCQB</h5>
 
                 <p>⏰Сбор в <%= config.schedule.arrivalTime %> по адресу Tehase 6 (Перед главными воротами)</p>
                 <p>⏰ Брифинг <%= config.schedule.briefingTime %></p>
