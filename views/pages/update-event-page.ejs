@@ -92,12 +92,14 @@ const convertToISODate = (date) => {
                                 <div class="rule-items d-flex flex-col mb-20">
                                     <% event.rules[ruleTitle].forEach(function(ruleItem, itemIndex) { %>
                                         <label for="rule-item-<%= ruleTitle %>-<%= itemIndex %>">Правило <%= itemIndex + 1 %></label>
-                                        <input id="rule-item-<%= ruleTitle %>-<%= itemIndex %>" type="text" value="<%= ruleItem %>" placeholder="Текст правила">
-                                        <span class="remove-item" onclick="removeRuleItem('<%= ruleTitle %>', <%= itemIndex %>)" title="Удалить правило">&times;</span>
+                                        <div class="input-item">
+                                            <input class="rule-input" id="rule-item-<%= ruleTitle %>-<%= itemIndex %>" type="text" value="<%= ruleItem %>" placeholder="Текст правила">
+                                            <span class="remove-item" onclick="removeRuleItem('<%= ruleTitle %>', <%= itemIndex %>)" title="Удалить правило">&times;</span>
+                                        </div>
                                     <% }); %>
                                 </div>
                                 <button type="button" onclick="addRuleItem('<%= ruleTitle %>')">Добавить правило</button>
-                                <span class="remove-item" onclick="removeRuleList('<%= ruleTitle %>')" title="Удалить список правил">&times;</span>
+                                <button class="remove-item-btn" onclick="removeRuleList('<%= ruleTitle %>')" title="Удалить список правил">Удалить список</button>
                             </div>
                         <% } %>
                     </div>

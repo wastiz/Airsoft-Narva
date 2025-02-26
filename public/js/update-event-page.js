@@ -32,10 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 <input id="rule-title-${ruleListCounter}" type="text" placeholder="Название списка правил">
                 <div class="rule-items d-flex flex-col mb-20">
                     <label for="rule-item-${ruleListCounter}-1">Правило 1</label>
-                    <input id="rule-item-${ruleListCounter}-1" type="text" placeholder="Текст правила">
-                    <span class="remove-item" onclick="removeRuleList(${ruleListCounter})" title="Удалить список правил">&times;</span>
+                    <div class="input-item">
+                        <input class="rule-input" id="rule-item-${ruleListCounter}-1" type="text" placeholder="Текст правила">
+                        <span class="remove-item" onclick="removeRuleItem(${ruleListCounter}, 1)" title="Удалить правило">&times;</span>
+                    </div>
                 </div>
                 <button type="button" onclick="addRuleItem(${ruleListCounter})">Добавить правило</button>
+                <button class="remove-item-btn" onclick="removeRuleList(${ruleListCounter})" title="Удалить список правил">Удалить список</button>
             </div>
         `;
         document.getElementById('rules-list').insertAdjacentHTML('beforeend', newRuleList);
@@ -110,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    //test changes
     window.addRuleList = addRuleList;
     window.addRuleItem = addRuleItem;
     window.removeRuleItem = removeRuleItem;
