@@ -2,29 +2,26 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
-const {transformData} = require("../functions");
 const {pool} = require('../db');
 const {checkAdmin} = require("../middleware/auth");
+const eventConfig = require('../configs/event-config.json');
 
 router.post('/submit-update-event', async (req, res) => {
     try {
         let { password, ...data } = req.body;
 
         if (password === "1234") {
-            return res.status(405).json({ message: 'Пароль 1234 запрещен!' });
+            return res.status(405).json({ message: 'Серьезно?!' });
         } else if (!password || password !== process.env.ADMIN_PASSWORD) {
             console.log("Попытка с неверным паролем");
             return res.status(403).json({ message: 'Доступ запрещён. Неверный пароль.' });
         }
 
-        console.log(data)
-        const imageFile = data["bg-file"]
+        const imageFile = data["bg-file"];
         if (imageFile) {
             const base64Data = imageFile.split(',')[1];
-
             const buffer = Buffer.from(base64Data, 'base64');
-
-            const uploadPath = path.join(__dirname, 'public', 'img', 'event');
+            const uploadPath = path.join(__dirname, '..', 'public', 'img', 'event');
 
             if (!fs.existsSync(uploadPath)) {
                 fs.mkdirSync(uploadPath, { recursive: true });
@@ -38,29 +35,64 @@ router.post('/submit-update-event', async (req, res) => {
                     console.error('Ошибка записи файла:', err);
                     return res.status(500).json({ message: 'Ошибка сохранения изображения' });
                 }
+
                 const imageUrl = `public/img/event/${filename}`;
+                console.log("Изображение успешно загружено");
 
-                res.json({ message: 'Изображение успешно загружено', imageUrl: imageUrl });
+                return res.json({ message: 'Изображение успешно загружено', imageUrl: imageUrl });
             });
+        } else {
+            const output = {};
+
+            const convertDate = (date) => {
+                const [year, month, day] = date.split('-');
+                return `${day}.${month}.${year}`;
+            };
+
+            output["header"] = {
+                "bg": data.bgname ? `img/event/${data.bgname}` : eventConfig.header.bg,
+                "type": data.image ? "image" : (data.video ? "video" : "none"),
+                "before-title": "Объявляем регистрацию на",
+                "title": data.title,
+                "after-title": convertDate(data.date) || "Дата не указана",
+                "button": "Регистрация"
+            };
+
+            output["schedule"] = data.schedule;
+            output["story"] = data.story;
+            output["rules"] = data.rules;
+            output["teams"] = data.teams;
+            output["teamrestriction"] = parseInt(data.teamrestriction, 10) || null;
+
+            output["dates-prices"] = data.pricing.map(item => {
+                const formattedStartDate = item[0].split('-').reverse().join('.');
+                const formattedEndDate = item[1].split('-').reverse().join('.');
+                return `${formattedStartDate}-${formattedEndDate}-${item[2]}`;
+            });
+
+            const filePath = path.join(__dirname, '../configs/event-config.json');
+            const fileContent = await fs.promises.readFile(filePath, 'utf8');
+
+            const parsedContent = JSON.parse(fileContent);
+
+            if (data.teams) {
+                parsedContent.teams = data.teams;
+            }
+
+            Object.assign(parsedContent, output);
+
+            await fs.promises.writeFile(filePath, JSON.stringify(parsedContent, null, 2), 'utf8');
+            console.log("Файл успешно обновлён");
+
+            return res.status(200).json({ message: 'Файл успешно обновлён.' });
         }
-
-        data = transformData(data);
-
-        const filePath = path.join(__dirname, '../configs/event-config.json');
-        const fileContent = await fs.promises.readFile(filePath, 'utf8');
-
-        const parsedContent = JSON.parse(fileContent);
-        Object.assign(parsedContent, data);
-
-        await fs.promises.writeFile(filePath, JSON.stringify(parsedContent, null, 2), 'utf8');
-        console.log("Файл успешно обновлён");
-
-        res.status(200).json({ message: 'Файл успешно обновлён.' });
     } catch (error) {
         console.error("Ошибка:", error);
-        res.status(500).json({ message: 'Произошла ошибка на сервере.', error: error.message });
+        return res.status(500).json({ message: 'Произошла ошибка на сервере.', error: error.message });
     }
 });
+
+module.exports = router;
 
 
 router.post('/delete-current-game', checkAdmin, async (req, res) => {

@@ -61,22 +61,22 @@ document.addEventListener('DOMContentLoaded', function () {
         teamCounter++;
 
         const newTeam = `
-    <div class="team-list-item">
-        <label for="team-id-${teamCounter}">id команды</label>
-        <input id="team-id-${teamCounter}" type="text" placeholder="id команды">
-
-        <label for="team-name-${teamCounter}">Название команды</label>
-        <input id="team-name-${teamCounter}" type="text" placeholder="Название команды">
-
-        <label for="team-description-${teamCounter}">Описание</label>
-        <textarea id="team-description-${teamCounter}" rows="1" placeholder="Описание команды..."></textarea>
-
-        <input class="form-check-input" type="checkbox" value="" id="disable-team-${teamCounter}">
-        <label class="form-check-label" for="disable-team-${teamCounter}">
-            Закрыть команду
-        </label>
-    </div>
-`;
+        <div class="team-list-item">
+            <label for="team-id-${teamCounter}">id команды</label>
+            <input id="team-id-${teamCounter}" type="text" placeholder="id команды">
+    
+            <label for="team-name-${teamCounter}">Название команды</label>
+            <input id="team-name-${teamCounter}" type="text" placeholder="Название команды">
+    
+            <label for="team-description-${teamCounter}">Описание</label>
+            <textarea id="team-description-${teamCounter}" rows="1" placeholder="Описание команды..."></textarea>
+    
+            <input class="form-check-input" type="checkbox" value="" id="disable-team-${teamCounter}">
+            <label class="form-check-label" for="disable-team-${teamCounter}">
+                Закрыть команду
+            </label>
+        </div>
+        `;
 
         document.getElementById('teams-list').insertAdjacentHTML('beforeend', newTeam);
     }

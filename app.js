@@ -24,6 +24,10 @@ app.use(expressLayouts);
 app.use(express.static('public'));
 app.set('layout', 'layouts/main');
 
+// Увеличиваем лимит до 50 МБ в теле запроса
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 // Middleware для обработки JSON и URL-кодированных данных
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

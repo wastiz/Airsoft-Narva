@@ -97,7 +97,7 @@
                             <fieldset name="team" class='form-fieldset'>
                                 <label class="text-white">Выберите фракцию:</label><br>
 
-                                <p class="team-restriction">В данный момент у Кочевников перевес в 3 или более человекаpull o</p>
+                                <p class="team-restriction">У какой-то команды может быть перевес или забрана роль, поэтому опция будет недоступна</p>
 
                                 <% config.teams.forEach(team => { %>
                                     <input type="radio" class="form-check-input" id="<%= team.id %>" name="team" value="<%= team.name %>" required <%if(team.isDisabled) {%> disabled <%}%>>
