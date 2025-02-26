@@ -39,6 +39,32 @@
     min-height: 100px;
 }
 
+.remove-item {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+    font-size: 30px;
+}
+
+.remove-item-btn {
+    background-color: red;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.rule-input {
+    width: 95%;
+    height: 40px;
+}
+
+.input-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 /* Заголовки секций */
 h6 {
     color: #fff;

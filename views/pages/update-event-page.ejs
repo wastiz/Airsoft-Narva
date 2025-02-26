@@ -56,7 +56,6 @@ const convertToISODate = (date) => {
                     </div>
                 </div>
 
-
                 <!-- Расписание -->
                 <h6>Расписание:</h6>
                 <div class="d-flex flex-row align-items-center gap-5 mb-20">
@@ -94,9 +93,11 @@ const convertToISODate = (date) => {
                                     <% event.rules[ruleTitle].forEach(function(ruleItem, itemIndex) { %>
                                         <label for="rule-item-<%= ruleTitle %>-<%= itemIndex %>">Правило <%= itemIndex + 1 %></label>
                                         <input id="rule-item-<%= ruleTitle %>-<%= itemIndex %>" type="text" value="<%= ruleItem %>" placeholder="Текст правила">
+                                        <span class="remove-item" onclick="removeRuleItem('<%= ruleTitle %>', <%= itemIndex %>)" title="Удалить правило">&times;</span>
                                     <% }); %>
                                 </div>
                                 <button type="button" onclick="addRuleItem('<%= ruleTitle %>')">Добавить правило</button>
+                                <span class="remove-item" onclick="removeRuleList('<%= ruleTitle %>')" title="Удалить список правил">&times;</span>
                             </div>
                         <% } %>
                     </div>
@@ -110,7 +111,7 @@ const convertToISODate = (date) => {
                     <input id="team-restriction" type="number" value="<%= event.teamrestriction || '' %>">
                     <div id="teams-list" class="d-flex flex-col mb-20">
                         <% event.teams.forEach(function(team, teamIndex) { %>
-                            <div class="team-list-item">
+                            <div class="team-list-item" id="team-list-item-<%= teamIndex %>">
                                 <label for="team-id-<%= teamIndex %>">id команды</label>
                                 <input id="team-id-<%= teamIndex %>" type="text" value="<%= team.id %>" placeholder="id команды">
                                 <label for="team-name-<%= teamIndex %>">Название команды</label>
@@ -121,6 +122,7 @@ const convertToISODate = (date) => {
                                 <label class="form-check-label" for="disable-team-<%= team.id %>">
                                     Закрыть команду
                                 </label>
+                                <span class="remove-item" onclick="removeTeam(<%= teamIndex %>)" title="Удалить команду">&times;</span>
                             </div>
                         <% }); %>
                     </div>
@@ -164,7 +166,6 @@ const convertToISODate = (date) => {
 
     <input type="hidden" id="hidden-rule-data" value='<%= JSON.stringify(event.rules) %>'>
     <input type="hidden" id="hidden-team-data" value='<%= JSON.stringify(event.teams) %>'>
-
 
 </section>
 

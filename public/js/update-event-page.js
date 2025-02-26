@@ -20,12 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
     imageRadio.addEventListener('change', toggleFileInputs);
     videoRadio.addEventListener('change', toggleFileInputs);
 
-    const rulesData = JSON.parse(document.getElementById('hidden-rule-data').value);
-    const teamsData = JSON.parse(document.getElementById('hidden-team-data').value);
-
-    let ruleListCounter = Object.keys(rulesData).length;
-    let ruleItemCounter = Object.values(rulesData).reduce((acc, list) => acc + list.length, 0);
-    let teamCounter = teamsData.length;
+    let ruleListCounter = 0;
+    let ruleItemCounter = 0;
+    let teamCounter = 0;
 
     function addRuleList() {
         ruleListCounter++;
@@ -36,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="rule-items d-flex flex-col mb-20">
                     <label for="rule-item-${ruleListCounter}-1">Правило 1</label>
                     <input id="rule-item-${ruleListCounter}-1" type="text" placeholder="Текст правила">
+                    <span class="remove-item" onclick="removeRuleList(${ruleListCounter})" title="Удалить список правил">&times;</span>
                 </div>
                 <button type="button" onclick="addRuleItem(${ruleListCounter})">Добавить правило</button>
             </div>
@@ -46,8 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function addRuleItem(ruleListId) {
         ruleItemCounter++;
         const newRuleItem = `
-            <label for="rule-item-${ruleListId}-${ruleItemCounter}">Правило ${ruleItemCounter}</label>
-            <input id="rule-item-${ruleListId}-${ruleItemCounter}" type="text" placeholder="Текст правила">
+            <div id="rule-item-${ruleListId}-${ruleItemCounter}">
+                <label for="rule-item-${ruleListId}-${ruleItemCounter}">Правило ${ruleItemCounter}</label>
+                <div class="input-item">
+                    <input class="rule-input" id="rule-item-${ruleListId}-${ruleItemCounter}" type="text" placeholder="Текст правила">
+                    <span class="remove-item" onclick="removeRuleItem(${ruleListId}, ${ruleItemCounter})" title="Удалить правило">&times;</span>
+                </div>
+            </div>
         `;
         const ruleListItem = document.getElementById(`rule-list-item-${ruleListId}`);
         if (ruleListItem) {
@@ -57,11 +60,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function removeRuleItem(ruleListId, ruleItemIndex) {
+        const ruleItem = document.getElementById(`rule-item-${ruleListId}-${ruleItemIndex}`);
+        if (ruleItem) {
+            ruleItem.remove();
+        } else {
+            console.error('Элемент не найден:', `rule-item-${ruleListId}-${ruleItemIndex}`);
+        }
+    }
+
+    function removeRuleList(ruleListId) {
+        const ruleListItem = document.getElementById(`rule-list-item-${ruleListId}`);
+        if (ruleListItem) {
+            ruleListItem.remove();
+        } else {
+            console.error('Элемент не найден:', `rule-list-item-${ruleListId}`);
+        }
+    }
+
     function addTeam() {
         teamCounter++;
-
         const newTeam = `
-        <div class="team-list-item">
+        <div class="team-list-item" id="team-list-item-${teamCounter}">
             <label for="team-id-${teamCounter}">id команды</label>
             <input id="team-id-${teamCounter}" type="text" placeholder="id команды">
     
@@ -75,16 +95,31 @@ document.addEventListener('DOMContentLoaded', function () {
             <label class="form-check-label" for="disable-team-${teamCounter}">
                 Закрыть команду
             </label>
+            <span class="remove-item" onclick="removeTeam(${teamCounter})" title="Удалить команду">&times;</span>
         </div>
         `;
-
         document.getElementById('teams-list').insertAdjacentHTML('beforeend', newTeam);
     }
 
+    function removeTeam(teamIndex) {
+        const teamItem = document.getElementById(`team-list-item-${teamIndex}`);
+        if (teamItem) {
+            teamItem.remove();
+        } else {
+            console.error('Элемент не найден:', `team-list-item-${teamIndex}`);
+        }
+    }
 
     window.addRuleList = addRuleList;
     window.addRuleItem = addRuleItem;
+    window.removeRuleItem = removeRuleItem;
+    window.removeRuleList = removeRuleList;
     window.addTeam = addTeam;
+    window.removeTeam = removeTeam;
+
+    document.querySelectorAll('.team-list-item').forEach((item, index) => {
+        teamCounter = Math.max(teamCounter, index + 1);
+    });
 
     const textHandler = document.getElementById('text-handler');
 
