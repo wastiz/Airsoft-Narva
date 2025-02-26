@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    //test changes
     window.addRuleList = addRuleList;
     window.addRuleItem = addRuleItem;
     window.removeRuleItem = removeRuleItem;
