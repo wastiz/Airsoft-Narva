@@ -55,11 +55,11 @@ router.post('/submit-book-form', async (req, res) => {
 
         // Save guest registration to the database
         const insertGuestQuery = `
-            INSERT INTO event_registrations (event_id, name, email, phone, age, payment_method, unique_number, team)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            INSERT INTO event_registrations (event_id, name, email, phone, age, social_link, payment_method, unique_number, team)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         `;
 
-        await pool.query(insertGuestQuery, [eventId, data.name, data.email, data.phone, data.age, data.payment_method, uniqueNumber, data.team]);
+        await pool.query(insertGuestQuery, [eventId, data.name, data.email, data.phone, data.age, data.social_link, data.payment_method, uniqueNumber, data.team]);
 
         res.status(200).send('Все сделано');
     } catch (error) {
@@ -97,6 +97,14 @@ router.post('/submit-user-register', async (req, res) => {
 
         const user = userResult.rows[0];
 
+        // Проверяем наличие всех необходимых полей
+        const requiredFields = ['first_name', 'last_name', 'email', 'phone', 'age', 'social_link'];
+        for (const field of requiredFields) {
+            if (!user[field]) {
+                return res.status(400).send(`Пожалуйста, заполните все поля в профиле для завершения регистрации.`);
+            }
+        }
+
         // Получаем текущий ивент
         const eventResult = await pool.query(`
             SELECT id, name
@@ -121,13 +129,13 @@ router.post('/submit-user-register', async (req, res) => {
             return res.status(409).send('Вы уже зарегистрированы на этот ивент');
         }
 
-        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
-
         // Проверяем выбрана ли команда
         const selectedTeam = req.body.team;
         if (!selectedTeam) {
             return res.status(400).send('Необходимо выбрать команду');
         }
+
+        const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
 
         // Отправляем письмо
         const mailOptions = {
@@ -182,8 +190,8 @@ router.post('/submit-user-register', async (req, res) => {
             user.email,
             user.phone,
             user.age,
-            selectedTeam,
             user.social_link,
+            selectedTeam,
             req.body.payment_method || 'bank-transfer',
             uniqueNumber
         ]);

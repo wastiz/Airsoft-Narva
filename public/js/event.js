@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
             name: formData.get('name'),
             phone: formData.get('phone'),
             email: formData.get('email'),
-            social: formData.get('social'),
+            social_link: formData.get('social'),
             age: formData.get("age"),
             nickname: formData.get('nickname'),
             aboutCharacter: formData.get('about-character'),

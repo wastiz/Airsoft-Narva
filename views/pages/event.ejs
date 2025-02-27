@@ -63,10 +63,10 @@
 
                     <div class="event-teams flex flex-col hidden">
                         <% for (let key in config.teams) { %>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#team-<%= config.teams[key]["name"]%>" aria-expanded="false" aria-controls="team-<%= config.teams[key]["name"]%>">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#team-<%= config.teams[key]["id"]%>" aria-expanded="false" aria-controls="team-<%= config.teams[key]["id"]%>">
                                 <%= config.teams[key]["name"]%>
                             </button>
-                            <div class="collapse" id="team-<%= config.teams[key]["name"]%>">
+                            <div class="collapse" id="team-<%= config.teams[key]["id"]%>">
                                 <div class="card card-body">
                                     <%= config.teams[key]["description"]%>
                                 </div>
@@ -90,7 +90,7 @@
                             <input type='text' id="name" name="name" placeholder="Имя / Фамилия" required>
                             <input type='text' id="tel" name="phone" placeholder="Номер телефона" required>
                             <input id="email" name="email" type="email" placeholder="Эмайл" required/>
-                            <textarea style="margin-bottom: 0" id="social" name="social" type="text" placeholder="Ссылка на вашу любую соц сеть (для связи)" required></textarea>
+                            <textarea style="margin-bottom: 0" id="social" name="social" type="text" placeholder="Ваша соц сеть (желательно телеграм)" required></textarea>
                             <input id="age" name="age" type="number" placeholder="Введите ваш возраст" required/>
                             <input type="text" name="nickname" placeholder="Имя персонажа" required>
                             <textarea id="message" name="about-character" rows="10" placeholder="О вашем персонаже (опционально)" data-lt-tmp-id="lt-324300" spellcheck="false" data-gramm="false"></textarea>
