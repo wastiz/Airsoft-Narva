@@ -78,7 +78,7 @@
                             <td><%= new Date(game.game_date).toLocaleDateString('ru-RU') %></td>
                             <td><%= game.registrations_count || 0 %></td>
                             <td class="action-buttons">
-                                <a href="/player-list/open-game/<%= game.id %>" class="dashboard-btn">
+                                <a href="/player-list/open-games/<%= game.id %>" class="dashboard-btn">
                                     <button class="btn mb-20"><i class="fa fa-eye"></i></button>
                                 </a>
                                 <button class="make-current-btn" onclick="makeGameCurrent('<%= game.id %>')" title="Сделать текущим">

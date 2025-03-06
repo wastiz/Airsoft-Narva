@@ -8,7 +8,7 @@ const eventConfig = require('../configs/event-config.json');
 
 router.post('/submit-update-event', async (req, res) => {
     try {
-        let { password, ...data } = req.body;
+        let { password, active, ...data } = req.body;
 
         if (password === "1234") {
             return res.status(405).json({ message: 'Серьезно?!' });
@@ -69,6 +69,8 @@ router.post('/submit-update-event', async (req, res) => {
                 const formattedEndDate = item[1].split('-').reverse().join('.');
                 return `${formattedStartDate}-${formattedEndDate}-${item[2]}`;
             });
+
+            output["active"] = active;
 
             const filePath = path.join(__dirname, '../configs/event-config.json');
             const fileContent = await fs.promises.readFile(filePath, 'utf8');
@@ -136,17 +138,27 @@ router.post('/delete-current-game', checkAdmin, async (req, res) => {
 });
 
 // Получение деталей игрока
-router.get('/player-details/:playerId', checkAdmin, async (req, res) => {
+router.get('/player-details/:playerId/:gameType', checkAdmin, async (req, res) => {
     try {
-        const result = await pool.query(
-            'SELECT first_name, last_name, callsign, email, phone, age FROM users WHERE id = $1',
-            [req.params.playerId]
-        );
-        
+        const { playerId, gameType } = req.params;
+
+        let query;
+        let result;
+
+        if (gameType === 'open-games') {
+            query = 'SELECT name, email, phone, age, payment_method FROM open_games_registrations WHERE id = $1';
+            result = await pool.query(query, [playerId]);
+        } else if (gameType === 'event') {
+            query = 'SELECT name, email, phone, age, payment_method, social_link FROM event_registrations WHERE id = $1';
+            result = await pool.query(query, [playerId]);
+        } else {
+            return res.status(400).json({ error: 'Неверный тип игры' });
+        }
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Игрок не найден' });
         }
-        
+
         res.json(result.rows[0]);
     } catch (error) {
         console.error('Error:', error);
@@ -155,12 +167,21 @@ router.get('/player-details/:playerId', checkAdmin, async (req, res) => {
 });
 
 // Переключение статуса оплаты
-router.post('/toggle-payment-status/:playerId', checkAdmin, async (req, res) => {
+router.post('/toggle-payment-status/:playerId/:gameType', checkAdmin, async (req, res) => {
+    const { playerId, gameType } = req.params;
+
     try {
-        await pool.query(
-            'UPDATE open_games_registrations SET payment_status = CASE WHEN payment_status = \'paid\' THEN \'pending\' ELSE \'paid\' END WHERE id = $1',
-            [req.params.playerId]
-        );
+        if (gameType === "open-games") {
+            await pool.query(
+                'UPDATE open_games_registrations SET payment_status = CASE WHEN payment_status = \'paid\' THEN \'pending\' ELSE \'paid\' END WHERE id = $1',
+                [playerId]
+            );
+        } else if (gameType === "event") {
+            await pool.query(
+                'UPDATE event_registrations SET payment_status = CASE WHEN payment_status = \'paid\' THEN \'pending\' ELSE \'paid\' END WHERE id = $1',
+                [playerId]
+            );
+        }
         res.sendStatus(200);
     } catch (error) {
         console.error('Error:', error);
@@ -169,12 +190,31 @@ router.post('/toggle-payment-status/:playerId', checkAdmin, async (req, res) => 
 });
 
 // Переключение статуса прибытия
-router.post('/toggle-arrival-status/:playerId', checkAdmin, async (req, res) => {
+router.post('/toggle-arrival-status/:playerId/:gameType', checkAdmin, async (req, res) => {
+    const { playerId, gameType } = req.params;
+
     try {
-        await pool.query(
-            'UPDATE open_games_registrations SET arrived = NOT arrived WHERE id = $1',
-            [req.params.playerId]
-        );
+        if (gameType === "open-games") {
+            await pool.query(
+                'UPDATE open_games_registrations SET arrived = NOT arrived WHERE id = $1',
+                [playerId]
+            );
+
+            await pool.query(
+                'UPDATE users SET games_attended = games_attended + 1 WHERE id = (SELECT user_id FROM open_games_registrations WHERE id = $1)',
+                [playerId]
+            );
+        } else if (gameType === "event") {
+            await pool.query(
+                'UPDATE event_registrations SET arrived = NOT arrived WHERE id = $1',
+                [playerId]
+            );
+
+            await pool.query(
+                'UPDATE users SET games_attended = games_attended + 1 WHERE id = (SELECT user_id FROM event_registrations WHERE id = $1)',
+                [playerId]
+            );
+        }
         res.sendStatus(200);
     } catch (error) {
         console.error('Error:', error);
@@ -412,6 +452,41 @@ router.post('/open-games/config', checkAdmin, async (req, res) => {
     } catch (error) {
         console.error('Error saving game config:', error);
         res.status(500).send('Ошибка сервера');
+    }
+});
+
+router.post('/submit-user-register', async (req, res) => {
+    try {
+        // Existing logic...
+
+        // Check for existing registration with the same email or phone
+        const existingReg = await pool.query(`
+            SELECT id 
+            FROM open_games_registrations 
+            WHERE email = $1 OR phone = $2
+        `, [data.email, data.phone]);
+
+        if (existingReg.rows.length > 0) {
+            return res.status(409).send('Емайл или номер телефона уже зарегистрированы');
+        }
+
+        // Existing logic for fetching user data and inserting into the database...
+        // Save guest registration to the database
+        const insertGuestQuery = `
+            INSERT INTO open_games_registrations (game_id, user_id, name, email, phone, age, payment_method, unique_number)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+
+        await pool.query(insertGuestQuery, [gameId, userId, data.name, data.email, data.phone, data.age, data.payment_method, uniqueNumber]);
+
+        res.status(200).send('Регистрация успешна');
+    } catch (error) {
+        console.error('Error:', error);
+        if (error.code === '23505') {
+            res.status(409).send('Емайл уже зарегистрирован');
+        } else {
+            res.status(500).send('Ошибка при заполнении данных');
+        }
     }
 });
 

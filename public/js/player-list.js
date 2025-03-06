@@ -13,20 +13,19 @@ window.onclick = function(event) {
 }
 
 // Показать детали игрока
-async function showPlayerDetails(playerId) {
+async function showPlayerDetails(playerId, gameType) {
     try {
-        const response = await fetch(`/admin/player-details/${playerId}`);
+        const response = await fetch(`/admin/player-details/${playerId}/${gameType}`);
         if (response.ok) {
             const player = await response.json();
             
             document.getElementById('playerDetails').innerHTML = `
                 <div class="player-info">
-                    <p><strong>Имя:</strong> ${player.first_name}</p>
-                    <p><strong>Фамилия:</strong> ${player.last_name}</p>
-                    <p><strong>Позывной:</strong> ${player.callsign || '-'}</p>
+                    <p><strong>Имя Фамилимя:</strong> ${player.name}</p>
                     <p><strong>Email:</strong> ${player.email}</p>
                     <p><strong>Телефон:</strong> ${player.phone}</p>
                     <p><strong>Возраст:</strong> ${player.age}</p>
+                    <p><strong>Соц сеть:</strong> ${player.social_link ?? '-'}</p>
                     <p><strong>Метод оплаты:</strong> ${player.payment_method === 'bank-transfer' ? 'Банковский перевод' : 'Наличные'}</p>
                 </div>
             `;
@@ -40,9 +39,9 @@ async function showPlayerDetails(playerId) {
 }
 
 // Переключение статуса оплаты
-async function togglePaymentStatus(playerId) {
+async function togglePaymentStatus(playerId, gameType) {
     try {
-        const response = await fetch(`/admin/toggle-payment-status/${playerId}`, {
+        const response = await fetch(`/admin/toggle-payment-status/${playerId}/${gameType}`, {
             method: 'POST'
         });
         
@@ -56,9 +55,9 @@ async function togglePaymentStatus(playerId) {
 }
 
 // Переключение статуса прибытия
-async function toggleArrivalStatus(playerId) {
+async function toggleArrivalStatus(playerId, gameType) {
     try {
-        const response = await fetch(`/admin/toggle-arrival-status/${playerId}`, {
+        const response = await fetch(`/admin/toggle-arrival-status/${playerId}/${gameType}`, {
             method: 'POST'
         });
         

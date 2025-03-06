@@ -3,6 +3,11 @@
 
 <%- include('../partials/header.ejs') %>
 <section class="commonSection wearebest">
+    <% if (!config.active) { %>
+        <div class="alert alert-warning">
+            В данный момент нет активных ивентов.
+        </div>
+    <% } else { %>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -27,7 +32,7 @@
                         <a class="nav-link disabled">Фракции</a>
                     </li>
                 </ul>
-                <div class='event-content'>
+                <div class='event-content'>    
                     <div class="event-main">
                         <h5><b>Наш канал в Телеграм:</b></h5>
                         <p><a style="color: #05b8fa;" href="https://t.me/airsoftnarva">https://t.me/airsoftnarva</a></p>
@@ -73,7 +78,6 @@
                             </div>
                         <% } %>
                     </div>
-
                 </div>
             </div>
             <div class="col-md-4" id="rega">
@@ -153,5 +157,6 @@
             </div>
         </div>
     </div>
+    <% } %>
 </section>
 <script src="js/event.js"></script>

@@ -92,3 +92,5 @@ async function createNextOpenGame() {
 // createNextOpenGame();
 
 console.log('Open games scheduler is running...');
+
+module.exports = { createNextOpenGame };

@@ -14,6 +14,7 @@ const adminController = require('./controllers/adminController');
 const bookFormController = require('./controllers/bookFormController');
 const profileController = require('./controllers/profileController');
 const authController = require('./controllers/authController');
+const { createNextOpenGame } = require('./createOpenGame');
 // Установка EJS как шаблонизатора
 app.set('view engine', 'ejs');
 

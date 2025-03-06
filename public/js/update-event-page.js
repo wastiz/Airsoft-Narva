@@ -154,7 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
             teams: gatherTeams(),
             teamrestriction: document.getElementById('team-restriction').value,
             pricing: gatherPricing(),
-            password: document.getElementById('update-password').value
+            password: document.getElementById('update-password').value,
+            active: document.getElementById('event-active').checked
         };
 
         const imageFile = document.getElementById('event-image-file').files[0];

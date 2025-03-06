@@ -155,6 +155,12 @@ const convertToISODate = (date) => {
                 </div>
 
                 <div class="mb-20">
+                    <h6>Статус ивента:</h6>
+                    <input type="checkbox" id="event-active" <% if (event.active) { %>checked<% } %> />
+                    <label for="event-active">Активен</label>
+                </div>
+
+                <div class="mb-20">
                     <h6>Пароль:</h6>
                     <p class="text-white">Чтобы сохранить изменения введите пароль</p>
                     <input type="password" id="update-password">

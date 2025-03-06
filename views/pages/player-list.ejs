@@ -13,8 +13,7 @@
         <table class="player-table">
             <thead>
                 <tr>
-                    <th>Имя</th>
-                    <th>Фамилия</th>
+                    <th>Имя Фаимлия</th>
                     <th>Позывной</th>
                     <th>Статус оплаты</th>
                     <th>Присутствие</th>
@@ -25,7 +24,6 @@
                 <% players.forEach(player => { %>
                     <tr data-player-id="<%= player.id %>">
                         <td><%= player.first_name %></td>
-                        <td><%= player.last_name %></td>
                         <td><%= player.callsign || '-' %></td>
                         <td>
                             <span class="status-badge payment-status <%= player.payment_status === 'paid' ? 'status-paid' : 'status-pending' %>">
@@ -38,15 +36,15 @@
                             </span>
                         </td>
                         <td>
-                            <button class="action-btn view-btn" onclick="showPlayerDetails('<%- player.id %>')">
+                            <button class="action-btn view-btn" onclick="showPlayerDetails('<%- player.id %>', '<%= gameType %>')">
                                 <i class="fa fa-eye"></i>
                             </button>
                             <button class="action-btn payment-btn <%= player.payment_status === 'paid' ? 'active' : '' %>" 
-                                    onclick="togglePaymentStatus('<%- player.id %>')">
+                                    onclick="togglePaymentStatus('<%- player.id %>', '<%= gameType %>')">
                                 <i class="fa fa-money" style="color: white;"></i>
                             </button>
                             <button class="action-btn arrival-btn <%= player.arrived ? 'active' : '' %>" 
-                                    onclick="toggleArrivalStatus('<%- player.id %>')">
+                                    onclick="toggleArrivalStatus('<%- player.id %>', '<%= gameType %>')">
                                 <i class="fa fa-check"></i>
                             </button>
                         </td>

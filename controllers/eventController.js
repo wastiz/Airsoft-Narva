@@ -12,6 +12,16 @@ router.post('/submit-book-form', async (req, res) => {
     try {
         const uniqueNumber = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
 
+        // Check for existing registration with the same email or phone
+        const existingRegistration = await pool.query(`
+            SELECT * FROM event_registrations 
+            WHERE email = $1 OR phone = $2
+        `, [data.email, data.phone]);
+
+        if (existingRegistration.rows.length > 0) {
+            return res.status(409).send('Емайл или номер телефона уже зарегистрированы');
+        }
+
         const mailOptions = {
             from: {
                 name: "Narva CQB Arena",
