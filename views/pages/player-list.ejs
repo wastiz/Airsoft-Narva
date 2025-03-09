@@ -14,7 +14,13 @@
             <thead>
                 <tr>
                     <th>Имя Фаимлия</th>
-                    <th>Команда</th>
+                    <th>
+                        <% if (gameType === 'event') { %>
+                            Команда
+                        <% } else { %>
+                            Почта
+                        <% } %>
+                    </th>
                     <th>Статус оплаты</th>
                     <th>Присутствие</th>
                     <th>Действия</th>
@@ -28,7 +34,7 @@
                             <% if (gameType === 'event') { %>
                                 <%= player.team || '-' %>
                             <% } else { %>
-                                <%= player.callsign || '-' %>
+                                <%= player.email || '-' %>
                             <% } %>
                         </td>
                         <td>

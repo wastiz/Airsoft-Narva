@@ -282,13 +282,11 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
             query = `
                 SELECT 
                     ogr.id,
-                    u.first_name,
-                    u.last_name,
-                    u.callsign,
+                    ogr.name,
+                    ogr.email,
                     ogr.payment_status,
                     ogr.arrived
                 FROM open_games_registrations ogr
-                JOIN users u ON ogr.user_id = u.id
                 WHERE ogr.game_id = $1
                 ORDER BY ogr.created_at ASC
             `;
@@ -306,7 +304,6 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
                     er.payment_status,
                     er.arrived
                 FROM event_registrations er
-                LEFT JOIN users u ON er.user_id = u.id
                 WHERE er.event_id = $1
                 ORDER BY er.created_at ASC
             `;
