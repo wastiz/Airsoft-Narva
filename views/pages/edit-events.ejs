@@ -31,6 +31,7 @@
                     <p>Создан: <%= new Date(currentEvent.created_at).toLocaleDateString('ru-RU') %></p>
                 </div>
                 <div class="event-actions">
+                    <button class="btn" onclick="openCreatePlayerModal()">Добавить игрока</button>
                     <a href="/player-list/event/<%= eventStats.id %>" class="dashboard-btn">
                         <button class="btn mb-20">Управление регистрациями (<%= eventStats.registrationsCount %>)</button>
                     </a>
@@ -111,6 +112,51 @@
         </form>
     </div>
 </div>
+
+<!-- Модалка для добавления игрока -->
+<div id="createPlayerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCreatePlayerModal()">&times;</span>
+        <h2>Создать игрока</h2>
+        <form id="createPlayerForm" class="player-form">
+            <div class="form-group">
+                <label for="name">Имя/Фамилия:</label>
+                <input type="text" id="name" name="name" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Возраст:</label>
+                <input type="number" id="age" name="age" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Метод оплаты:</label>
+                <select id="paymentMethod" name="paymentMethod" class="form-input" required>
+                    <option value="налик">Налик</option>
+                    <option value="перевод">Перевод</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="socialLink">Ссылка на соц сеть:</label>
+                <input type="text" id="socialLink" name="socialLink" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="team">Команда/НПС:</label>
+                <input type="text" id="team" name="team" class="form-input">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">Создать игрока</button>
+            </div>
+        </form>
+    </div>
+</div> 
+
 
 <%- contentFor('customJS') %>
 <script src="/js/edit-events.js"></script>

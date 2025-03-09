@@ -94,8 +94,6 @@ router.post('/submit-update-event', async (req, res) => {
     }
 });
 
-module.exports = router;
-
 
 router.post('/delete-current-game', checkAdmin, async (req, res) => {
     const client = await pool.connect();
@@ -487,6 +485,36 @@ router.post('/submit-user-register', async (req, res) => {
         } else {
             res.status(500).send('Ошибка при заполнении данных');
         }
+    }
+});
+
+
+router.post('/add-player', async (req, res) => {
+    const { name, phone, email, age, team, payment_method, social_link } = req.body;
+
+    const unique_number = Math.floor(Math.random() * 1000000);
+
+    try {
+        const eventResult = await pool.query(
+            'SELECT id FROM events WHERE current = true LIMIT 1'
+        );
+
+        if (eventResult.rows.length === 0) {
+            return res.status(404).send('Нет текущего ивента');
+        }
+
+        const event_id = eventResult.rows[0].id;
+
+        const result = await pool.query(
+            `INSERT INTO event_registrations (event_id, name, phone, email, age, team, payment_method, social_link, unique_number)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+            [event_id, name, phone, email, age, team, payment_method, social_link, unique_number]
+        );
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error creating player:', error);
+        res.status(500).send('Ошибка при добавлении игрока');
     }
 });
 

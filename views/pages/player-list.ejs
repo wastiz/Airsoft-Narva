@@ -14,7 +14,7 @@
             <thead>
                 <tr>
                     <th>Имя Фаимлия</th>
-                    <th>Позывной</th>
+                    <th>Команда</th>
                     <th>Статус оплаты</th>
                     <th>Присутствие</th>
                     <th>Действия</th>
@@ -23,8 +23,14 @@
             <tbody>
                 <% players.forEach(player => { %>
                     <tr data-player-id="<%= player.id %>">
-                        <td><%= player.first_name %></td>
-                        <td><%= player.callsign || '-' %></td>
+                        <td><%= player.name %></td>
+                        <td>
+                            <% if (gameType === 'event') { %>
+                                <%= player.team || '-' %>
+                            <% } else { %>
+                                <%= player.callsign || '-' %>
+                            <% } %>
+                        </td>
                         <td>
                             <span class="status-badge payment-status <%= player.payment_status === 'paid' ? 'status-paid' : 'status-pending' %>">
                                 <%= player.payment_status === 'paid' ? 'Оплачено' : 'Не оплачено' %>

@@ -301,9 +301,8 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
             query = `
                 SELECT 
                     er.id,
-                    COALESCE(u.first_name, er.name) as first_name,
-                    COALESCE(u.last_name, '') as last_name,
-                    COALESCE(u.callsign, '') as callsign,
+                    er.name,
+                    er.team,
                     er.payment_status,
                     er.arrived
                 FROM event_registrations er
@@ -316,6 +315,10 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
                 'SELECT event_date as game_date FROM events WHERE id = $1',
                 [gameId]
             );
+
+            if (gameResult.rows.length === 0) {
+                return res.status(404).send('Игра не найдена');
+            }
         }
 
         const result = await pool.query(query, [gameId]);
@@ -335,7 +338,6 @@ router.get('/player-list/:gameType/:gameId', checkAdmin, async (req, res) => {
 
 router.get('/edit-events', checkAdmin, async (req, res) => {
     try {
-        // Получаем текущий ивент с количеством регистраций
         const currentEventResult = await pool.query(`
             SELECT 
                 e.id, e.name, e.event_date, e.created_at, e.updated_at,

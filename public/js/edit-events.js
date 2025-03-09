@@ -85,4 +85,51 @@ async function makeEventCurrent(eventId) {
         console.error('Error:', error);
         alert('Ошибка сервера');
     }
-} 
+}
+
+
+function openCreatePlayerModal() {
+    const playerModal = document.getElementById('createPlayerModal');
+    playerModal.style.display = "block";
+}
+
+function closeCreatePlayerModal () {
+    const playerModal = document.getElementById('createPlayerModal');
+    playerModal.style.display = "none";
+}
+
+
+// Обработка отправки формы создания игрока
+document.getElementById('createPlayerForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        age: formData.get('age'),
+        team: formData.get('team'),
+        payment_method: formData.get('paymentMethod'),
+        social_link: formData.get('socialLink')
+    };
+
+    try {
+        const response = await fetch('/admin/add-player', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            const error = await response.text();
+            alert(error || 'Ошибка при создании игрока');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ошибка сервера');
+    }
+}); 
