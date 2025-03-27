@@ -455,9 +455,6 @@ router.post('/open-games/config', checkAdmin, async (req, res) => {
 
 router.post('/submit-user-register', async (req, res) => {
     try {
-        // Existing logic...
-
-        // Check for existing registration with the same email or phone
         const existingReg = await pool.query(`
             SELECT id 
             FROM open_games_registrations 
@@ -468,8 +465,6 @@ router.post('/submit-user-register', async (req, res) => {
             return res.status(409).send('Емайл или номер телефона уже зарегистрированы');
         }
 
-        // Existing logic for fetching user data and inserting into the database...
-        // Save guest registration to the database
         const insertGuestQuery = `
             INSERT INTO open_games_registrations (game_id, user_id, name, email, phone, age, payment_method, unique_number)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -515,6 +510,77 @@ router.post('/add-player', async (req, res) => {
     } catch (error) {
         console.error('Error creating player:', error);
         res.status(500).send('Ошибка при добавлении игрока');
+    }
+});
+
+
+router.post('/submit-project-reg', async (req, res) => {
+    const { name, unique_code, email, phone } = req.body;
+
+    if (!name || !unique_code) {
+        return res.status(400).send('Имя и Исикукод обязательны для заполнения.');
+    }
+
+    try {
+        const year = parseInt(unique_code.slice(1, 3), 10);
+        const month = parseInt(unique_code.slice(3, 5), 10);
+        const day = parseInt(unique_code.slice(5, 7), 10);
+
+        const firstDigit = parseInt(unique_code.charAt(0), 10);
+        let fullYear;
+
+        if (firstDigit === 3 || firstDigit === 4) {
+            fullYear = 1900 + year;
+        } else if (firstDigit === 5 || firstDigit === 6) {
+            fullYear = 2000 + year;
+        } else {
+            return res.status(400).send('Некорректный Исикукод.');
+        }
+
+        const dateOfBirth = new Date(fullYear, month - 1, day);
+
+        const today = new Date();
+        let age = today.getFullYear() - fullYear;
+
+        if (today.getMonth() < month - 1 || (today.getMonth() === month - 1 && today.getDate() < day)) {
+            age--;
+        }
+
+        const insertQuery = `
+            INSERT INTO project_users (name, unique_code, email, phone, age, date_of_birth)
+            VALUES ($1, $2, $3, $4, $5, $6)
+        `;
+
+        await pool.query(insertQuery, [name, unique_code, email, phone, age, dateOfBirth]);
+
+        res.status(200).send('Пользователь успешно зарегистрирован.');
+    } catch (error) {
+        console.error('Error:', error);
+        if (error.code === '23505') {
+            res.status(409).send('Пользователь с таким уникальным кодом уже зарегистрирован.');
+        } else {
+            res.status(500).send('Ошибка при регистрации пользователя.');
+        }
+    }
+});
+
+router.get('/get-registered-users', checkAdmin, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT name, unique_code, email FROM project_users');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching registered users:', error);
+        res.status(500).send('Ошибка при получении зарегистрированных пользователей.');
+    }
+});
+
+router.get('/get-registered-users-count', checkAdmin, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) AS count FROM project_users');
+        res.json(result.rows[0].count);
+    } catch (error) {
+        console.error('Error fetching registered users count:', error);
+        res.status(500).send('Ошибка при получении количества зарегистрированных пользователей.');
     }
 });
 
