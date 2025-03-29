@@ -41,6 +41,27 @@ async function loadDashboardStats() {
     } catch (error) {
         console.error('Error loading dashboard stats:', error);
     }
+
+    try {
+        const response = await fetch('/admin/get-registered-users');
+        const users = await response.json();
+        const thead = document.getElementById('registered-users-head');
+        thead.innerText = 'Зарегано по проекту (' + users.length + ")";
+        const tbody = document.getElementById('registered-users-body');
+        tbody.innerHTML = '';
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.unique_code}</td>
+                <td>${user.email || 'Не указан'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching registered users:', error);
+    }
 }
 
 // Загружаем статистику при загрузке страницы

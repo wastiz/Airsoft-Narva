@@ -2,8 +2,6 @@
 <link rel="stylesheet" href="/css/admin.css">
 <link rel="stylesheet" href="/css/project-registration.css">
 
-<%- include('../partials/admin-header') %>
-
 <section class="registration-section">
     <div class="container">
         <h4>Регистрация пользователей для проекта</h4>
@@ -27,48 +25,8 @@
             <button type="submit">Добавить пользователя</button>
         </form>
         <p id="response-message"></p>
-
-        <h3 id="registered-users-head"></h3>
-        <table class="registered-users-table">
-            <thead>
-                <tr>
-                    <th>Имя Фамилия</th>
-                    <th>Исикукод</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody id="registered-users-body">
-
-            </tbody>
-        </table>
     </div>
 </section>
 
 <%- contentFor('customJS') %>
 <script src="/js/project-registration.js"></script>
-<script>
-    async function fetchRegisteredUsers() {
-        try {
-            const response = await fetch('/admin/get-registered-users');
-            const users = await response.json();
-            const thead = document.getElementById('registered-users-head');
-            thead.innerText = 'Зарегистрированные пользователи (' + users.length + ")";
-            const tbody = document.getElementById('registered-users-body');
-            tbody.innerHTML = '';
-
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.name}</td>
-                    <td>${user.unique_code}</td>
-                    <td>${user.email || 'Не указан'}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Error fetching registered users:', error);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', fetchRegisteredUsers);
-</script>

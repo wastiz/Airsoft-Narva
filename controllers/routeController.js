@@ -373,7 +373,7 @@ router.get('/edit-events', checkAdmin, async (req, res) => {
     }
 });
 
-router.get('/project-registration', checkAdmin, async (req, res) => {
+router.get('/project-registration', async (req, res) => {
     res.render('pages/project-registration', { 
         layout: 'layouts/main',
         currentPath: req.path

@@ -50,27 +50,3 @@ button:hover {
         padding: 0 15px;
     }
 }
-
-.registered-users-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.registered-users-table th,
-.registered-users-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-}
-
-.registered-users-table th {
-    background-color: #f2f2f2;
-}
-
-@media (max-width: 768px) {
-    .registered-users-table th,
-    .registered-users-table td {
-        font-size: 14px;
-    }
-}
